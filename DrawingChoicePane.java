@@ -14,6 +14,8 @@ package stopmotioneditor;
  * @author yigit
  */
 import java.util.ArrayList;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.event.EventType;
 import javafx.geometry.Pos;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
@@ -23,7 +25,6 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 public class DrawingChoicePane extends Pane{
@@ -36,7 +37,8 @@ public class DrawingChoicePane extends Pane{
     private static final double SEPERATOR_HEIGHT = 15;
     private static final double FIXED_COLOR_PANE_HGAP = 20;
     private static final double FIXED_COLOR_PANE_VGAP = 20;
-    private static final double THIS_WIDTH = 600; // 600 pixel
+    public static final double THIS_WIDTH = 600; // 600 pixel
+    private static final double CIRCLE_PANE_MIN_SIZE = 400;
     //private static final double THIS_HEIGHT = ?;
     //private static final double RGB_PANE_SPACING = ?;
     //private static final double SMALL_VBOX_SPACING = ?;
@@ -55,15 +57,16 @@ public class DrawingChoicePane extends Pane{
     
     //Panes
     private VBox bigVBox = new VBox();
-    private VBox smallVBox = new VBox();//contains the circle and the slider
+    private VBox smallVBox = new VBox();//contains the circlePane and the slider
     private GridPane fixedColorPane = new GridPane();
     private GridPane rgbPane = new GridPane();
     private Rectangle seperator = new Rectangle();// separates the slider and circle with the below nodes
+    private Pane circlePane = new Pane();//contains the circle pane, smallVbox contains this pane
     public DrawingChoicePane(){
         this.setWidth(THIS_WIDTH);
         
-        smallVBox.getChildren().addAll(circle,radiusSlider);
-        smallVBox.setSpacing(20);//changel ater on
+        this.setSmallVBox();
+        
         fixedColorPane.setVgap(FIXED_COLOR_PANE_VGAP);
         fixedColorPane.setHgap(FIXED_COLOR_PANE_HGAP);
         fixedColorPane.setAlignment(Pos.CENTER);
@@ -73,11 +76,25 @@ public class DrawingChoicePane extends Pane{
         this.setSeparator();
         
         bigVBox.setSpacing(30);//changel ater on
-        bigVBox.getChildren().addAll(circle,radiusSlider,seperator,fixedColorPane,rgbPane);
+        bigVBox.getChildren().addAll(smallVBox,seperator,fixedColorPane,rgbPane);
         this.getChildren().addAll(bigVBox);
-        
+        this.addBindings();
     }
     
+    private void setSmallVBox(){
+        circlePane.getChildren().add(this.circle);
+        
+        //This helps the circle to stay on middle after radius change
+        this.circle.centerXProperty().bind(circlePane.widthProperty().divide(2));
+        this.circle.centerYProperty().bind(circlePane.heightProperty().divide(2));
+        circlePane.setMinHeight(CIRCLE_PANE_MIN_SIZE);
+        
+        smallVBox.getChildren().addAll(circlePane,radiusSlider);
+        //this enables the slider to stay on its desired spot
+        //smallVBox.spacingProperty().bind(new SimpleDoubleProperty(420).subtract(circle.radiusProperty().multiply(2)));
+        //desired spacing is 20, circle radius is at most 200, so 220 - radius is the spacing
+        
+    }
     private void setFixedRectangles(double width){//sets the fixed color squares(rectangles) with specified width
         for(int i = 0; i < 25; i++){
             Rectangle rect = new Rectangle(width,width);
@@ -123,7 +140,7 @@ public class DrawingChoicePane extends Pane{
     private void setSeparator(){
         this.seperator.widthProperty().bind(this.widthProperty());//bind this seperators width to choice pane's width 
         this.seperator.setHeight(SEPERATOR_HEIGHT);
-        this.seperator.setFill(Color.ALICEBLUE);
+        this.seperator.setFill(Color.LIGHTGREY);
     }
     private void setRGBPane(){
         redSlider.setMax(255);
@@ -140,12 +157,16 @@ public class DrawingChoicePane extends Pane{
         rgbPane.add(greenSlider, 0, 2);
         rgbPane.add(greenLabel, 1, 2);
         
+        rgbPane.setAlignment(Pos.CENTER);//set the elements onto the center
     }
     /**
-     * This method adds some bindings to the sliders, might be problematic later on
+     * This method adds some bindings and event handling to the sliders etc., might be problematic later on.
      */
     private void addBindings(){
-        
+        radiusSlider.valueProperty().addListener( ov -> {
+            double value = radiusSlider.getValue();
+            this.circle.setRadius(value);
+            
+        });
     }
 }
-
