@@ -2,13 +2,13 @@ import java.util.ArrayList;
 /**
  * UserClass
  */
-public class UserClass {
+public class User {
 
     String userName;
     String password;
     ArrayList <Project> projects;
 
-    public UserClass(String userName, String password){
+    public User(String userName, String password){
 
         this.userName = userName;
         this.password = password;
@@ -16,7 +16,7 @@ public class UserClass {
     }
 
 
-    public void AddProject(Project project){
+    public void addProject(Project project){
 
         projects.add(project);
     }

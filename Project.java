@@ -19,7 +19,8 @@ import javafx.scene.image.Image;
  */
 public class Project {
    public static final double INITIAL_FPS_RATE = 9;
-   private User user;
+   private String name;
+    // user data field?
    private ArrayList<EditableImage> images = new ArrayList<>();
    private Timeline timer; //similar to swing Timer, determines animation fps
    private int numberOfImages; //THIS IS IMPORTANT FOR SMALLIMAGE, represents the no of images must be updated during runtime when necessary
@@ -30,12 +31,11 @@ public class Project {
     * @param projectName 
     * @param userName
     */
-   public Project(ArrayList<Image> fxImages, String projectName, String userName){
+   public Project(ArrayList<Image> fxImages, String projectName){
        //set the numberOfImagesInProject in each editableImage during construction, will be used for smallImage indexLabell
+       this.name = projectName;
        this.numberOfImages = fxImages.size();
        for(int i = 0; i < numberOfImages; i++){
-           /* String filePath = imageFilePaths.get(i);
-           images.add(new EditableImage(filePath,this,i)); */
            this.images.add( new EditableImage(fxImages.get(i), this, i));
        }
        this.initializeTimer();

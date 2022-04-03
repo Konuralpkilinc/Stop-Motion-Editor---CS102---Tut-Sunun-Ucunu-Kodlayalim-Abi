@@ -21,7 +21,7 @@ public class EditableImage extends ImageView{
     private Polyline lastLine; //represents the last line that is added to the lines
     private SmallImage smallImage;
     private BigImage bigImage;
-    private Image fxImage; // Filepath is replaced with this (Emir)
+    private Image fxImage;
     private int index;//!!!! IMPORTANT, this must be set when project is being created and must be updated during deletion etc.
     //indexOnProject represents the number of this specific image instance
     

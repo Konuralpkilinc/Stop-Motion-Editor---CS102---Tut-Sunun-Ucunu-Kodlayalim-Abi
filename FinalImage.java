@@ -24,8 +24,8 @@ public class FinalImage extends ImageView{
     protected Polyline lastLine; //represents the last line that is added to the lines
     protected EditableImage editableImage;// editable image of this final image
     
-    public FinalImage(EditableImage editableImage, String filePath){//same filepath with the editableImage
-        super(new Image(filePath));
+    public FinalImage(EditableImage editableImage, Image fxImage){//same fxImage with the editableImage
+        super(fxImage);
         this.editableImage = editableImage;
         this.setPreserveRatio(preserveRatio);
         //this.setProperties();
