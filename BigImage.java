@@ -5,6 +5,8 @@
  */
 package stopmotioneditor;
 
+import javafx.scene.image.Image;
+
 /**
  *
  * @author yigit
@@ -16,8 +18,8 @@ public class BigImage extends FinalImage{
     /*protected ArrayList<Polyline> lines = new ArrayList<>(); //drawings that have been made
     protected Polyline lastLine; //represents the last line that is added to the lines
     protected EditableImage editableImage;// editable image of this final image*/ 
-    public BigImage(EditableImage editableImg, String filePath){
-        super(editableImg,filePath);
+    public BigImage(EditableImage editableImg, Image fxImage){
+        super(editableImg, fxImage);
         
         //set the dimensions
         this.setFitWidth(FinalImage.SMALL_IMAGE_WIDTH);

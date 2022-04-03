@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import javafx.animation.Timeline;
 import javafx.animation.KeyFrame;
 import javafx.util.Duration;
+import javafx.scene.image.Image;
 /**
  *This class represent a project of the user
  * Please extend accordingly to other classes
@@ -18,21 +19,24 @@ import javafx.util.Duration;
  */
 public class Project {
    public static final double INITIAL_FPS_RATE = 9;
-   //add User data field ?
+   private User user;
    private ArrayList<EditableImage> images = new ArrayList<>();
    private Timeline timer; //similar to swing Timer, determines animation fps
    private int numberOfImages; //THIS IS IMPORTANT FOR SMALLIMAGE, represents the no of images must be updated during runtime when necessary
    /**
     * constructs a Project
     * Will be invoked when the project is constructed for the first time(not taken from database)
-    * @param imageFilePaths images' filepaths
+    * @param images 
+    * @param projectName 
+    * @param userName
     */
-   public Project(ArrayList<String> imageFilePaths){
+   public Project(ArrayList<Image> fxImages, String projectName, String userName){
        //set the numberOfImagesInProject in each editableImage during construction, will be used for smallImage indexLabell
-       this.numberOfImages = imageFilePaths.size();
+       this.numberOfImages = fxImages.size();
        for(int i = 0; i < numberOfImages; i++){
-           String filePath = imageFilePaths.get(i);
-           images.add(new EditableImage(filePath,this,i));
+           /* String filePath = imageFilePaths.get(i);
+           images.add(new EditableImage(filePath,this,i)); */
+           this.images.add( new EditableImage(fxImages.get(i), this, i));
        }
        this.initializeTimer();
        

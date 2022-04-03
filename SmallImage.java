@@ -6,6 +6,7 @@
 package stopmotioneditor;
 
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -39,8 +40,8 @@ public class SmallImage extends FinalImage{
     /**
      *
      */
-    public SmallImage(EditableImage editableImg,String filePath){
-        super(editableImg,filePath);
+    public SmallImage(EditableImage editableImg, Image fxImage){
+        super(editableImg, fxImage);
         
         //set the dimensions
         this.setFitWidth(FinalImage.SMALL_IMAGE_WIDTH);

@@ -21,19 +21,19 @@ public class EditableImage extends ImageView{
     private Polyline lastLine; //represents the last line that is added to the lines
     private SmallImage smallImage;
     private BigImage bigImage;
-    private String filePath;
+    private Image fxImage; // Filepath is replaced with this (Emir)
     private int index;//!!!! IMPORTANT, this must be set when project is being created and must be updated during deletion etc.
     //indexOnProject represents the number of this specific image instance
     
-    public EditableImage(String filePath, Project project,int index){
-        super(new Image(filePath));
+    public EditableImage(Image fxImage, Project project,int index){
+        super(fxImage);
         this.project = project;
-        this.filePath = filePath;
+        this.fxImage = fxImage;
         //set the index, from file input's for loop
         this.index = index;
         //create small and bigImages
-        this.smallImage = new SmallImage(this, this.filePath);
-        this.bigImage = new BigImage(this, this.filePath);//true false specifies whether the final image is bigImage
+        this.smallImage = new SmallImage(this, this.fxImage);
+        this.bigImage = new BigImage(this, this.fxImage);//true false specifies whether the final image is bigImage
         //set the properties
         this.setProperties();
         
