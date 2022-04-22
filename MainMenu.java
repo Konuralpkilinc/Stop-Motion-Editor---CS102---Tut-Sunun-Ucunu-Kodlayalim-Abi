@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package stopmotioneditorbackup.stopmotioneditor;
+package stopmotioneditor;
 
 /**
  *
@@ -29,6 +29,9 @@ public class MainMenu {
         filePaths.add("Images/apo7.jpg");
         filePaths.add("Images/apo7.jpg");
         filePaths.add("Images/apo7.jpg");
+        filePaths.add("Images/apo1.jpg");
+        filePaths.add("Images/apo1.jpg");
+        
         return new Project(filePaths);
     }
 }

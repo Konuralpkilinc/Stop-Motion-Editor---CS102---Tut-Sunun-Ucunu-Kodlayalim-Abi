@@ -25,6 +25,14 @@ public class BigImage extends FinalImage{
         this.setFitWidth(FinalImage.SMALL_IMAGE_WIDTH);
         this.setFitHeight(FinalImage.SMALL_IMAGE_HEIGHT);
     }
+    public BigImage(EditableImage editableImg, String filePath){
+        super(editableImg,filePath);
+        
+        //set the dimensions
+        this.setFitWidth(FinalImage.SMALL_IMAGE_WIDTH);
+        this.setFitHeight(FinalImage.SMALL_IMAGE_HEIGHT);
+    }
+    
     //Invoke when a drawing has been made
     public void addLastLine(){
         super.addLastLine(EditableImage.BIG_IMAGE_EDITABLE_IMAGE_RATIO);

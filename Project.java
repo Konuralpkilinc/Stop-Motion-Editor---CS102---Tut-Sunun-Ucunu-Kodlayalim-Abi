@@ -10,8 +10,10 @@ package stopmotioneditor;
 import java.util.ArrayList;
 import javafx.animation.Timeline;
 import javafx.animation.KeyFrame;
+import javafx.scene.control.ComboBox;
 import javafx.util.Duration;
 import javafx.scene.image.Image;
+import javafx.scene.shape.Circle;
 /**
  *This class represent a project of the user
  * Please extend accordingly to other classes
@@ -24,6 +26,12 @@ public class Project {
    private ArrayList<EditableImage> images = new ArrayList<>();
    private Timeline timer; //similar to swing Timer, determines animation fps
    private int numberOfImages; //THIS IS IMPORTANT FOR SMALLIMAGE, represents the no of images must be updated during runtime when necessary
+  
+   //Properties received from the EditScreen object
+   private EditScreen editScreen; //EditScreen object itself, its created automatically after start method is invoked in EditScreen
+   private ComboBox<String> choicePaneSelector; //this is the same ComboBox with the one in the EditScreen
+   private Circle drawingCircle; //This is the same circle with the one in the DrawingChoicePane, will be used from EditableImage event handling
+   private int selectedImgIndex;  //Will be useful for smallImage event handling
    /**
     * constructs a Project
     * Will be invoked when the project is constructed for the first time(not taken from database)
@@ -45,6 +53,21 @@ public class Project {
            
        }
    }
+   public Project(ArrayList<String> imageFilePaths){
+       //set the numberOfImagesInProject in each editableImage during construction, will be used for smallImage indexLabell
+       this.numberOfImages = imageFilePaths.size();
+       for(int i = 0; i < numberOfImages; i++){
+           String filePath = imageFilePaths.get(i);
+           images.add(new EditableImage(filePath,this,i));
+       }
+       this.initializeTimer();
+       
+       //After each EditableImage has been created, initialize the smallImage's labels accordingly
+       for(int i = 0; i < this.numberOfImages; i++){
+           
+       }
+   }
+   
    //will be used by smallImage instances
    public int getNumberOfImages(){
        return this.numberOfImages;
@@ -112,4 +135,44 @@ public class Project {
    public void playProject(){
        this.timer.play(); // continue the animation if it's paused
    }
+    /**
+     * 
+     * @param choicePaneSelector the combobox on the edit screen, this method will be useful for event handling 
+     */
+    public void setchoicePaneSelector(ComboBox<String> choicePaneSelector) {
+        this.choicePaneSelector = choicePaneSelector;
+    }
+    //Invoke this from the EditScreen's constructor
+    public void setDrawingCircle(Circle circle){
+        this.drawingCircle = circle;
+    }
+    //Invoke this from EditableImage Event Handling process
+    public Circle getDrawingCircle(){
+        return this.drawingCircle;
+    }
+    /**
+     * @return combobox selection indicating choice pane on edit screen
+     */
+    public String getChoicePaneSelection(){
+        String selection = this.choicePaneSelector.getValue();
+        return selection;
+    }
+    //Invoke from start method
+    public void setEditScreen(EditScreen editScreen){
+        this.editScreen = editScreen;
+    }
+    public void setSelectedImageIndex(int index){
+        this.selectedImgIndex = index;
+    }
+    public int getSelectedImageIndex(){
+        return this.selectedImgIndex;
+    }
+    /**
+     * This method calls the corresponding method on the EditScreen object, will be invoked when a smallImage is clicked
+     * No bounds checking
+     * @param index of the selected smallImage 
+     */
+    public void invokeUpdateEditableImagePane(int index){
+        this.editScreen.updateEditableImagePane(index);
+    }
 }

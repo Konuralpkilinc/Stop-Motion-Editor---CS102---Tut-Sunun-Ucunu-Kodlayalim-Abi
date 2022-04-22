@@ -3,8 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package stopmotioneditorbackup.stopmotioneditor;
-
+package stopmotioneditor;
 /**
  *This class will be used to view the main editing screen when the edit button is hit on the main menu.
  * @author yigit
@@ -41,7 +40,7 @@ public class EditScreen extends Application{
     public static final int SMALL_IMAGE_BOX_MIN_HEIGHT = 160;
     public static final int BORDERPANE_INSETS_VALUE = 30; //represents the insets value from top and bottom
     public static final int SCROLLPANE_MIN_HEIGHT = 160;
-    
+    public static final boolean CHOICE_PANE_SELECTOR_EDITABLE = false;
     private Project project;
     private EditableImage selectedImg; //this represents the selected image, will be the first image initially
     
@@ -61,6 +60,7 @@ public class EditScreen extends Application{
         //Receive the corresponding Project instance from the main menu class's getSelectedProject method
         this.project = MainMenu.testMethod();
         
+        this.project.setEditScreen(this); //Set the project's EditScreen
         //Initializations
         this.setEditableImagePane();
         this.setSmallImageBox();
@@ -68,6 +68,7 @@ public class EditScreen extends Application{
         this.setChoicePanes();
         this.setChoicePaneContainer();
         this.setBigContainer();
+        this.sendDrawingCircle();
         
         //Set the Scene and show the primaryStage
         Scene scene = new Scene(bigContainer);
@@ -80,9 +81,28 @@ public class EditScreen extends Application{
         launch(args);//launch the edit screen
     }
     private void setEditableImagePane(){
-        this.selectedImg = this.project.getImage(0);//initially the first image is selected
-        this.editableImagePane.getChildren().add(this.selectedImg); 
+        /*this.selectedImg = this.project.getImage(0);//initially the first image is selected
+        this.project.setSelectedImageIndex(0); //Set the datafield on project regarding selected image index
+        //add the editableImageContainer object in the EditableImage, which is a Pane instance to this pane
+        Pane container = this.selectedImg.getContainer();
+        this.editableImagePane.getChildren().add(container); //Add the container which contains the EditableImage and its Polylines 
+        */
+        this.updateEditableImagePane(0);
+    }
+    /**
+     * This method redraws the EditableImagePane after a smallImage is pressed, it doesn't perform bounds checking
+     * Invoke when a smallImage is clicked
+     * @param index of the selected image 
+     */
+    public void updateEditableImagePane(int index){
+        //clear the editableImagePane
+        this.editableImagePane.getChildren().clear(); //!!!! Might be problematic later on !!!!
         
+        this.selectedImg = this.project.getImage(index);
+        this.project.setSelectedImageIndex(index);
+        
+        Pane container = this.selectedImg.getContainer();
+        this.editableImagePane.getChildren().add(container);
     }
     //This methods sets EditableImagePane to the center of the borderPane, scrollPane to the bottom 
     private void setBorderPane(){
@@ -127,18 +147,71 @@ public class EditScreen extends Application{
     private void setChoicePanes(){
         //set the comboBox's width
         this.choicePaneSelector.setMinWidth(DrawingChoicePane.THIS_WIDTH);
+        this.choicePaneSelector.setEditable(CHOICE_PANE_SELECTOR_EDITABLE);
         //intiailize comboBox with selections
         
         //ToDo (ADD MORE CHOICEPANES LATER ON)
-        this.choicePanes.add(new DrawingChoicePane());
-        choicePaneSelector.getItems().add("Add Drawings");//add comboBox item
+        String drawingString = "Add Drawings";
+        this.choicePanes.add(new DrawingChoicePane(drawingString));
+        choicePaneSelector.getItems().add(drawingString);//add comboBox item
+        
+        String fpsString = "Fps & Audio";
+        this.choicePanes.add(new FpsAudioChoicePane(this.project, fpsString)); //create new choice pane
+        choicePaneSelector.getItems().add(fpsString);
+       
+        //set the initial selection to the first element
+        this.choicePaneSelector.getSelectionModel().selectFirst(); //Might be problematic !!!!!!!!!!!!!!!!!!!!
         
         this.selectedChoicePane = this.choicePanes.get(0);//drawing pane is the initial choice
+        
+        //Add the choicePaneSelector to the project, this will enable us to access the combobox selection from EditableImages of this project
+        this.project.setchoicePaneSelector(this.choicePaneSelector);
+        
+        //set the comboBox's event handling procedure
+        this.choicePaneSelector.setOnAction( e -> {
+            //this method body will be called when a selection occurs in combobox
+            String selection = this.choicePaneSelector.getValue();
+            setSelectedChoicePane(selection);
+        });
+    }
+    /**
+     * 
+     * @return  void will update the selected choice pane's index on choicePanes arraylist, given a String, will be used by the choicePaneSelector combobox
+     */
+    private void setSelectedChoicePane(String selection){
+        int size = this.choicePanes.size();
+        for(int i = 0; i < size; i++){
+            Pane choicePane = this.choicePanes.get(i);
+            String value = choicePane.toString(); //DON'T FORGET TO OVERRIDE TOSTRING IN CHOICEPANES
+            if(selection.equals(value)){
+                this.selectedChoicePane = choicePane; //update the current selection
+            }
+        }
+        //update the choice pane container (might be problematic)
+        this.choicePaneContainer.getChildren().remove(1); //this arraylist contains the combobox in index 0, selected choice pane in index 1
+        this.choicePaneContainer.getChildren().add(this.selectedChoicePane);
+        
     }
     //Adds the comboBox and adds the initial selected choice pane, initial choice pane will be add drawings
     private void setChoicePaneContainer(){
         this.choicePaneContainer.getChildren().add(this.choicePaneSelector);
         this.choicePaneContainer.getChildren().add(this.selectedChoicePane);
+    }
+    /**
+     * Sends the circle object to the corresponding Project, invoke this during initializations in start method.
+     */
+    private void sendDrawingCircle(){
+        //Find the drawing choice pane from the arraylist, then invoke setDrawingCircle on the Project object
+        for(int i = 0; i < this.choicePanes.size(); i++){
+            Pane choicePane = this.choicePanes.get(i);
+            if(choicePane instanceof DrawingChoicePane){
+                //Set the DrawijngChoicePane's circle to this Project instance
+                Circle circle = ((DrawingChoicePane)choicePane).getCircle();
+                this.project.setDrawingCircle(circle);
+                
+            }
+        }
+        
     }
     /**
     *This method receives the project object when an existent project is selected. Then it performs initializations
@@ -148,4 +221,17 @@ public class EditScreen extends Application{
         this.project = project;
         this.selectedImg = (project.getImages(0, 1)).get(0);//initially the first element is the selected image
     }
+    //Invoke when a smallImage is clicked, this will return the current selected image's index
+    public int getIndexOfSelectedImage(){
+        return this.project.indexOf(this.selectedImg);
+    }
+    /**
+     * Will be used to determine whether a drawing can be added when an event is fired from EditableImage
+     * @return selected choice pane's String representation
+     */
+    public String getChoicePaneSelection(){
+        String selection = this.choicePaneSelector.getValue();
+        return selection;
+    }
+    
 }

@@ -28,9 +28,9 @@ public class SmallImage extends FinalImage{
     
     private Label indexLabel = new Label();//This is the label that specifies the index of image, eg index/length
     private StackPane smallImagePane = new StackPane();//this essentially holds the SmallImage and rectangles, rectangles will be used to determine selection and whether sound is being used
-    private VBox smallImagePaneContainer = new VBox();//contains the smallImagePane and indexLabel
-    private Rectangle selectionRectangle;
-    private Rectangle soundRectangle;//These rectangles are same for every instance of small image
+    private VBox smallImagePaneContainer = new VBox();//contains the finalImageContaine coming from subclass and indexLabel
+    private static Rectangle selectionRectangle;
+    private static Rectangle soundRectangle;//These rectangles are same for every instance of small image
     private boolean hasSound; //Set with respect to EditableImage's sound data field
     //Inhereted fields from FinalImage
     /*protected ArrayList<Polyline> lines = new ArrayList<>(); //drawings that have been made
@@ -55,6 +55,23 @@ public class SmallImage extends FinalImage{
         this.initializeSmallImagePane();
         this.setSmallImagePaneContainer();
     }
+    
+    public SmallImage(EditableImage editableImg,String filePath){
+        super(editableImg,filePath);
+        
+        //set the dimensions
+        this.setFitWidth(FinalImage.SMALL_IMAGE_WIDTH);
+        this.setFitHeight(FinalImage.SMALL_IMAGE_HEIGHT);
+        
+        //initialize rectangles, regardless of selection
+        selectionRectangle = new Rectangle(SELECTION_RECTANGLE_WIDTH,SELECTION_RECTANGLE_HEIGHT,SELECTION_RECTANGLE_COLOR);
+        soundRectangle = new Rectangle(SOUND_RECTANGLE_WIDTH,SOUND_RECTANGLE_HEIGHT,SOUND_RECTANGLE_COLOR);
+        
+        //initialize the stackpane, no selection or sound at first
+        this.initializeSmallImagePane();
+        this.setSmallImagePaneContainer();
+        this.setEventHandling();
+    }
     //Invoke when a drawing has been made
     public void addLastLine(){
         super.addLastLine(EditableImage.SMALL_IMAGE_EDITABLE_IMAGE_RATIO);
@@ -75,6 +92,9 @@ public class SmallImage extends FinalImage{
             this.smallImagePane.getChildren().add(this.soundRectangle);
         }
         this.smallImagePane.getChildren().add(this);
+        
+        //After selection, invoke the updateSmallImagePaneContainer to update stuff
+        this.updateSmallImagePaneContainer();
     }
     /**
      * this method is invoked when sound is added or removed from the corresponding editable image
@@ -106,9 +126,16 @@ public class SmallImage extends FinalImage{
         }
         this.smallImagePane.getChildren().add(this);
     }
-    //adds the smallImagePane and indexLabel to paneContainer
+    //adds the finalImageContainer and indexLabel to paneContainer
     public void setSmallImagePaneContainer(){
-        this.smallImagePaneContainer.getChildren().addAll(this.smallImagePane,this.indexLabel);
+        //this.smallImagePaneContainer.getChildren().clear(); //!!!!! MIGHT BE PROBLEMATIC!!!
+        //this.smallImagePaneContainer.getChildren().addAll(this.smallImagePane,this.indexLabel);
+        this.finalImageContainer.getChildren().add(this.smallImagePane);
+        this.smallImagePaneContainer.getChildren().addAll(this.finalImageContainer,this.indexLabel);
+    }
+    public void updateSmallImagePaneContainer(){
+        this.smallImagePaneContainer.getChildren().clear();
+        this.smallImagePaneContainer.getChildren().addAll(this.finalImageContainer,this.indexLabel);
     }
     /**
      * This method updates the indexLabel of this small image, with respect to its EditableImage's
@@ -121,5 +148,24 @@ public class SmallImage extends FinalImage{
         int totalImagesInProject = project.getNumberOfImages();
         String value = "(" + (index + 1)+ "," + totalImagesInProject + ")";
         this.indexLabel.setText(value);
+    }
+    private void setEventHandling(){
+        //When a smallImage is clicked
+        this.setOnMouseClicked(e -> {
+            //Change the state of previous selectedSmallImage to false
+            Project project = this.editableImage.getProject();
+            int prevIndex = project.getSelectedImageIndex();
+            EditableImage prevImage = project.getImage(prevIndex);
+            SmallImage prevSmallImage = prevImage.getSmallImage();
+            prevSmallImage.setSelected(false);
+            
+            //Select the current image
+            this.setSelected(true); // this SmallImage is selected since it's clicked
+            
+            //Open the corresponding editable Image
+            int currentIndex = this.editableImage.getIndex();
+            project.invokeUpdateEditableImagePane(currentIndex);
+        });
+        
     }
 }

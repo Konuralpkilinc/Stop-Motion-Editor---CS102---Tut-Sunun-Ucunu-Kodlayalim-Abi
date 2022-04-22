@@ -13,6 +13,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Polyline; //drawings
 import java.util.ArrayList;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Paint;
 public class FinalImage extends ImageView{
     public static final double BIG_IMAGE_WIDTH = 1920;
     public static final double BIG_IMAGE_HEIGHT = 1080;
@@ -23,9 +25,16 @@ public class FinalImage extends ImageView{
     protected ArrayList<Polyline> lines = new ArrayList<>(); //drawings that have been made
     protected Polyline lastLine; //represents the last line that is added to the lines
     protected EditableImage editableImage;// editable image of this final image
+    protected Pane finalImageContainer = new Pane(); //this will contain the FinalImage itself and its polylines
     
     public FinalImage(EditableImage editableImage, Image fxImage){//same fxImage with the editableImage
         super(fxImage);
+        this.editableImage = editableImage;
+        this.setPreserveRatio(preserveRatio);
+        //this.setProperties();
+    }
+    public FinalImage(EditableImage editableImage, String filePath){//same filepath with the editableImage
+        super(new Image(filePath));
         this.editableImage = editableImage;
         this.setPreserveRatio(preserveRatio);
         //this.setProperties();
@@ -42,8 +51,9 @@ public class FinalImage extends ImageView{
         Polyline givenLine = this.editableImage.getLastLine();
         Polyline temp = new Polyline();//empty polyline
         //set the colors
-        temp.setFill(givenLine.getFill());
-        temp.setStroke(givenLine.getStroke());
+        
+        Paint color = givenLine.getStroke();
+        temp.setStroke(color);
         
         //copy all of the points with respect to ratio of images
         //shift each point with respect to ratio
@@ -57,5 +67,21 @@ public class FinalImage extends ImageView{
         //update the last line and add it
         this.lastLine = temp;
         this.lines.add(lastLine);
+        //Add the lastLine to the finalImageContainer
+        this.finalImageContainer.getChildren().add(this.lastLine);
+    }
+    //Return the container of this FinalImage
+    public Pane getContainer(){
+        return this.finalImageContainer;
+    }
+    /**
+     * Invoke when user right clicks a drawing that has been made.
+     * Invoke on both the smallImage and the bigImage
+     * @param index of the line to be removed 
+     */
+    public void removeLineAtIndex(int index){
+        Polyline removedLine = this.lines.remove(index);
+        //remove the line from the container
+        this.finalImageContainer.getChildren().remove(removedLine);
     }
 }

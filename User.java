@@ -1,3 +1,5 @@
+package stopmotioneditor;
+
 import java.util.ArrayList;
 /**
  * UserClass
