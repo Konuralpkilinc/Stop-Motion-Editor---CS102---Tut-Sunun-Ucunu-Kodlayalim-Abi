@@ -189,6 +189,7 @@ public class Project {
         for (int i = minIndex; i<= maxIndex; i++ ){
             images.remove(i);
         }
+        
     }
     public void cut(int minIndex, int maxIndex){
         int calculation = minIndex;
