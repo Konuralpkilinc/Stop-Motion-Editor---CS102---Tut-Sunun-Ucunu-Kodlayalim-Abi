@@ -189,7 +189,7 @@ public class Project {
         for (int i = minIndex; i<= maxIndex; i++ ){
             images.remove(i);
         }
-        
+        updateIndexesOfImages();
     }
     public void cut(int minIndex, int maxIndex){
         int calculation = minIndex;
@@ -221,6 +221,7 @@ public class Project {
 
             images.add(temp.get(i));
         }
+        updateIndexesOfImages();
     }
     public EditableImage clone(EditableImage x){
             
