@@ -23,6 +23,7 @@ public class Project {
    public static final double INITIAL_FPS_RATE = 9;
    private String name;
     // user data field?
+   private ArrayList <EditableImage> clonedArrayList = new ArrayList<>(); 
    private ArrayList<EditableImage> images = new ArrayList<>();
    private Timeline timer; //similar to swing Timer, determines animation fps
    private int numberOfImages; //THIS IS IMPORTANT FOR SMALLIMAGE, represents the no of images must be updated during runtime when necessary
@@ -174,5 +175,53 @@ public class Project {
      */
     public void invokeUpdateEditableImagePane(int index){
         this.editScreen.updateEditableImagePane(index);
+    }
+    public void copy(int minIndex , int maxIndex){
+        // I assume that you have already convert these integers to ındex values
+        for(int i = minIndex; i <= maxIndex ;i++ ){
+
+            clonedArrayList.add(clone(images.get(i)));
+        }
+    }
+
+    public void remove (int minIndex, int maxIndex){
+
+        for (int i = minIndex; i<= maxIndex; i++ ){
+            images.remove(i);
+        }
+    }
+    public void cut(int minIndex, int maxIndex){
+        int calculation = minIndex;
+
+        for(int i = minIndex; i <= maxIndex; i++){
+            clonedArrayList.add(clone(images.get(i)));
+        }
+        for(int i = minIndex; i <= maxIndex; i++){
+            images.remove(calculation);
+        }
+    }
+    public void paste(int entryIndex){
+
+        ArrayList <EditableImage> temp = new ArrayList<>();
+
+        for(int i = entryIndex+1 ; i < images.size(); i++){
+
+            temp.add(clone(images.get(i)));
+        }
+        for(int i = images.size()-1; i > entryIndex ; i--){
+
+            images.remove(i);
+        }
+        for(int i = 0 ; i < clonedArrayList.size() ; i++){
+
+            images.add(clonedArrayList.get(i));
+        }
+        for(int i = 0 ; i < temp.size(); i++){
+
+            images.add(temp.get(i));
+        }
+    }
+    public EditableImage clone(EditableImage x){
+            
     }
 }

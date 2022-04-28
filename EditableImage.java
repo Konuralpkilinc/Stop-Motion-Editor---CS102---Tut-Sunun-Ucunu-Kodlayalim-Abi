@@ -36,6 +36,7 @@ public class EditableImage extends ImageView{
     private Pane editableImageContainer = new Pane(); // !!!!!This pane will contain the editable Image and its Polylines, change this pane
     //when the SmallImage is clicked, add this pane into the one in the EditScreen
     
+    
     public EditableImage(Image fxImage, Project project,int index){
         super(fxImage);
         this.project = project;
@@ -88,6 +89,11 @@ public class EditableImage extends ImageView{
     public SmallImage getSmallImage(){
         return this.smallImage;
     }
+    //Following  3 methods are necessary to create same objects in project class
+    public String getFilePath(){
+        return filePath;
+    }
+
     //Invoke this method when a deletion appending etc happens
     public void updateIndex(){
         this.project.indexOf(this);
@@ -211,6 +217,7 @@ public class EditableImage extends ImageView{
         }
         return isValid;
     }
+
 }
 /* 
  //This method sets the event handling procedure of the EditableImage, call from constructor
