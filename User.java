@@ -24,21 +24,21 @@ public class User {
     }
 
 
-    public Project ReceiveProject(int projectNumber){
+    public Project receiveProject(int projectNumber){
 
         return projects.get(projectNumber-1);
     }
 
 
-    public final void ChangePassword(String newPassword){
+    public final void changePassword(String newPassword){
 
         password = newPassword;
     }
-    public String GetUserName(){
+    public String getUserName(){
 
         return userName;
     }
-    public String GetPassword(){
+    public String getPassword(){
 
         return password;
     }
