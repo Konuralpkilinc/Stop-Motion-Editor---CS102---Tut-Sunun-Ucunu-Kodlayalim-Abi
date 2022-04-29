@@ -43,6 +43,8 @@ public class MainMenuFrame extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(102, 0, 0));
         jPanel1.setPreferredSize(new java.awt.Dimension(1000, 850));
 
+        jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
         jPanel2.setBackground(new java.awt.Color(51, 0, 0));
 
         jButton1.setBackground(new java.awt.Color(153, 0, 0));
