@@ -26,172 +26,170 @@ public class MainMenuFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jPanel2 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jLabel1 = new javax.swing.JLabel();
+        mainMenuBasePanel = new javax.swing.JPanel();
+        mainMenuProjectsScrollpane = new javax.swing.JScrollPane();
+        mainMenuButtonsPanel = new javax.swing.JPanel();
+        mainMenuEditProjectButton = new javax.swing.JButton();
+        mainMenuShareProjectButton = new javax.swing.JButton();
+        mainMenuPlayProjectButton = new javax.swing.JButton();
+        mainMenuDeleteProjectButton = new javax.swing.JButton();
+        mainMenuUserListScrollpane = new javax.swing.JScrollPane();
+        mainMenuUserListLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1000, 700));
+        setTitle("Stop Motion Film Editor");
         setResizable(false);
 
-        jPanel1.setBackground(new java.awt.Color(102, 0, 0));
-        jPanel1.setPreferredSize(new java.awt.Dimension(1000, 850));
+        mainMenuBasePanel.setBackground(new java.awt.Color(102, 0, 0));
+        mainMenuBasePanel.setPreferredSize(new java.awt.Dimension(1000, 850));
 
-        jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        mainMenuProjectsScrollpane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-        jPanel2.setBackground(new java.awt.Color(51, 0, 0));
+        mainMenuButtonsPanel.setBackground(new java.awt.Color(51, 0, 0));
 
-        jButton1.setBackground(new java.awt.Color(153, 0, 0));
-        jButton1.setFont(new java.awt.Font("Impact", 2, 18)); // NOI18N
-        jButton1.setText("Edit Project");
-        jButton1.setMaximumSize(new java.awt.Dimension(120, 120));
-        jButton1.setMinimumSize(new java.awt.Dimension(120, 120));
-        jButton1.setOpaque(true);
-        jButton1.setPreferredSize(new java.awt.Dimension(120, 120));
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        mainMenuEditProjectButton.setBackground(new java.awt.Color(153, 0, 0));
+        mainMenuEditProjectButton.setFont(new java.awt.Font("Impact", 2, 15)); // NOI18N
+        mainMenuEditProjectButton.setText("Edit Project");
+        mainMenuEditProjectButton.setMaximumSize(new java.awt.Dimension(120, 120));
+        mainMenuEditProjectButton.setMinimumSize(new java.awt.Dimension(120, 120));
+        mainMenuEditProjectButton.setOpaque(true);
+        mainMenuEditProjectButton.setPreferredSize(new java.awt.Dimension(120, 120));
+        mainMenuEditProjectButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                mainMenuEditProjectButtonActionPerformed(evt);
             }
         });
 
-        jButton3.setBackground(new java.awt.Color(153, 0, 0));
-        jButton3.setFont(new java.awt.Font("Impact", 2, 18)); // NOI18N
-        jButton3.setText("Share Project");
-        jButton3.setMaximumSize(new java.awt.Dimension(120, 120));
-        jButton3.setMinimumSize(new java.awt.Dimension(120, 120));
-        jButton3.setOpaque(true);
-        jButton3.setPreferredSize(new java.awt.Dimension(120, 120));
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        mainMenuShareProjectButton.setBackground(new java.awt.Color(153, 0, 0));
+        mainMenuShareProjectButton.setFont(new java.awt.Font("Impact", 2, 15)); // NOI18N
+        mainMenuShareProjectButton.setText("Share Project");
+        mainMenuShareProjectButton.setMaximumSize(new java.awt.Dimension(120, 120));
+        mainMenuShareProjectButton.setMinimumSize(new java.awt.Dimension(120, 120));
+        mainMenuShareProjectButton.setOpaque(true);
+        mainMenuShareProjectButton.setPreferredSize(new java.awt.Dimension(120, 120));
+        mainMenuShareProjectButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                mainMenuShareProjectButtonActionPerformed(evt);
             }
         });
 
-        jButton2.setBackground(new java.awt.Color(153, 0, 0));
-        jButton2.setFont(new java.awt.Font("Impact", 2, 18)); // NOI18N
-        jButton2.setText("Play Project");
-        jButton2.setToolTipText("");
-        jButton2.setMaximumSize(new java.awt.Dimension(120, 120));
-        jButton2.setMinimumSize(new java.awt.Dimension(120, 120));
-        jButton2.setOpaque(true);
-        jButton2.setPreferredSize(new java.awt.Dimension(120, 120));
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        mainMenuPlayProjectButton.setBackground(new java.awt.Color(153, 0, 0));
+        mainMenuPlayProjectButton.setFont(new java.awt.Font("Impact", 2, 15)); // NOI18N
+        mainMenuPlayProjectButton.setText("Play Project");
+        mainMenuPlayProjectButton.setToolTipText("");
+        mainMenuPlayProjectButton.setMaximumSize(new java.awt.Dimension(120, 120));
+        mainMenuPlayProjectButton.setMinimumSize(new java.awt.Dimension(120, 120));
+        mainMenuPlayProjectButton.setOpaque(true);
+        mainMenuPlayProjectButton.setPreferredSize(new java.awt.Dimension(120, 120));
+        mainMenuPlayProjectButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                mainMenuPlayProjectButtonActionPerformed(evt);
             }
         });
 
-        jButton4.setBackground(new java.awt.Color(153, 0, 0));
-        jButton4.setFont(new java.awt.Font("Impact", 2, 18)); // NOI18N
-        jButton4.setText("Delete Project");
-        jButton4.setMaximumSize(new java.awt.Dimension(150, 150));
-        jButton4.setMinimumSize(new java.awt.Dimension(150, 150));
-        jButton4.setOpaque(true);
-        jButton4.setPreferredSize(new java.awt.Dimension(150, 150));
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        mainMenuDeleteProjectButton.setBackground(new java.awt.Color(153, 0, 0));
+        mainMenuDeleteProjectButton.setFont(new java.awt.Font("Impact", 2, 15)); // NOI18N
+        mainMenuDeleteProjectButton.setText("Delete Project");
+        mainMenuDeleteProjectButton.setMaximumSize(new java.awt.Dimension(150, 150));
+        mainMenuDeleteProjectButton.setMinimumSize(new java.awt.Dimension(150, 150));
+        mainMenuDeleteProjectButton.setOpaque(true);
+        mainMenuDeleteProjectButton.setPreferredSize(new java.awt.Dimension(150, 150));
+        mainMenuDeleteProjectButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                mainMenuDeleteProjectButtonActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        javax.swing.GroupLayout mainMenuButtonsPanelLayout = new javax.swing.GroupLayout(mainMenuButtonsPanel);
+        mainMenuButtonsPanel.setLayout(mainMenuButtonsPanelLayout);
+        mainMenuButtonsPanelLayout.setHorizontalGroup(
+            mainMenuButtonsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(mainMenuButtonsPanelLayout.createSequentialGroup()
                 .addGap(18, 18, 18)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(mainMenuPlayProjectButton, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(mainMenuEditProjectButton, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(mainMenuDeleteProjectButton, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(33, 33, 33)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(mainMenuShareProjectButton, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18))
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        mainMenuButtonsPanelLayout.setVerticalGroup(
+            mainMenuButtonsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(mainMenuButtonsPanelLayout.createSequentialGroup()
                 .addGap(24, 24, 24)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(mainMenuButtonsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(mainMenuPlayProjectButton, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(mainMenuEditProjectButton, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(mainMenuDeleteProjectButton, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(mainMenuShareProjectButton, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(30, Short.MAX_VALUE))
         );
 
-        jLabel1.setFont(new java.awt.Font("Yu Gothic UI Semibold", 1, 36)); // NOI18N
-        jLabel1.setText("    USER LIST");
+        mainMenuUserListLabel.setFont(new java.awt.Font("Yu Gothic UI Semibold", 1, 36)); // NOI18N
+        mainMenuUserListLabel.setText("     USER LIST");
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout mainMenuBasePanelLayout = new javax.swing.GroupLayout(mainMenuBasePanel);
+        mainMenuBasePanel.setLayout(mainMenuBasePanelLayout);
+        mainMenuBasePanelLayout.setHorizontalGroup(
+            mainMenuBasePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(mainMenuBasePanelLayout.createSequentialGroup()
                 .addGap(35, 35, 35)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(mainMenuBasePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(mainMenuProjectsScrollpane)
+                    .addComponent(mainMenuButtonsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(mainMenuBasePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(mainMenuUserListScrollpane, javax.swing.GroupLayout.DEFAULT_SIZE, 269, Short.MAX_VALUE)
+                    .addComponent(mainMenuUserListLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(43, 43, 43))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
+        mainMenuBasePanelLayout.setVerticalGroup(
+            mainMenuBasePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainMenuBasePanelLayout.createSequentialGroup()
+                .addGap(32, 32, 32)
+                .addGroup(mainMenuBasePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(mainMenuBasePanelLayout.createSequentialGroup()
+                        .addComponent(mainMenuUserListLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jScrollPane3))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(mainMenuUserListScrollpane))
+                    .addGroup(mainMenuBasePanelLayout.createSequentialGroup()
+                        .addComponent(mainMenuProjectsScrollpane, javax.swing.GroupLayout.PREFERRED_SIZE, 392, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(40, 40, 40)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(56, Short.MAX_VALUE))
+                        .addComponent(mainMenuButtonsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(62, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(mainMenuBasePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 694, Short.MAX_VALUE))
+            .addComponent(mainMenuBasePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 700, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void mainMenuEditProjectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mainMenuEditProjectButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_mainMenuEditProjectButtonActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void mainMenuPlayProjectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mainMenuPlayProjectButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_mainMenuPlayProjectButtonActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void mainMenuShareProjectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mainMenuShareProjectButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_mainMenuShareProjectButtonActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void mainMenuDeleteProjectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mainMenuDeleteProjectButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_mainMenuDeleteProjectButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -230,14 +228,14 @@ public class MainMenuFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JPanel mainMenuBasePanel;
+    private javax.swing.JPanel mainMenuButtonsPanel;
+    private javax.swing.JButton mainMenuDeleteProjectButton;
+    private javax.swing.JButton mainMenuEditProjectButton;
+    private javax.swing.JButton mainMenuPlayProjectButton;
+    private javax.swing.JScrollPane mainMenuProjectsScrollpane;
+    private javax.swing.JButton mainMenuShareProjectButton;
+    private javax.swing.JLabel mainMenuUserListLabel;
+    private javax.swing.JScrollPane mainMenuUserListScrollpane;
     // End of variables declaration//GEN-END:variables
 }

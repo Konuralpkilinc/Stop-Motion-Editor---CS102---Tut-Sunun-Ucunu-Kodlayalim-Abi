@@ -27,148 +27,148 @@ public class RegisterScreenFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
-        jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        jLabel2 = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea2 = new javax.swing.JTextArea();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jTextArea3 = new javax.swing.JTextArea();
-        jLabel3 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        registerBasePanel = new javax.swing.JPanel();
+        registerUsernameLabel = new javax.swing.JLabel();
+        registerUsernameScrollpane = new javax.swing.JScrollPane();
+        registerUsernameTextArea = new javax.swing.JTextArea();
+        registerPasswordLabel = new javax.swing.JLabel();
+        registerPasswordScrollpane = new javax.swing.JScrollPane();
+        registerPasswordTextArea = new javax.swing.JTextArea();
+        registerRePasswordScrollpane = new javax.swing.JScrollPane();
+        registerRePasswordTextArea = new javax.swing.JTextArea();
+        registerRePasswordLabel = new javax.swing.JLabel();
+        registerBackButton = new javax.swing.JButton();
+        registerDoneButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
 
-        jPanel1.setBackground(new java.awt.Color(102, 236, 133));
+        registerBasePanel.setBackground(new java.awt.Color(102, 236, 133));
 
-        jLabel1.setFont(new java.awt.Font("Ink Free", 3, 36)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(51, 0, 51));
-        jLabel1.setText("SELECT USERNAME");
+        registerUsernameLabel.setFont(new java.awt.Font("Ink Free", 3, 36)); // NOI18N
+        registerUsernameLabel.setForeground(new java.awt.Color(51, 0, 51));
+        registerUsernameLabel.setText("SELECT USERNAME");
 
-        jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        registerUsernameScrollpane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        registerUsernameScrollpane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
-        jTextArea1.setBackground(new java.awt.Color(0, 255, 153));
-        jTextArea1.setColumns(20);
-        jTextArea1.setFont(new java.awt.Font("Constantia", 0, 36)); // NOI18N
-        jTextArea1.setForeground(new java.awt.Color(0, 102, 102));
-        jTextArea1.setRows(5);
-        jTextArea1.addKeyListener(new java.awt.event.KeyAdapter() {
+        registerUsernameTextArea.setBackground(new java.awt.Color(0, 255, 153));
+        registerUsernameTextArea.setColumns(20);
+        registerUsernameTextArea.setFont(new java.awt.Font("Constantia", 0, 36)); // NOI18N
+        registerUsernameTextArea.setForeground(new java.awt.Color(0, 102, 102));
+        registerUsernameTextArea.setRows(5);
+        registerUsernameTextArea.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 usernameHandler(evt);
             }
         });
-        jScrollPane1.setViewportView(jTextArea1);
+        registerUsernameScrollpane.setViewportView(registerUsernameTextArea);
 
-        jLabel2.setFont(new java.awt.Font("Ink Free", 3, 36)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(51, 0, 51));
-        jLabel2.setText("SELECT PASSWORD");
+        registerPasswordLabel.setFont(new java.awt.Font("Ink Free", 3, 36)); // NOI18N
+        registerPasswordLabel.setForeground(new java.awt.Color(51, 0, 51));
+        registerPasswordLabel.setText("SELECT PASSWORD");
 
-        jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        jScrollPane2.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        registerPasswordScrollpane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        registerPasswordScrollpane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
-        jTextArea2.setBackground(new java.awt.Color(0, 255, 153));
-        jTextArea2.setColumns(20);
-        jTextArea2.setFont(new java.awt.Font("Constantia", 0, 36)); // NOI18N
-        jTextArea2.setForeground(new java.awt.Color(0, 102, 102));
-        jTextArea2.setRows(5);
-        jTextArea2.addKeyListener(new java.awt.event.KeyAdapter() {
+        registerPasswordTextArea.setBackground(new java.awt.Color(0, 255, 153));
+        registerPasswordTextArea.setColumns(20);
+        registerPasswordTextArea.setFont(new java.awt.Font("Constantia", 0, 36)); // NOI18N
+        registerPasswordTextArea.setForeground(new java.awt.Color(0, 102, 102));
+        registerPasswordTextArea.setRows(5);
+        registerPasswordTextArea.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                jTextArea2usernameHandler(evt);
+                registerPasswordTextAreausernameHandler(evt);
             }
         });
-        jScrollPane2.setViewportView(jTextArea2);
+        registerPasswordScrollpane.setViewportView(registerPasswordTextArea);
 
-        jScrollPane3.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        jScrollPane3.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        registerRePasswordScrollpane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        registerRePasswordScrollpane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
-        jTextArea3.setBackground(new java.awt.Color(0, 255, 153));
-        jTextArea3.setColumns(20);
-        jTextArea3.setFont(new java.awt.Font("Constantia", 0, 36)); // NOI18N
-        jTextArea3.setForeground(new java.awt.Color(0, 102, 102));
-        jTextArea3.setRows(5);
-        jTextArea3.addKeyListener(new java.awt.event.KeyAdapter() {
+        registerRePasswordTextArea.setBackground(new java.awt.Color(0, 255, 153));
+        registerRePasswordTextArea.setColumns(20);
+        registerRePasswordTextArea.setFont(new java.awt.Font("Constantia", 0, 36)); // NOI18N
+        registerRePasswordTextArea.setForeground(new java.awt.Color(0, 102, 102));
+        registerRePasswordTextArea.setRows(5);
+        registerRePasswordTextArea.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                jTextArea3usernameHandler(evt);
+                registerRePasswordTextAreausernameHandler(evt);
             }
         });
-        jScrollPane3.setViewportView(jTextArea3);
+        registerRePasswordScrollpane.setViewportView(registerRePasswordTextArea);
 
-        jLabel3.setFont(new java.awt.Font("Ink Free", 3, 36)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(51, 0, 51));
-        jLabel3.setText("CONFIRM PASSWORD");
+        registerRePasswordLabel.setFont(new java.awt.Font("Ink Free", 3, 36)); // NOI18N
+        registerRePasswordLabel.setForeground(new java.awt.Color(51, 0, 51));
+        registerRePasswordLabel.setText("CONFIRM PASSWORD");
 
-        jButton1.setBackground(new java.awt.Color(0, 204, 0));
-        jButton1.setFont(new java.awt.Font("Ink Free", 1, 18)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(0, 0, 255));
-        jButton1.setText("BACK");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        registerBackButton.setBackground(new java.awt.Color(0, 204, 0));
+        registerBackButton.setFont(new java.awt.Font("Ink Free", 1, 18)); // NOI18N
+        registerBackButton.setForeground(new java.awt.Color(153, 255, 0));
+        registerBackButton.setText("BACK");
+        registerBackButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                registerBackButtonActionPerformed(evt);
             }
         });
 
-        jButton2.setBackground(new java.awt.Color(0, 204, 0));
-        jButton2.setFont(new java.awt.Font("Ink Free", 1, 18)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(0, 0, 255));
-        jButton2.setLabel("DONE");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        registerDoneButton.setBackground(new java.awt.Color(0, 204, 0));
+        registerDoneButton.setFont(new java.awt.Font("Ink Free", 1, 18)); // NOI18N
+        registerDoneButton.setForeground(new java.awt.Color(102, 255, 0));
+        registerDoneButton.setLabel("DONE");
+        registerDoneButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                registerDoneButtonActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout registerBasePanelLayout = new javax.swing.GroupLayout(registerBasePanel);
+        registerBasePanel.setLayout(registerBasePanelLayout);
+        registerBasePanelLayout.setHorizontalGroup(
+            registerBasePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(registerBasePanelLayout.createSequentialGroup()
                 .addGap(19, 19, 19)
-                .addComponent(jButton1)
+                .addComponent(registerBackButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(registerBasePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(registerBasePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, registerBasePanelLayout.createSequentialGroup()
+                            .addComponent(registerUsernameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(145, 145, 145))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 381, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, registerBasePanelLayout.createSequentialGroup()
+                            .addComponent(registerUsernameScrollpane, javax.swing.GroupLayout.PREFERRED_SIZE, 381, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(126, 126, 126)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 381, Short.MAX_VALUE)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 381, Short.MAX_VALUE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGroup(registerBasePanelLayout.createSequentialGroup()
+                        .addGroup(registerBasePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(registerPasswordScrollpane, javax.swing.GroupLayout.DEFAULT_SIZE, 381, Short.MAX_VALUE)
+                            .addComponent(registerRePasswordScrollpane, javax.swing.GroupLayout.DEFAULT_SIZE, 381, Short.MAX_VALUE)
+                            .addComponent(registerRePasswordLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(registerBasePanelLayout.createSequentialGroup()
                                 .addGap(18, 18, 18)
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(registerPasswordLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2)
+                        .addComponent(registerDoneButton)
                         .addGap(16, 16, 16))))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        registerBasePanelLayout.setVerticalGroup(
+            registerBasePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(registerBasePanelLayout.createSequentialGroup()
                 .addGap(12, 12, 12)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton2)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(registerBasePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(registerDoneButton)
+                    .addGroup(registerBasePanelLayout.createSequentialGroup()
+                        .addComponent(registerUsernameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(registerUsernameScrollpane, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(12, 12, 12)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(registerPasswordLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(registerPasswordScrollpane, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(12, 12, 12)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(registerRePasswordLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jButton1))
+                        .addComponent(registerRePasswordScrollpane, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(registerBackButton))
                 .addContainerGap(23, Short.MAX_VALUE))
         );
 
@@ -176,11 +176,11 @@ public class RegisterScreenFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(registerBasePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(registerBasePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -190,21 +190,21 @@ public class RegisterScreenFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_usernameHandler
 
-    private void jTextArea2usernameHandler(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextArea2usernameHandler
+    private void registerPasswordTextAreausernameHandler(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_registerPasswordTextAreausernameHandler
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextArea2usernameHandler
+    }//GEN-LAST:event_registerPasswordTextAreausernameHandler
 
-    private void jTextArea3usernameHandler(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextArea3usernameHandler
+    private void registerRePasswordTextAreausernameHandler(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_registerRePasswordTextAreausernameHandler
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextArea3usernameHandler
+    }//GEN-LAST:event_registerRePasswordTextAreausernameHandler
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void registerBackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerBackButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_registerBackButtonActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void registerDoneButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerDoneButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_registerDoneButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -250,18 +250,18 @@ public class RegisterScreenFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextArea jTextArea2;
-    private javax.swing.JTextArea jTextArea3;
+    private javax.swing.JButton registerBackButton;
+    private javax.swing.JPanel registerBasePanel;
+    private javax.swing.JButton registerDoneButton;
+    private javax.swing.JLabel registerPasswordLabel;
+    private javax.swing.JScrollPane registerPasswordScrollpane;
+    private javax.swing.JTextArea registerPasswordTextArea;
+    private javax.swing.JLabel registerRePasswordLabel;
+    private javax.swing.JScrollPane registerRePasswordScrollpane;
+    private javax.swing.JTextArea registerRePasswordTextArea;
+    private javax.swing.JLabel registerUsernameLabel;
+    private javax.swing.JScrollPane registerUsernameScrollpane;
+    private javax.swing.JTextArea registerUsernameTextArea;
     // End of variables declaration//GEN-END:variables
 
 }
