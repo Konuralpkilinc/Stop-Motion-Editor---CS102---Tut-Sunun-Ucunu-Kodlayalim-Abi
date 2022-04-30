@@ -10,7 +10,7 @@ import javax.imageio.stream.ImageInputStream;
 
 /**
  *
- * @author ASUS
+ * @author bahadır
  */
 public class ImageFiltering {
 
