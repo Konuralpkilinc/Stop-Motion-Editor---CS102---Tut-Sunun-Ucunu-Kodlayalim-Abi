@@ -2,7 +2,7 @@ package stopmotioneditor;
 
 import java.util.ArrayList;
 /**
- * UserClass
+ * Bahadır
  */
 public class User {
 
