@@ -9,12 +9,14 @@ public class User {
     String userName;
     String password;
     ArrayList <Project> projects;
+    static ArrayList<User> users = new ArrayList<>();
 
     public User(String userName, String password){
 
         this.userName = userName;
         this.password = password;
         projects = new ArrayList<>();
+        users.add(this);
     }
 
 
