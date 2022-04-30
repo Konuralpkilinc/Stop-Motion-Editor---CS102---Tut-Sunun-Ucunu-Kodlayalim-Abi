@@ -4,6 +4,9 @@
  */
 package com.mycompany.guideneme;
 
+import com.mycompany.guideneme.MainMenuFrame;
+import com.mycompany.guideneme.RegisterScreenFrame;
+
 /**
  *
  * @author Burak Oruk
@@ -11,11 +14,15 @@ package com.mycompany.guideneme;
 public class LoginScreenFrame extends javax.swing.JFrame {
     private String userName;
     private String passWord;
+    private MainMenuFrame mainMenuFrame;
+    private RegisterScreenFrame registerScreenFrame;
 
     /**
      * Creates new form NewJFrame
      */
-    public LoginScreenFrame() {
+    public LoginScreenFrame(MainMenuFrame mainMenuFrame, RegisterScreenFrame registerScreenFrame) {
+        this.mainMenuFrame = mainMenuFrame;
+        this.registerScreenFrame = registerScreenFrame;
         initComponents();
     }
 
@@ -160,14 +167,24 @@ public class LoginScreenFrame extends javax.swing.JFrame {
 
     private void usernameHandler(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_usernameHandler
         // TODO add your handling code here:
+        userName = loginUsernameTextArea.getText();
     }//GEN-LAST:event_usernameHandler
 
     private void loginPasswordTextAreausernameHandler(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_loginPasswordTextAreausernameHandler
         // TODO add your handling code here:
+        passWord = loginPasswordTextArea.getText();
     }//GEN-LAST:event_loginPasswordTextAreausernameHandler
 
     private void loginDoneButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginDoneButtonActionPerformed
         // TODO add your handling code here:
+       if(Database.isUserExist(userName, passWord)){
+           setVisible(false);
+           mainMenuFrame.setVisible(true);
+       }
+       else{
+           loginUsernameTextArea.setText("Invalid");
+           loginPasswordTextArea.setText("Invalid");
+       }
     }//GEN-LAST:event_loginDoneButtonActionPerformed
 
     /**
