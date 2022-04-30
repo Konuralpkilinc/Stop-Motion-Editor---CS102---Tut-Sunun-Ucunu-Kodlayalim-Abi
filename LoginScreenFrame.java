@@ -94,6 +94,11 @@ public class LoginScreenFrame extends javax.swing.JFrame {
         registerButton.setFont(new java.awt.Font("Yu Gothic Medium", 2, 20)); // NOI18N
         registerButton.setForeground(new java.awt.Color(0, 51, 51));
         registerButton.setText("Don't have an account? Click HERE to register!");
+        registerButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                registerButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout logıinBasePanelLayout = new javax.swing.GroupLayout(logıinBasePanel);
         logıinBasePanel.setLayout(logıinBasePanelLayout);
@@ -167,6 +172,10 @@ public class LoginScreenFrame extends javax.swing.JFrame {
     private void loginDoneButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginDoneButtonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_loginDoneButtonActionPerformed
+
+    private void registerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_registerButtonActionPerformed
 
     /**
      * @param args the command line arguments
