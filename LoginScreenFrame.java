@@ -9,6 +9,8 @@ package com.mycompany.guideneme;
  * @author Burak Oruk
  */
 public class LoginScreenFrame extends javax.swing.JFrame {
+    private String userName;
+    private String passWord;
 
     /**
      * Creates new form NewJFrame
