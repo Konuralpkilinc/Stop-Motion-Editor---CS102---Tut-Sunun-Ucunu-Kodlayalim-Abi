@@ -14,14 +14,12 @@ import com.mycompany.guideneme.RegisterScreenFrame;
 public class LoginScreenFrame extends javax.swing.JFrame {
     private String userName;
     private String passWord;
-    private MainMenuFrame mainMenuFrame;
     private RegisterScreenFrame registerScreenFrame;
 
     /**
      * Creates new form NewJFrame
      */
-    public LoginScreenFrame(MainMenuFrame mainMenuFrame, RegisterScreenFrame registerScreenFrame) {
-        this.mainMenuFrame = mainMenuFrame;
+    public LoginScreenFrame(RegisterScreenFrame registerScreenFrame) {
         this.registerScreenFrame = registerScreenFrame;
         initComponents();
     }
@@ -171,19 +169,20 @@ public class LoginScreenFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void usernameHandler(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_usernameHandler
-        // TODO add your handling code here:
+        
         userName = loginUsernameTextArea.getText();
     }//GEN-LAST:event_usernameHandler
 
     private void loginPasswordTextAreausernameHandler(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_loginPasswordTextAreausernameHandler
-        // TODO add your handling code here:
+        
         passWord = loginPasswordTextArea.getText();
     }//GEN-LAST:event_loginPasswordTextAreausernameHandler
 
     private void loginDoneButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginDoneButtonActionPerformed
-        // TODO add your handling code here:
+       
        if(Database.isUserExist(userName, passWord)){
            setVisible(false);
+           MainMenuFrame mainmenuFrame = new MainMenuFrame(Database.getUser());
            mainMenuFrame.setVisible(true);
        }
        else{
@@ -193,8 +192,9 @@ public class LoginScreenFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_loginDoneButtonActionPerformed
 
     private void registerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerButtonActionPerformed
-        // TODO add your handling code here:
+        
         setVisible(false);
+        registerScreenFrame.setVisible(true);
         
     }//GEN-LAST:event_registerButtonActionPerformed
 
