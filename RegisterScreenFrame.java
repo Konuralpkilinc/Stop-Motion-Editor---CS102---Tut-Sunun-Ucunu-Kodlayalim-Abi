@@ -22,6 +22,7 @@ public class RegisterScreenFrame extends javax.swing.JFrame {
     public RegisterScreenFrame(LoginScreenFrame loginScreenFrame) {
         this.loginScreenFrame = loginScreenFrame;
         initComponents();
+        setVisible(true);
     }
 
     /**
@@ -227,7 +228,7 @@ public class RegisterScreenFrame extends javax.swing.JFrame {
                 loginScreenFrame.setVisible(true);
             }
             else{
-                registerUsernameTextArea.setText("Username name must be unique");
+                registerUsernameTextArea.setText("Username must be unique");
             }
         }
     }//GEN-LAST:event_registerDoneButtonActionPerformed
