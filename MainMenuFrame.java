@@ -7,6 +7,7 @@ package com.mycompany.guideneme;
 /**
  *
  * @author Burak Oruk
+ * @contributor Bahadır Günenc
  */
 public class MainMenuFrame extends javax.swing.JFrame {
 

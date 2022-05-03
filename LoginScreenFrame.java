@@ -10,6 +10,7 @@ import com.mycompany.guideneme.RegisterScreenFrame;
 /**
  *
  * @author Burak Oruk
+ * @contributor Bahadır Günenc
  */
 public class LoginScreenFrame extends javax.swing.JFrame {
     private String userName;
@@ -182,7 +183,7 @@ public class LoginScreenFrame extends javax.swing.JFrame {
        
        if(Database.isUserExist(userName, passWord)){
            setVisible(false);
-           MainMenuFrame mainmenuFrame = new MainMenuFrame(Database.getUser());
+           MainMenuFrame mainmenuFrame = new MainMenuFrame(Database.getUser(userName));
            mainMenuFrame.setVisible(true);
        }
        else{

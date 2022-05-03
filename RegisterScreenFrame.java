@@ -9,6 +9,7 @@ import com.mycompany.guideneme.LoginScreenFrame;
 /**
  *
  * @author Burak Oruk
+ * @contributor Bahadır Günenc
  */
 public class RegisterScreenFrame extends javax.swing.JFrame {
     String userName;
@@ -217,6 +218,7 @@ public class RegisterScreenFrame extends javax.swing.JFrame {
 
     private void registerDoneButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerDoneButtonActionPerformed
         if(!password.equals(rePassword)){
+            registerUsernameTextArea.setText("");
             registerPasswordTextArea.setText("Doesnt match with repassword");
             registerRePasswordTextArea.setText("Doesnt match with password");
 
