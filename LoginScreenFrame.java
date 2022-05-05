@@ -16,12 +16,14 @@ public class LoginScreenFrame extends javax.swing.JFrame {
     private String userName;
     private String passWord;
     private RegisterScreenFrame registerScreenFrame;
+    private MainMenuFrame mainMenuFrame;
 
     /**
      * Creates new form NewJFrame
      */
-    public LoginScreenFrame(RegisterScreenFrame registerScreenFrame) {
+    public LoginScreenFrame(RegisterScreenFrame registerScreenFrame, MainMenuFrame mainMenuFrame) {
         this.registerScreenFrame = registerScreenFrame;
+        this.mainMenuFrame = mainMenuFrame;
         initComponents();
     }
 

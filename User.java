@@ -44,4 +44,8 @@ public class User {
 
         return password;
     }
+    public ArrayList<Project> getProjects(){
+
+        return projects;
+    }
 }

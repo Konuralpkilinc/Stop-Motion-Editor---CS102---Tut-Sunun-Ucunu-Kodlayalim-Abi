@@ -4,6 +4,8 @@
  */
 package com.mycompany.guideneme;
 
+import javax.swing.JButton;
+
 /**
  *
  * @author Burak Oruk
