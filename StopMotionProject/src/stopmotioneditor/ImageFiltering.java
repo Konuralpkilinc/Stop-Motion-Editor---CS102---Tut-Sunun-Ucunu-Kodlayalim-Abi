@@ -1,5 +1,5 @@
 package stopmotioneditor;
-
+import java.awt.Image;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -8,6 +8,7 @@ import java.util.Iterator;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
+import javafx.embed.swing.SwingFXUtils;
 
 
 /**
@@ -26,24 +27,24 @@ public class ImageFiltering {
 
     public ImageFiltering(){}  //empty constructor 
     
-    public void Filtering(File input){
+    public void filtering(EditableImage input){
         try{
-           iis = ImageIO.createImageInputStream(input);   //creates location for image
+           iis = ImageIO.createImageInputStream(input.getImage());   //creates location for image
            iterator = ImageIO.getImageReaders(iis);       //as I understand this decodes image
            reader = iterator.next();                      //idk
            imageFormat = reader.getFormatName();          //when writing image, type is important
            
            image = ImageIO.read(iis);                       
-           width = image.getWidth();
-           height = image.getHeight();
+           width = (int)EditableImage.EDITABLE_IMAGE_WIDTH;
+           height = (int)EditableImage.EDITABLE_IMAGE_HEIGHT;
         }
         catch(IOException ex){
             System.out.println(ex);
         }
     }
-    public void RedFiltering(File input){
+    public void redFiltering(EditableImage input){
         
-        Filtering(input);
+        filtering(input);
 
         for (int y = 0 ; y < height ; y++){                //these nested loops analyzes all pixels and 
             for (int x = 0; x < width ; x++){              //modifies is according to the method
@@ -53,12 +54,12 @@ public class ImageFiltering {
                 image.setRGB(x,y,redColor.getRGB());
             }
         }
-        try{ImageIO.write(image, imageFormat,input);}
-        catch(IOException e){System.out.println(e);}        //compiler just want this and I add it all these
+        Image fxImage = SwingFXUtils.toFXImage(image, null);
+        input.setImage(fxImage);    //compiler just want this and I add it all these
     }                                                       //try catch statements
-    public void GreenFiltering(File input){
+    public void greenFiltering(EditableImage input){
 
-        Filtering(input);
+        filtering(input);
 
         for (int y = 0 ; y < height ; y++){
             for (int x = 0; x < width ; x++){
@@ -68,13 +69,13 @@ public class ImageFiltering {
                 image.setRGB(x,y,greenColor.getRGB());
             }
         }
-        try{ImageIO.write(image, imageFormat,input);}
-        catch(IOException e){System.out.println(e);}
+        Image fxImage = SwingFXUtils.toFXImage(image, null);
+        input.setImage(fxImage);
     }
 
-    public void BlueFiltering(File input){
+    public void blueFiltering(EditableImage input){
 
-        Filtering(input);
+        filtering(input);
 
         for (int y = 0 ; y < height ; y++){
             for (int x = 0; x < width ; x++){
@@ -84,13 +85,13 @@ public class ImageFiltering {
                 image.setRGB(x,y,blueColor.getRGB());
             }
         }
-        try{ImageIO.write(image, imageFormat,input);}
-        catch(IOException e){System.out.println(e);}
+        Image fxImage = SwingFXUtils.toFXImage(image, null);
+        input.setImage(fxImage);
     }
 
-    public void GrayFiltering(File input){
+    public void grayFiltering(EditableImage input){
 
-        Filtering(input);
+        filtering(input);
 
         for(int y = 0; y < height; y++){                  //Just here I have to use all three rgb value
             for (int x = 0; x < width ; x++){
@@ -103,7 +104,7 @@ public class ImageFiltering {
                 image.setRGB(x,y,gray.getRGB());
             }
         }
-        try{ImageIO.write(image, imageFormat, input);}
-        catch(IOException e){System.out.println(e);}
+        Image fxImage = SwingFXUtils.toFXImage(image, null);
+        input.setImage(fxImage);
     }  
 }
