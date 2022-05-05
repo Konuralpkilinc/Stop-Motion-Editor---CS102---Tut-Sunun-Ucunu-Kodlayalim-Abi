@@ -1,22 +1,25 @@
 import java.util.ArrayList;
 import javax.swing.JButton;
+import javax.swing.JRadioButton;
+import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.plaf.DimensionUIResource;
 import java.awt.FlowLayout;
 
 /**
- * Aim of this class is to make a panel that will hold various amounts of JButtons and make it possible to use them.
+ * Aim of this class is to make a panel that will hold various amounts of JRadioButtons and make it possible to use them.
  * This abstract class extends JPanel for the purposes of esay usage. It will be initialized and added to a frame easily.
  * @author Burak Oruk
  * 02.05.2022
  */
 class ButtonHolder extends JPanel{
 
-    private ArrayList<JButton> buttons;
+    private ArrayList<JRadioButton> buttons;
     private JPanel panel;
     private JScrollPane scroller;
     private JButton createButton;
+    private ButtonGroup group;
     private int panelWidth; 
     private int panelHeight; 
     private int buttonWidth; 
@@ -32,11 +35,16 @@ class ButtonHolder extends JPanel{
 
 
         //initializing the objects
-        buttons = new ArrayList<JButton>();
+        buttons = new ArrayList<JRadioButton>();
 
-        // this button will be resposible for opening the project creating screen
-        createButton = new JButton("New Project");
+        group = new ButtonGroup();
+
+        createButton = new JButton("New Project");  // this button will be resposible for opening the project creating screen
         createButton.setPreferredSize( new DimensionUIResource(buttonWidth, buttonHeight));
+        createButton.addActionListener( e -> {
+            // this action will open the CreateProject frame
+            // the created project will be assigned to a new JButton to be added to this class
+        });
 
         DimensionUIResource preferredSize = new DimensionUIResource(width, height);
         layout = new FlowLayout();
@@ -54,7 +62,6 @@ class ButtonHolder extends JPanel{
 
 
         // adding components to their places
-        buttons.add(createButton);
         panel.add(createButton);
         scroller.setViewportView(panel);
         this.add(scroller);
@@ -66,9 +73,15 @@ class ButtonHolder extends JPanel{
     * @Override
     */
     
-    public void add( JButton c ){
+    public void add( JRadioButton c ){
 
         buttons.add(c);
+
+        group.add(c);
+
+        c.addActionListener( e -> {
+            //this 
+        } );
 
         int rows = this.noOfRows();
 
@@ -83,12 +96,14 @@ class ButtonHolder extends JPanel{
     }
 
     /**
-    * does almost the same thing with "public void add(JButton c)" except this method removes the given button instead of adding it
+    * does almost the same thing with "public void add(JRadioButton c)" except this method removes the given button instead of adding it
     * @Override
     */
-    public void remove( JButton c ){
+    public void remove( JRadioButton c ){
 
         buttons.remove(c);
+
+        group.remove(c);
         
         int rows = this.noOfRows();
 
@@ -106,7 +121,7 @@ class ButtonHolder extends JPanel{
     * this method adds the elements in the given array one by 
     * it exist for the purpose of showasing already existing projects of the user
     */
-    public void addArray( JButton[] buttonArray ){
+    public void addArray( JRadioButton[] buttonArray ){
 
         for ( int i = 0; i < buttonArray.length; i++){
             this.add( buttonArray[i] );
@@ -117,7 +132,7 @@ class ButtonHolder extends JPanel{
     * this method removes the elements in the given array one by 
     * it exist for no purpose particular, it just might be useful
     */
-    public void removeArray( JButton[] buttonArray ){
+    public void removeArray( JRadioButton[] buttonArray ){
 
         for ( int i = 0; i < buttonArray.length; i++){
             this.remove( buttonArray[i] );
@@ -129,12 +144,9 @@ class ButtonHolder extends JPanel{
     */
     private int noOfRows(){
 
-        System.out.println( panelWidth);System.out.println(buttonWidth);
-
-        int columns = this.panelWidth / this.buttonWidth; // this turns out wrong
-        System.out.println(columns);
-
-        double x = (double)buttons.size();
+        int columns = this.panelWidth / this.buttonWidth; 
+        
+        double x = (double)buttons.size() + 1;
 
         return (int) Math.ceil( ( x ) / columns );
     }
