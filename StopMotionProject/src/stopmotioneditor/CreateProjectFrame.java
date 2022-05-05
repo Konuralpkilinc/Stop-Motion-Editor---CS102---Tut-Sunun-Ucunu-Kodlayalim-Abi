@@ -169,46 +169,20 @@ public class CreateProjectFrame extends javax.swing.JFrame {
 
     private void cpSelectFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cpSelectFileButtonActionPerformed
         // TODO add your handling code here:
+
+        // in here, methods for selecting images from a folder and adding them to an ArrayList must be called
+
     }//GEN-LAST:event_cpSelectFileButtonActionPerformed
 
     private void cpDoneButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cpDoneButtonActionPerformed
-        // TODO add your handling code here:
+
+        //creating the project
+        Project project = new Project ( projectImages, cpEnterProjectTextField.getText() );
+
+        // User.getProjects.add( project ); // which user would this line call for?
+
     }//GEN-LAST:event_cpDoneButtonActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CreateProjectFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CreateProjectFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CreateProjectFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CreateProjectFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new CreateProjectFrame().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel cpBackgroundPanel;
@@ -220,4 +194,6 @@ public class CreateProjectFrame extends javax.swing.JFrame {
     private javax.swing.JButton cpSelectFileButton;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
+
+    private ArrayList<Image> projectImages;
 }
