@@ -26,7 +26,7 @@ public class User {
     }
 
 
-    public Project receiveProject(int projectNumber){
+    public Project deliverProject(int projectNumber){
 
         return projects.get(projectNumber-1);
     }
@@ -47,5 +47,9 @@ public class User {
     public ArrayList<Project> getProjects(){
 
         return projects;
+    }
+    public void removeProject(int removeIndex){
+        
+        projects.remove(projects.get(removeIndex));
     }
 }

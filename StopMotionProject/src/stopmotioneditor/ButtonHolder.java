@@ -152,5 +152,8 @@ class ButtonHolder extends JPanel{
 
         return (int) Math.ceil( ( x ) / columns );
     }
+    public ArrayList<JRadioButton> getButtons(){
+        return buttons;
+    }
 
 }

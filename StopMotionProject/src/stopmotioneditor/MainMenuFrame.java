@@ -4,7 +4,12 @@
  */
 package stopmotioneditor;
 
+import java.util.ArrayList;
+
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JRadioButton;
 
 /**
  *
@@ -190,10 +195,39 @@ public class MainMenuFrame extends javax.swing.JFrame {
 
     private void mainMenuShareProjectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mainMenuShareProjectButtonActionPerformed
         // TODO add your handling code here:
+        ArrayList<Integer> indexes = new ArrayList<>();
+        Project sharedProject;
+
+        for(int i = 0; i < User.users.size(); i++){
+            if(mainMenuUserListScrollpane.getCheckBox(i).isSelected()){
+                indexes.add(i);
+            }
+        }        
+        for(int i = 0; i < mainMenuProjectsScrollpane.getButtons().size(); i++){
+            if(mainMenuProjectsScrollpane.getButtons().get(i).isSelected()){
+                sharedProject = user.getProjects().get(i);
+                break;
+            }
+        }
+        for(int i = 0; i < indexes.size(); i++){
+            User.users.get(indexes.get(i)).addProject(sharedProject);
+        }
     }//GEN-LAST:event_mainMenuShareProjectButtonActionPerformed
 
     private void mainMenuDeleteProjectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mainMenuDeleteProjectButtonActionPerformed
-        // TODO add your handling code here:
+        
+        int removeIndex = 0;
+        ArrayList<JRadioButton> radioBoxes = mainMenuProjectsScrollpane.getButtons();
+
+        for(int i = 0 ; i < radioBoxes.size(); i++){
+            if(radioBoxes.get(i).isSelected()){
+                removeIndex = i;
+                break;
+            }
+        }
+
+        mainMenuProjectsScrollpane.remove(radioBoxes.get(removeIndex));
+        user.removeProject(removeIndex);
     }//GEN-LAST:event_mainMenuDeleteProjectButtonActionPerformed
 
     
