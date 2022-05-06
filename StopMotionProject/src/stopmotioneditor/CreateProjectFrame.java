@@ -4,6 +4,11 @@
  */
 package stopmotioneditor;
 
+import java.util.ArrayList;
+
+import javax.swing.JRadioButton;
+import javax.swing.plaf.DimensionUIResource;
+
 /**
  *
  * @author Burak Oruk
@@ -13,7 +18,8 @@ public class CreateProjectFrame extends javax.swing.JFrame {
     /**
      * Creates new form CreateProjectFrame
      */
-    public CreateProjectFrame() {
+    public CreateProjectFrame( MainMenuFrame mainMenuFrame ) {
+        this.mainMenu=mainMenuFrame;
         initComponents();
     }
 
@@ -168,7 +174,6 @@ public class CreateProjectFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_cpEnterProjectTextFieldActionPerformed
 
     private void cpSelectFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cpSelectFileButtonActionPerformed
-        // TODO add your handling code here:
 
         // in here, methods for selecting images from a folder and adding them to an ArrayList must be called
 
@@ -176,10 +181,18 @@ public class CreateProjectFrame extends javax.swing.JFrame {
 
     private void cpDoneButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cpDoneButtonActionPerformed
 
-        //creating the project
-        Project project = new Project ( projectImages, cpEnterProjectTextField.getText() );
+        String projectName = cpEnterProjectTextField.getText();
 
-        // User.getProjects.add( project ); // which user would this line call for?
+        //creating the project
+        Project project = new Project ( projectImages, projectName );
+
+        mainMenu.getUser().addProject( project );
+
+        JRadioButton button = new JRadioButton( projectName );
+        button.setPreferredSize( new DimensionUIResource(160, 140) ); 
+        mainMenu.getButtonHolder().add(button);
+
+        this.dispose();
 
     }//GEN-LAST:event_cpDoneButtonActionPerformed
 
@@ -195,5 +208,6 @@ public class CreateProjectFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 
-    private ArrayList<Image> projectImages;
+    MainMenuFrame mainMenu;
+    private ArrayList<Image> projectImages = new ArrayList<Image>();
 }

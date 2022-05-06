@@ -27,6 +27,7 @@ class ButtonHolder extends JPanel{
     private int buttonWidth; 
     private int buttonHeight;
     private FlowLayout layout;
+    private MainMenuFrame mainMenu;
 
     public ButtonHolder( int width, int height, int buttonWidth, int buttonHeight ){
 
@@ -44,8 +45,7 @@ class ButtonHolder extends JPanel{
         createButton = new JButton("New Project");  // this button will be resposible for opening the project creating screen
         createButton.setPreferredSize( new DimensionUIResource(buttonWidth, buttonHeight));
         createButton.addActionListener( e -> {
-            // this action will open the CreateProject frame
-            // the created project will be assigned to a new JButton to be added to this class
+            new CreateProjectFrame( mainMenu );
         });
 
         DimensionUIResource preferredSize = new DimensionUIResource(width, height);
@@ -156,4 +156,8 @@ class ButtonHolder extends JPanel{
         return buttons;
     }
 
+    // this initializes the variable which holds the MainMenuFrame frame this panel will be placed on
+    public void setMainMenu( MainMenuFrame mainMenu ){
+        this.mainMenu = mainMenu;
+    }
 }
