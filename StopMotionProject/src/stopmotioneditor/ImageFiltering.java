@@ -2,7 +2,7 @@ package stopmotioneditor;
 import java.awt.Image;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.io.File;
+import java.io.File; 
 import java.io.IOException;
 import java.util.Iterator;
 import javax.imageio.ImageIO;
@@ -17,17 +17,17 @@ import javafx.embed.swing.SwingFXUtils;
  */
 public class ImageFiltering {
 
-    ImageInputStream iis;
-    Iterator<ImageReader> iterator;
-    ImageReader reader; 
-    String imageFormat; 
-    BufferedImage image;
-    int width; 
-    int height; 
+    static ImageInputStream iis;
+    static Iterator<ImageReader> iterator;
+    static ImageReader reader; 
+    static String imageFormat; 
+    static BufferedImage image;
+    static int width; 
+    static int height; 
 
     public ImageFiltering(){}  //empty constructor 
     
-    public void filtering(EditableImage input){
+    public static void filtering(EditableImage input){
         try{
            iis = ImageIO.createImageInputStream(input.getImage());   //creates location for image
            iterator = ImageIO.getImageReaders(iis);       //as I understand this decodes image
@@ -42,7 +42,7 @@ public class ImageFiltering {
             System.out.println(ex);
         }
     }
-    public void redFiltering(EditableImage input){
+    public static void redFiltering(EditableImage input){
         
         filtering(input);
 
@@ -54,10 +54,10 @@ public class ImageFiltering {
                 image.setRGB(x,y,redColor.getRGB());
             }
         }
-        Image fxImage = SwingFXUtils.toFXImage(image, null);
+        WriteableImage fxImage = SwingFXUtils.toFXImage(image, null);
         input.setImage(fxImage);    //compiler just want this and I add it all these
     }                                                       //try catch statements
-    public void greenFiltering(EditableImage input){
+    public static void greenFiltering(EditableImage input){
 
         filtering(input);
 
@@ -69,11 +69,11 @@ public class ImageFiltering {
                 image.setRGB(x,y,greenColor.getRGB());
             }
         }
-        Image fxImage = SwingFXUtils.toFXImage(image, null);
+        WriteableImage fxImage = SwingFXUtils.toFXImage(image, null);
         input.setImage(fxImage);
     }
 
-    public void blueFiltering(EditableImage input){
+    public static void blueFiltering(EditableImage input){
 
         filtering(input);
 
@@ -85,11 +85,11 @@ public class ImageFiltering {
                 image.setRGB(x,y,blueColor.getRGB());
             }
         }
-        Image fxImage = SwingFXUtils.toFXImage(image, null);
+        WriteableImage fxImage = SwingFXUtils.toFXImage(image, null);
         input.setImage(fxImage);
     }
 
-    public void grayFiltering(EditableImage input){
+    public static void grayFiltering(EditableImage input){
 
         filtering(input);
 
@@ -104,7 +104,7 @@ public class ImageFiltering {
                 image.setRGB(x,y,gray.getRGB());
             }
         }
-        Image fxImage = SwingFXUtils.toFXImage(image, null);
+        WriteableImage fxImage = SwingFXUtils.toFXImage(image, null);
         input.setImage(fxImage);
     }  
 }
