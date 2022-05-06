@@ -5,6 +5,12 @@ package stopmotioneditor;
  * @author yigit
  * This class represents the image 1280 x 720 which will have drawings on it
  */
+import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.ObjectStreamException;
+import java.io.Serializable;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Polyline; //drawings
@@ -17,7 +23,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
-public class EditableImage extends ImageView{
+
+public class EditableImage extends ImageView implements Serializable {
     public static final double EDITABLE_IMAGE_WIDTH = 1280;
     public static final double EDITABLE_IMAGE_HEIGHT = 720;
     public static final double SMALL_IMAGE_EDITABLE_IMAGE_RATIO = FinalImage.SMALL_IMAGE_HEIGHT / EDITABLE_IMAGE_HEIGHT;
@@ -82,6 +89,9 @@ public class EditableImage extends ImageView{
      */
     public Polyline getLastLine(){
         return this.lastLine;
+    }
+    public Image getFxImage() {
+        return this.fxImage;
     }
     public BigImage getBigImage(){
         return this.bigImage;
@@ -217,6 +227,25 @@ public class EditableImage extends ImageView{
         }
         return isValid;
     }
+    
+    private void writeObject(final ObjectOutputStream out) throws IOException
+   {
+      out.writeObject(this.lines);
+      out.writeInt(this.index);
+      out.writeObject(this.fxImage);
+   }
+    
+    private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException
+   {
+      this.lines = (ArrayList<Polyline>) in.readObject();
+      this.index = in.readInt();
+      this.fxImage = (Image) in.readObject();
+   }
+    
+    private void readObjectNoData() throws ObjectStreamException
+   {
+      throw new InvalidObjectException("Stream data required");
+   }
 
 }
 /* 

@@ -1,5 +1,6 @@
 package stopmotioneditor;
 
+import com.google.gson.Gson;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,9 +12,13 @@ import javax.imageio.ImageIO;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -36,7 +41,7 @@ public final class Database {
             return DriverManager.getConnection(URL);
     
         } catch (SQLException e) {
-            System.out.println("Connection error");
+            System.out.println("Database connection error");
             return null;
         }  
     }
@@ -232,9 +237,68 @@ public final class Database {
      * @param projectName name of the project
      * @param index index of the image in the project
      */
-    private static void saveImageToDatabase (Image img, String username, String projectName, int index) {
+    public static long saveImageToDatabase (Image img, String username, String projectName, int index) {
         // Serialize EditableImage
         // Waiting for EditableImage class to finalize
-        // Add index to database 
+        // Add index to database
+        
+        Project project = new Project(null, projectName);
+        EditableImage ei = new EditableImage (img, project, 0);
+        ArrayList<Integer> al = new ArrayList<Integer>();
+        String className = al.getClass().getName();
+        al.add(new Integer(5));
+        al.add(new Integer(6));
+        
+        try {
+            PreparedStatement pstmt = CONN.prepareStatement("INSERT INTO Editable_Images (name, image, image_index, project_id) VALUES (?, ?, ?, ?)");
+            pstmt.setString(1, className);
+            pstmt.setObject(2, al);
+            pstmt.setInt(3, 1);
+            pstmt.setInt(4, 1);
+            pstmt.executeUpdate();
+            ResultSet rs = pstmt.getGeneratedKeys();
+            int serialized_id = -1;
+            if (rs.next()) {
+                serialized_id = rs.getInt(1);
+            }
+            rs.close(); 
+            pstmt.close();
+            System.out.println("Serialization done! classname: " + className);
+            return serialized_id;
+        } catch (SQLException exception) {
+              System.out.println ("serialization fail");
+        }
+        return -1;
     }
-}
+    
+    public static Object deserializeEditableImage (long serialized_id) {
+        try {
+            PreparedStatement pstmt = CONN.prepareStatement("SELECT image FROM Editable_Images WHERE id = ?");
+            pstmt.setLong(1, serialized_id);
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
+            
+            byte[] buf = rs.getBytes(1);
+		ObjectInputStream objectIn = null;
+		if (buf != null)
+                    objectIn = new ObjectInputStream(new ByteArrayInputStream(buf));
+
+		Object deSerializedObject = objectIn.readObject();
+            String className = deSerializedObject.getClass().getName();
+            rs.close();
+            pstmt.close();
+            System.out.println("Deserialization done! classname: " + className);
+            return deSerializedObject;
+
+        } catch (SQLException exception) {
+            System.out.println ("deserialization fail");
+        } catch (IOException ex) { 
+            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    
+} 

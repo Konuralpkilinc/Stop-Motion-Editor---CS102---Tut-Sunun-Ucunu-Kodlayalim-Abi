@@ -43,7 +43,7 @@ public class Project {
    public Project(ArrayList<Image> fxImages, String projectName){
        //set the numberOfImagesInProject in each editableImage during construction, will be used for smallImage indexLabell
        this.name = projectName;
-       this.numberOfImages = fxImages.size();
+       this.numberOfImages = (fxImages == null) ? 0 : fxImages.size();
        for(int i = 0; i < numberOfImages; i++){
            this.images.add( new EditableImage(fxImages.get(i), this, i));
        }

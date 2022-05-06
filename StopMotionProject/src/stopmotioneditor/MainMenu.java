@@ -10,6 +10,7 @@ package stopmotioneditor;
  * @author yigit
  * Java Swing Main Menu, ToDo
  */
+import java.io.File;
 import java.util.ArrayList;
 public class MainMenu {
     
@@ -21,17 +22,13 @@ public class MainMenu {
     //This method is for test only purposes, omit later
     public static Project testMethod(){
         ArrayList<String> filePaths = new ArrayList<>();
-        filePaths.add("file:Images/apo7.jpg");
-        filePaths.add("file:Images/apo7.jpg");
-        filePaths.add("file:Images/apo7.jpg");
-        filePaths.add("file:Images/apo7.jpg");
-        filePaths.add("file:Images/apo7.jpg");
-        filePaths.add("file:Images/apo7.jpg");
-        filePaths.add("file:Images/apo7.jpg");
-        filePaths.add("file:Images/apo7.jpg");
-        filePaths.add("file:Images/apo1.jpg");
-        filePaths.add("file:Images/apo1.jpg");
-        
+        filePaths.add(new File(("src/stopmotioneditor/Images/FixedImage.jpg")).toURI().toString());
+        filePaths.add(new File(("src/stopmotioneditor/Images/FixedImage.jpg")).toURI().toString());
+        filePaths.add(new File(("src/stopmotioneditor/Images/FixedImage.jpg")).toURI().toString());
+        filePaths.add(new File(("src/stopmotioneditor/Images/FixedImage.jpg")).toURI().toString());
+        filePaths.add(new File(("src/stopmotioneditor/Images/FixedImage.jpg")).toURI().toString());
+        filePaths.add(new File(("src/stopmotioneditor/Images/FixedImage.jpg")).toURI().toString());
+        filePaths.add(new File(("src/stopmotioneditor/Images/FixedImage.jpg")).toURI().toString());
         return new Project(filePaths);
     }
 }
