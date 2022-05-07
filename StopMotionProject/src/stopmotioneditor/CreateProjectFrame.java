@@ -6,7 +6,6 @@ package stopmotioneditor;
 
 import java.util.ArrayList;
 
-import javafx.scene.image.Image;
 import javax.swing.JRadioButton;
 import javax.swing.plaf.DimensionUIResource;
 
@@ -19,15 +18,14 @@ public class CreateProjectFrame extends javax.swing.JFrame {
 
     /**
      * Creates new form CreateProjectFrame
-     */
-    public CreateProjectFrame( MainMenuFrame mainMenuFrame ) {
-        this.mainMenu=mainMenuFrame;
+    */
+
+    public CreateProjectFrame(){
         initComponents();
     }
 
-    // this probably should not exist
-    public CreateProjectFrame(){
-        initComponents();
+    public void setMainMenu(MainMenuFrame mainMenuFrame){
+        this.mainMenu=mainMenuFrame;
     }
 
     /**
@@ -247,5 +245,5 @@ public class CreateProjectFrame extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     MainMenuFrame mainMenu;
-    private ArrayList<Image> projectImages = new ArrayList<Image>();
+    private ArrayList<EditableImage> projectImages = new ArrayList<EditableImage>();
 }

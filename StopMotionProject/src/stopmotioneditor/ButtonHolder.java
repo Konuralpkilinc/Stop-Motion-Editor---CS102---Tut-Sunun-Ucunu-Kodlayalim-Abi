@@ -45,7 +45,9 @@ class ButtonHolder extends JPanel{
         createButton = new JButton("New Project");  // this button will be resposible for opening the project creating screen
         createButton.setPreferredSize( new DimensionUIResource(buttonWidth, buttonHeight));
         createButton.addActionListener( e -> {
-            new CreateProjectFrame( mainMenu );
+            CreateProjectFrame createProject = new CreateProjectFrame();
+            createProject.setMainMenu(mainMenu);
+            createProject.setVisible(true);
         });
 
         DimensionUIResource preferredSize = new DimensionUIResource(width, height);

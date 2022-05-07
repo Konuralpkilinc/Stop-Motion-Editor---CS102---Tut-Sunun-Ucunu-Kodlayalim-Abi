@@ -13,19 +13,11 @@ package stopmotioneditor;
 public class LoginScreenFrame extends javax.swing.JFrame {
     private String userName;
     private String passWord;
-    private RegisterScreenFrame registerScreenFrame;
-    private MainMenuFrame mainMenuFrame;
 
     /**
      * Creates new form NewJFrame
      */
-    public LoginScreenFrame(RegisterScreenFrame registerScreenFrame, MainMenuFrame mainMenuFrame) {
-        this.registerScreenFrame = registerScreenFrame;
-        this.mainMenuFrame = mainMenuFrame;
-        initComponents();
-    }
 
-    // this probably should not exist
     public LoginScreenFrame(){
         initComponents();
     }
@@ -188,7 +180,8 @@ public class LoginScreenFrame extends javax.swing.JFrame {
        
        if(Database.isUserExist(userName, passWord)){
            setVisible(false);
-           MainMenuFrame mainmenuFrame = new MainMenuFrame(Database.getUser(userName));
+           MainMenuFrame mainMenuFrame = new MainMenuFrame();
+           mainMenuFrame.setUser(Database.getUser(userName));
            mainMenuFrame.setVisible(true);
        }
        else{
@@ -200,6 +193,8 @@ public class LoginScreenFrame extends javax.swing.JFrame {
     private void registerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerButtonActionPerformed
         
         setVisible(false);
+        RegisterScreenFrame registerScreenFrame = new RegisterScreenFrame() ;
+        registerScreenFrame.setLoginScreenFrame(this);
         registerScreenFrame.setVisible(true);
         
     }//GEN-LAST:event_registerButtonActionPerformed

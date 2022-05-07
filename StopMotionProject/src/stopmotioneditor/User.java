@@ -8,11 +8,13 @@ public class User {
 
     private String username;
     private ArrayList <Project> projects;
+    public static ArrayList<User> users = new ArrayList<>(); 
 
     public User(String userName){
 
         this.username = username;
         projects = new ArrayList<>();
+        users.add(this);
     }
 
 

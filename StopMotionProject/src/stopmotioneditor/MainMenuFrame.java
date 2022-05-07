@@ -22,14 +22,12 @@ public class MainMenuFrame extends javax.swing.JFrame {
     /**
      * Creates new form MainMenu
      */
-    public MainMenuFrame(User user) {
-        this.user = user;
+    public MainMenuFrame() {
         initComponents();
     }
-    
-    // this probably should not exist
-    public MainMenuFrame(){
-        initComponents();
+
+    public void setUser(User user){
+        this.user = user;
     }
 
     /**

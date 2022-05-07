@@ -19,15 +19,13 @@ public class RegisterScreenFrame extends javax.swing.JFrame {
     /**
      * Creates new form NewJFrame
      */
-    public RegisterScreenFrame(LoginScreenFrame loginScreenFrame) {
-        this.loginScreenFrame = loginScreenFrame;
-        initComponents();
-        setVisible(true);
-    }
 
-    // this probably should not exist
     public RegisterScreenFrame(){
         initComponents();
+    }
+
+    public void setLoginScreenFrame(LoginScreenFrame loginScreenFrame) {
+        this.loginScreenFrame = loginScreenFrame;
     }
 
     /**
@@ -216,8 +214,8 @@ public class RegisterScreenFrame extends javax.swing.JFrame {
 
     private void registerBackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerBackButtonActionPerformed
         
-        setVisible(false);
         loginScreenFrame.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_registerBackButtonActionPerformed
 
     private void registerDoneButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerDoneButtonActionPerformed
@@ -230,8 +228,8 @@ public class RegisterScreenFrame extends javax.swing.JFrame {
         else{
             if(Database.isUsernameUnique(userName)){
                 Database.registerUser(userName, password);
-                setVisible(false);
                 loginScreenFrame.setVisible(true);
+                this.dispose();
             }
             else{
                 registerUsernameTextArea.setText("Username must be unique");
