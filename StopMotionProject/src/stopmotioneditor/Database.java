@@ -217,8 +217,33 @@ public final class Database {
         return users;
     }
     
+    /**
+     * This methods return a random avatar from the Avatars folder
+     * @return an Avatar in the form of BufferedImage
+     */
     public static BufferedImage getRandomAvatar () {
-        return null;
+        double chooser = Math.random() * 4; // we have 4 avatars
+        String filepath;
+        BufferedImage img = null;
+        if (chooser < 1) {
+            filepath= "Avatars\\avatar1.jpeg";
+        }
+        else if (chooser < 2) {
+            filepath= "Avatars\\avatar2.jpg";
+        }
+        else if (chooser < 3) {
+            filepath= "Avatars\\avatar3.jpg";
+        }
+        else {
+            filepath= "Avatars\\avatar4.jpg";
+        }
+        try {
+            img = ImageIO.read(new File( filepath));
+        } 
+        catch (IOException e) {
+            System.out.println("getRandomAvatar error");
+        }
+        return img;
     }
     
     /**
@@ -277,48 +302,6 @@ public final class Database {
             System.out.println("getAllProjectsOfUser error");
         }
         return null;
-    }
-
-    /**
-     * This method reads images in a folder and convert them to JavaFX Image
-     * @param file the folder that incldues the images
-     * @return returns an arraylist of JavaFX Images.
-     */
-    public static ArrayList<Image> readImagesFromFolder (File file) {
-        // Creating an arraylist to return the images in the folder
-        ArrayList<Image> images = new ArrayList<Image>();
-
-        // Specifying the supported extensions
-        String[] extensions = new String[] { "jpg", "jpeg", "png"}; 
-
-        // Filter to identify images based on their extensions
-        FilenameFilter filter = new FilenameFilter() {
-            @Override
-            public boolean accept(File file, String name) {
-                for (String ext : extensions) {
-                    if (name.endsWith("." + ext)) {
-                        return true;
-                    }
-                }
-                return false;
-            }
-        };
-
-        if (file.isDirectory()) {   // Making sure it is a directory
-            for (File f : file.listFiles( filter)) {   // Reading each image from the directory
-                BufferedImage img = null;
-
-                try {
-                    img = ImageIO.read(f);
-                    Image fxImage = SwingFXUtils.toFXImage(img, null);
-                    images.add(fxImage);
-
-                } catch (IOException e) {
-                    System.out.println("Cannot read from the file!");
-                }
-            }
-        }
-        return images;
     }
     
     /**
