@@ -6,8 +6,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 import java.sql.Connection;
 import javax.imageio.ImageIO;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 import java.awt.image.BufferedImage;
@@ -23,8 +29,8 @@ import java.io.IOException;
  */
 
 public final class Database {
-    private static final String URL = "jdbc:sqlite:db.db";    // Database connection URL
-    private static final Connection CONN = setConnection();
+    private static final String URL = "jdbc:sqlite:StopMotionProject/db.db";    // Database connection URL
+    private static Connection CONN = setConnection();
 
     /**
      * The private method which sets database connection
@@ -139,7 +145,7 @@ public final class Database {
             int index = 0;     // index of images in the project
             images = readImagesFromFolder(file);  // Taking images from the folder
             for (Image image : images) {
-                saveImageToDatabase(image, username, projectName, index);
+                //saveImageToDatabase(image, username, projectName, index);
                 index++;
             }
         } 
@@ -232,9 +238,46 @@ public final class Database {
      * @param projectName name of the project
      * @param index index of the image in the project
      */
-    private static void saveImageToDatabase (Image img, String username, String projectName, int index) {
-        // Serialize EditableImage
-        // Waiting for EditableImage class to finalize
-        // Add index to database 
+    public static void saveImageToDatabase (String username, String projectName, int index) {        
+        ArrayList<Integer> al = new ArrayList<Integer>();
+        al.add(5);
+        al.add(6);
+        
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String st = gson.toJson(al);
+        
+        try {
+            PreparedStatement pstmt = CONN.prepareStatement("INSERT INTO Editable_Images (image, image_index, project_id) VALUES (?, ?, ?)");
+            pstmt.setString(1, st);
+            pstmt.setInt(2, 1);
+            pstmt.setInt(3, 1);
+            pstmt.executeUpdate();
+            
+            System.out.println("Serialization done!");
+        }
+        catch (SQLException exception) {
+            System.out.println("Serialization fail!");
+        }
+        
+    }
+    
+    public static Object deserialize () {
+        try {
+            PreparedStatement pstmt = CONN.prepareStatement("SELECT image FROM Editable_Images WHERE id = ?");
+            pstmt.setLong(1, 1);
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
+            String st = rs.getString(1);
+            
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            ArrayList<Image> deserializedImage = gson.fromJson(st, new TypeToken<List<Integer>>(){}.getType());
+            
+            System.out.println("Deserialization successful!");
+            return deserializedImage;
+            
+        } catch (SQLException ex) {
+            System.out.println("Desiralization error!");
+        }
+        return null;
     }
 }

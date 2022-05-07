@@ -8,6 +8,7 @@ package stopmotioneditor;
  *This class will be used to view the main editing screen when the edit button is hit on the main menu.
  * @author yigit
  */
+import java.io.IOException;
 import java.util.ArrayList;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
@@ -76,7 +77,7 @@ public class EditScreen extends Application{
         primaryStage.setTitle("Edit Project");
         primaryStage.show();
     }
-    public static void main(String[] args){
+    public static void main(String[] args) throws IOException{
         //For test only purposes
         launch(args);//launch the edit screen
     }

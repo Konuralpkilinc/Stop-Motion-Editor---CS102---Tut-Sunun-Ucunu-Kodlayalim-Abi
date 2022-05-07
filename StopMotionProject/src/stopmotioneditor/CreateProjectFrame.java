@@ -6,8 +6,10 @@ package stopmotioneditor;
 
 import java.util.ArrayList;
 
+import javafx.scene.image.Image;
 import javax.swing.JRadioButton;
 import javax.swing.plaf.DimensionUIResource;
+
 
 /**
  *

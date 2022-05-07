@@ -8,8 +8,18 @@ package stopmotioneditor;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Polyline; //drawings
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
+
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
+import javafx.scene.media.Media;
 import javafx.event.EventType;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -17,7 +27,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
-public class EditableImage extends ImageView{
+public class EditableImage extends ImageView implements Serializable {
     public static final double EDITABLE_IMAGE_WIDTH = 1280;
     public static final double EDITABLE_IMAGE_HEIGHT = 720;
     public static final double SMALL_IMAGE_EDITABLE_IMAGE_RATIO = FinalImage.SMALL_IMAGE_HEIGHT / EDITABLE_IMAGE_HEIGHT;
@@ -80,11 +90,16 @@ public class EditableImage extends ImageView{
      * @return the last drawing that has been added to the editable image
      * This method will be invoked when adding corresponding lines of the editableImage to finalImages
      */
-    public Polyline getLastLine(){
+    public Polyline getLastLine() {
+
         return this.lastLine;
+
     }
     public BigImage getBigImage(){
         return this.bigImage;
+    }
+    public Image getFxImage() {
+        return this.fxImage;
     }
     public SmallImage getSmallImage(){
         return this.smallImage;
