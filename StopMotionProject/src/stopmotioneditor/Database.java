@@ -1,24 +1,25 @@
 package stopmotioneditor;
 
-import com.google.gson.Gson;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 import java.sql.Connection;
 import javax.imageio.ImageIO;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 /**
@@ -28,8 +29,8 @@ import java.util.logging.Logger;
  */
 
 public final class Database {
-    private static final String URL = "jdbc:sqlite:db.db";    // Database connection URL
-    private static final Connection CONN = setConnection();
+    private static final String URL = "jdbc:sqlite:StopMotionProject/src/stopmotioneditor/db.db";    // Database connection URL
+    private static Connection CONN = setConnection();
 
     /**
      * The private method which sets database connection
@@ -41,7 +42,7 @@ public final class Database {
             return DriverManager.getConnection(URL);
     
         } catch (SQLException e) {
-            System.out.println("Database connection error");
+            System.out.println("Connection error");
             return null;
         }  
     }
@@ -144,7 +145,7 @@ public final class Database {
             int index = 0;     // index of images in the project
             images = readImagesFromFolder(file);  // Taking images from the folder
             for (Image image : images) {
-                saveImageToDatabase(image, username, projectName, index);
+                //saveImageToDatabase(image, username, projectName, index);
                 index++;
             }
         } 
@@ -237,68 +238,46 @@ public final class Database {
      * @param projectName name of the project
      * @param index index of the image in the project
      */
-    public static long saveImageToDatabase (Image img, String username, String projectName, int index) {
-        // Serialize EditableImage
-        // Waiting for EditableImage class to finalize
-        // Add index to database
-        
-        Project project = new Project(null, projectName);
-        EditableImage ei = new EditableImage (img, project, 0);
+    public static void saveImageToDatabase (String username, String projectName, int index) {        
         ArrayList<Integer> al = new ArrayList<Integer>();
-        String className = al.getClass().getName();
-        al.add(new Integer(5));
-        al.add(new Integer(6));
+        al.add(5);
+        al.add(6);
+        
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String st = gson.toJson(al);
         
         try {
-            PreparedStatement pstmt = CONN.prepareStatement("INSERT INTO Editable_Images (name, image, image_index, project_id) VALUES (?, ?, ?, ?)");
-            pstmt.setString(1, className);
-            pstmt.setObject(2, al);
+            PreparedStatement pstmt = CONN.prepareStatement("INSERT INTO Editable_Images (image, image_index, project_id) VALUES (?, ?, ?)");
+            pstmt.setString(1, st);
+            pstmt.setInt(2, 1);
             pstmt.setInt(3, 1);
-            pstmt.setInt(4, 1);
             pstmt.executeUpdate();
-            ResultSet rs = pstmt.getGeneratedKeys();
-            int serialized_id = -1;
-            if (rs.next()) {
-                serialized_id = rs.getInt(1);
-            }
-            rs.close(); 
-            pstmt.close();
-            System.out.println("Serialization done! classname: " + className);
-            return serialized_id;
-        } catch (SQLException exception) {
-              System.out.println ("serialization fail");
+            
+            System.out.println("Serialization done!");
         }
-        return -1;
+        catch (SQLException exception) {
+            System.out.println("Serialization fail!");
+        }
+        
     }
     
-    public static Object deserializeEditableImage (long serialized_id) {
+    public static Object deserialize () {
         try {
             PreparedStatement pstmt = CONN.prepareStatement("SELECT image FROM Editable_Images WHERE id = ?");
-            pstmt.setLong(1, serialized_id);
+            pstmt.setLong(1, 1);
             ResultSet rs = pstmt.executeQuery();
             rs.next();
+            String st = rs.getString(1);
             
-            byte[] buf = rs.getBytes(1);
-		ObjectInputStream objectIn = null;
-		if (buf != null)
-                    objectIn = new ObjectInputStream(new ByteArrayInputStream(buf));
-
-		Object deSerializedObject = objectIn.readObject();
-            String className = deSerializedObject.getClass().getName();
-            rs.close();
-            pstmt.close();
-            System.out.println("Deserialization done! classname: " + className);
-            return deSerializedObject;
-
-        } catch (SQLException exception) {
-            System.out.println ("deserialization fail");
-        } catch (IOException ex) { 
-            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            ArrayList<Image> deserializedImage = gson.fromJson(st, new TypeToken<List<Integer>>(){}.getType());
+            
+            System.out.println("Deserialization successful!");
+            return deserializedImage;
+            
+        } catch (SQLException ex) {
+            System.out.println("Desiralization error!");
         }
         return null;
     }
-    
-    
-} 
+}

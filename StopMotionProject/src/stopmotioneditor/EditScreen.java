@@ -80,7 +80,6 @@ public class EditScreen extends Application{
     public static void main(String[] args) throws IOException{
         //For test only purposes
         launch(args);//launch the edit screen
-        DatabaseTester.test();
     }
     private void setEditableImagePane(){
         /*this.selectedImg = this.project.getImage(0);//initially the first image is selected
