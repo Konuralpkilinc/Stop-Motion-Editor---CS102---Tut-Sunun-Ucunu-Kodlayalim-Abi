@@ -20,6 +20,12 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -140,14 +146,9 @@ public final class Database {
             pstmt2.setInt(1, userID);
             pstmt2.setInt(2, projectID);
 
-            // Adding the images of the project
-            ArrayList<Image> images;
-            int index = 0;     // index of images in the project
-            images = readImagesFromFolder(file);  // Taking images from the folder
-            for (Image image : images) {
-                //saveImageToDatabase(image, username, projectName, index);
-                index++;
-            }
+            // Copying the images to our Projects folder and saving them to database.
+            addImagesToProject(copyImagesFromFolder(file), projectID);
+            
         } 
         catch (SQLException e) {
             System.out.println("Cannot register project");
@@ -199,6 +200,89 @@ public final class Database {
         }
         return images;
     }
+    
+    /**
+     * This method reads images in a folder and add them to a ArrayList
+     * @param file folder that contains images
+     * @return the arraylist that contains images
+     */
+    private static ArrayList<File> copyImagesFromFolder (File file) {
+        // Creating an arraylist to return the images in the folder
+        ArrayList<File> images = new ArrayList<File>();
+
+        // Specifying the supported extensions
+        String[] extensions = new String[] { "jpg", "jpeg", "png"}; 
+
+        // Filter to identify images based on their extensions
+        FilenameFilter filter = new FilenameFilter() {
+            @Override
+            public boolean accept(File file, String name) {
+                for (String ext : extensions) {
+                    if (name.endsWith("." + ext)) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        };
+
+        if (file.isDirectory()) {   // Making sure it is a directory
+            for (File f : file.listFiles( filter)) {   // Reading each image from the directory
+                images.add(f);
+            }
+        }
+        return images;
+    }
+    
+    /**
+     * This method creates a ProjectX folder in Projects, and copies images in the files ArrayList there.
+     * Also, invokes saveImageToDatabase method to save image's properties to database.
+     * @param files the arraylist that contains images
+     * @param projectID id of the project
+     */
+    private static void addImagesToProject (ArrayList<File> files, int projectID) {
+        String folderName = "Project" + projectID;
+        File projectFolder = new File("Projects\\" + folderName);
+        projectFolder.mkdir();
+        int index = 0;
+                
+        for (File file : files) {
+            String from = file.getPath();
+            String to = "Projects\\" + folderName + "\\" + file.getName();
+            Path source = Paths.get(from);
+            Path target = Paths.get(to);
+            
+            try {
+                Files.copy(source, target, StandardCopyOption.COPY_ATTRIBUTES);
+                saveImageToDatabase(target, index, projectID);
+                index++;
+            }
+            catch (IOException ex) {
+                System.out.println("Image Copy Fail");
+            } 
+            
+        }
+    }
+    
+    /**
+     * This method inserts into Editable_Images table in the database
+     * @param path filepath of the image
+     * @param index index of the image in the project
+     * @param projectID id of the project which the image belongs to
+     */
+    private static void saveImageToDatabase (Path path, int index, int projectID) {
+        try {
+            PreparedStatement pstmt = CONN.prepareStatement("INSERT INTO Editable_Images (filepath, image_index, project_id) VALUES (?, ?, ?");
+            pstmt.setString(1, path.toString());
+            pstmt.setInt(2, index);
+            pstmt.setInt(3, projectID);
+            pstmt.executeUpdate();
+        } 
+        catch (SQLException ex) {
+            System.out.println("Error in saving images to database");
+        }
+        
+    }
 
     /**
      * This is a private method which returns the id of given username
@@ -238,7 +322,7 @@ public final class Database {
      * @param projectName name of the project
      * @param index index of the image in the project
      */
-    public static void saveImageToDatabase (String username, String projectName, int index) {        
+    public static void serialize (String username, String projectName, int index) {        
         ArrayList<Integer> al = new ArrayList<Integer>();
         al.add(5);
         al.add(6);
