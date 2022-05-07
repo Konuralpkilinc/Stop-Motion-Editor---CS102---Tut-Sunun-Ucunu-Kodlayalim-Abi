@@ -44,7 +44,7 @@ public class MainMenuFrame extends javax.swing.JFrame {
         mainMenuShareProjectButton = new javax.swing.JButton();
         mainMenuPlayProjectButton = new javax.swing.JButton();
         mainMenuDeleteProjectButton = new javax.swing.JButton();
-        mainMenuUserListScrollpane = new javax.swing.JScrollPane();
+        mainMenuUserListScrollpane = new UserHolder(user);
         mainMenuUserListLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -195,7 +195,7 @@ public class MainMenuFrame extends javax.swing.JFrame {
     private void mainMenuShareProjectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mainMenuShareProjectButtonActionPerformed
         // TODO add your handling code here:
         ArrayList<Integer> indexes = new ArrayList<>();
-        Project sharedProject;
+        Project sharedProject =  null;
 
         for(int i = 0; i < User.users.size(); i++){
             if(mainMenuUserListScrollpane.getCheckBox(i).isSelected()){
@@ -247,6 +247,6 @@ public class MainMenuFrame extends javax.swing.JFrame {
     private ButtonHolder mainMenuProjectsScrollpane;
     private javax.swing.JButton mainMenuShareProjectButton;
     private javax.swing.JLabel mainMenuUserListLabel;
-    private javax.swing.JScrollPane mainMenuUserListScrollpane;
+    private UserHolder mainMenuUserListScrollpane;
     // End of variables declaration//GEN-END:variables
 }
