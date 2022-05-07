@@ -211,5 +211,5 @@ public class CreateProjectFrame extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     MainMenuFrame mainMenu;
-    private ArrayList<Image> projectImages = new ArrayList<Image>();
+    private ArrayList<EditableImage> projectImages = new ArrayList<EditableImage>();
 }

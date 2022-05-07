@@ -159,6 +159,27 @@ public final class Database {
     }
     
     /**
+     * INVOKE THIS METHOD WHEN USER CLICKS SHARE PROJECT BUTTON
+     * This methods sets relation between targetUser and the project in the database. So the project is shared with targetUser
+     * @param sharerUsername username of the current user who logged şn
+     * @param targetUsername username of the user which the project will be shared
+     * @param projectName name of the project to be shared
+     */
+    public static void shareProject (String sharerUsername, String targetUsername, String projectName) {
+        try {
+            int targetUserID = getUserID(targetUsername);
+            int projectID = getProjectID(sharerUsername, projectName);
+            PreparedStatement pstmt = CONN.prepareStatement("INSERT INTO User_Project_Join (user_id, project_id) VALUES (?, ?)");
+            pstmt.setInt(1, targetUserID);
+            pstmt.setInt(2, projectID);
+            pstmt.executeUpdate();
+        } 
+        catch (SQLException ex) {
+            System.out.println("shareProject error");
+        }
+    }
+    
+    /**
      * INVOKE THIS METHOD AFTER VALIDATING USERNAME AND PASSWORD (LOGGING IN)
      * This method returns a User object which is created from database. 
      * @param username username
@@ -172,6 +193,32 @@ public final class Database {
             user.addProject(project);
         }
         return user;
+    }
+    
+    /**
+     * INVOKE THIS METHOD WHEN CREATING USERLIST PANEL
+     * This method returns an ArrayList of all Users in the database. 
+     * Warning: These User objects contains only username and avatar. They don't contain Project, EditableImage etc.
+     * @return arraylist of all users in the database
+     */
+    public static ArrayList<User> getAllUsers () {
+        ArrayList<User> users = new ArrayList<User>();
+        try {
+            PreparedStatement pstmt = CONN.prepareStatement("SELECT username FROM Users");
+            ResultSet rs = pstmt.executeQuery();
+            
+            while (rs.next()) {
+                users.add ( new User( rs.getString("username")));
+            }
+        } 
+        catch (SQLException ex) {
+            System.out.println("getAllUsers error");
+        }
+        return users;
+    }
+    
+    public static BufferedImage getRandomAvatar () {
+        return null;
     }
     
     /**
