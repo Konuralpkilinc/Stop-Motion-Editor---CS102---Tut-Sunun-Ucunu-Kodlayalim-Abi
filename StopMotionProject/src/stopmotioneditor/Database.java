@@ -62,7 +62,7 @@ public final class Database {
      */
     public static boolean isUserExist (String aUsername, String aPassword) {
         try {
-            PreparedStatement pstmt = CONN.prepareStatement( "SELECT password FROM Users WHERE username = '?'");
+            PreparedStatement pstmt = CONN.prepareStatement( "SELECT password FROM Users WHERE username = ?");
             pstmt.setString( 1, aUsername);
             ResultSet rs = pstmt.executeQuery();
 
@@ -85,7 +85,7 @@ public final class Database {
     public static boolean isUsernameUnique (String aUsername) {
         try {
             // Getting the number of users with have a username as 'aUsername' in the database 
-            PreparedStatement pstmt = CONN.prepareStatement( "SELECT count(*) FROM Users WHERE username = '?'");
+            PreparedStatement pstmt = CONN.prepareStatement( "SELECT count(*) FROM Users WHERE username = ?");
             pstmt.setString( 1, aUsername);
             ResultSet rs = pstmt.executeQuery();
 
@@ -113,7 +113,7 @@ public final class Database {
             try {
                 PreparedStatement pstmt = CONN.prepareStatement( "INSERT INTO Users (username, password) VALUES (?, ?)");
                 pstmt.setString(1, username);
-                pstmt.setString(2, username);
+                pstmt.setString(2, password);
                 pstmt.executeUpdate();
             } catch (SQLException e) {
                 System.out.println("Cannot register the user");
