@@ -4,7 +4,12 @@
  */
 package stopmotioneditor;
 
+import java.util.ArrayList;
+
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JRadioButton;
 
 /**
  *
@@ -32,7 +37,8 @@ public class MainMenuFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         mainMenuBasePanel = new javax.swing.JPanel();
-        mainMenuProjectsScrollpane = new javax.swing.JScrollPane();
+        mainMenuProjectsScrollpane = new ButtonHolder(600, 400, 160, 140);
+        mainMenuProjectsScrollpane.setMainMenu(this);
         mainMenuButtonsPanel = new javax.swing.JPanel();
         mainMenuEditProjectButton = new javax.swing.JButton();
         mainMenuShareProjectButton = new javax.swing.JButton();
@@ -47,8 +53,6 @@ public class MainMenuFrame extends javax.swing.JFrame {
 
         mainMenuBasePanel.setBackground(new java.awt.Color(102, 0, 0));
         mainMenuBasePanel.setPreferredSize(new java.awt.Dimension(1000, 850));
-
-        mainMenuProjectsScrollpane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
         mainMenuButtonsPanel.setBackground(new java.awt.Color(51, 0, 0));
 
@@ -190,13 +194,49 @@ public class MainMenuFrame extends javax.swing.JFrame {
 
     private void mainMenuShareProjectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mainMenuShareProjectButtonActionPerformed
         // TODO add your handling code here:
+        ArrayList<Integer> indexes = new ArrayList<>();
+        Project sharedProject;
+
+        for(int i = 0; i < User.users.size(); i++){
+            if(mainMenuUserListScrollpane.getCheckBox(i).isSelected()){
+                indexes.add(i);
+            }
+        }        
+        for(int i = 0; i < mainMenuProjectsScrollpane.getButtons().size(); i++){
+            if(mainMenuProjectsScrollpane.getButtons().get(i).isSelected()){
+                sharedProject = user.getProjects().get(i);
+                break;
+            }
+        }
+        for(int i = 0; i < indexes.size(); i++){
+            User.users.get(indexes.get(i)).addProject(sharedProject);
+        }
     }//GEN-LAST:event_mainMenuShareProjectButtonActionPerformed
 
     private void mainMenuDeleteProjectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mainMenuDeleteProjectButtonActionPerformed
-        // TODO add your handling code here:
+        
+        int removeIndex = 0;
+        ArrayList<JRadioButton> radioBoxes = mainMenuProjectsScrollpane.getButtons();
+
+        for(int i = 0 ; i < radioBoxes.size(); i++){
+            if(radioBoxes.get(i).isSelected()){
+                removeIndex = i;
+                break;
+            }
+        }
+
+        mainMenuProjectsScrollpane.remove(radioBoxes.get(removeIndex));
+        user.removeProject(removeIndex);
     }//GEN-LAST:event_mainMenuDeleteProjectButtonActionPerformed
 
-    
+
+    public ButtonHolder getButtonHolder(){
+        return mainMenuProjectsScrollpane;
+    }
+
+    public User getUser(){
+        return user;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel mainMenuBasePanel;
@@ -204,7 +244,7 @@ public class MainMenuFrame extends javax.swing.JFrame {
     private javax.swing.JButton mainMenuDeleteProjectButton;
     private javax.swing.JButton mainMenuEditProjectButton;
     private javax.swing.JButton mainMenuPlayProjectButton;
-    private javax.swing.JScrollPane mainMenuProjectsScrollpane;
+    private ButtonHolder mainMenuProjectsScrollpane;
     private javax.swing.JButton mainMenuShareProjectButton;
     private javax.swing.JLabel mainMenuUserListLabel;
     private javax.swing.JScrollPane mainMenuUserListScrollpane;
