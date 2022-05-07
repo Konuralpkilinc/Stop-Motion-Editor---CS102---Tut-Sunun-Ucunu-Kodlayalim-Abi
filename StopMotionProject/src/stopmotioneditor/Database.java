@@ -20,6 +20,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -121,6 +122,7 @@ public final class Database {
     }
 
     /**
+     * INVOKE THIS METHOD TO CREATE A NEW PROJECT
      * This method takes the images from the given filepath and creates a new project in the database.
      * Also, establishes the relation between the given user and the created project.
      * @param file the folder which includes images
@@ -145,9 +147,10 @@ public final class Database {
             PreparedStatement pstmt2 = CONN.prepareStatement("INSERT INTO User_Project_Join (user_id, project_id) VALUES (?, ?)");
             pstmt2.setInt(1, userID);
             pstmt2.setInt(2, projectID);
+            pstmt2.executeUpdate();
 
             // Copying the images to our Projects folder and saving them to database.
-            addImagesToProject(copyImagesFromFolder(file), projectID);
+            addImagesToProject(readImagesFromFolderToFileArrayList(file), projectID);
             
         } 
         catch (SQLException e) {
@@ -155,7 +158,77 @@ public final class Database {
         }
     }
     
-    public static User getUser (String st) {
+    /**
+     * INVOKE THIS METHOD AFTER VALIDATING USERNAME AND PASSWORD (LOGGING IN)
+     * This method returns a User object which is created from database. 
+     * @param username username
+     * @return User object
+     */
+    public static User getUser (String username) {
+        User user = new User(username);
+        ArrayList<Project> projects = getAllProjectsOfUser(username);
+        
+        for (Project project : projects) {
+            user.addProject(project);
+        }
+        return user;
+    }
+    
+    /**
+     * This method returns the project whose name is projectName from the database
+     * @param username owner of the project
+     * @param projectName name of the project
+     * @return 
+     */
+    public static Project getProject (String username, String projectName) {
+        ArrayList<EditableImage> images = new ArrayList<EditableImage>();
+        try {
+            int projectID = getProjectID(username, projectName);
+            PreparedStatement pstmt = CONN.prepareStatement("SELECT filepath,image_index FROM Editable_Images WHERE project_id = ?");
+            pstmt.setInt(1, projectID);
+            ResultSet rs = pstmt.executeQuery();
+            
+            while (rs.next()) {
+                images.add( new EditableImage(rs.getString("filepath"), rs.getInt("image_index")));
+            }
+            Project project = new Project(images, projectName);
+            
+            for (EditableImage image : images) {
+                image.setProject(project);
+            }
+            return project;
+        } 
+        catch (SQLException ex) {
+            System.out.println("getProject error");
+        }
+        return null;
+    }
+    
+    /**
+     * This method returns all of the projects of a user from the database
+     * @param username username
+     * @return project arraylist
+     */
+    public static ArrayList<Project> getAllProjectsOfUser (String username) {
+        ArrayList<Project> projects = new ArrayList<Project>();
+        try {
+            int userID = getUserID(username);
+            PreparedStatement pstmt = CONN.prepareStatement("SELECT Projects.name FROM Projects" 
+            + "JOIN User_Project_Join"
+            + "ON Projects.id = User_Project_Join.project_id"
+            + "WHERE User_Project_Join.user_id = ?");
+            
+            pstmt.setInt(1, userID);
+            ResultSet rs = pstmt.executeQuery();
+            
+            while (rs.next()) {
+                projects.add (getProject(username, rs.getString("name")));
+            }
+            return projects;
+        } 
+        catch (SQLException ex) {
+            System.out.println("getAllProjectsOfUser error");
+        }
         return null;
     }
 
@@ -206,7 +279,7 @@ public final class Database {
      * @param file folder that contains images
      * @return the arraylist that contains images
      */
-    private static ArrayList<File> copyImagesFromFolder (File file) {
+    private static ArrayList<File> readImagesFromFolderToFileArrayList (File file) {
         // Creating an arraylist to return the images in the folder
         ArrayList<File> images = new ArrayList<File>();
 
@@ -257,7 +330,11 @@ public final class Database {
                 saveImageToDatabase(target, index, projectID);
                 index++;
             }
+            catch (FileAlreadyExistsException ex) {
+                
+            }
             catch (IOException ex) {
+                System.out.println(ex);
                 System.out.println("Image Copy Fail");
             } 
             
@@ -272,13 +349,14 @@ public final class Database {
      */
     private static void saveImageToDatabase (Path path, int index, int projectID) {
         try {
-            PreparedStatement pstmt = CONN.prepareStatement("INSERT INTO Editable_Images (filepath, image_index, project_id) VALUES (?, ?, ?");
+            PreparedStatement pstmt = CONN.prepareStatement("INSERT INTO Editable_Images (filepath, image_index, project_id) VALUES (?, ?, ?)");
             pstmt.setString(1, path.toString());
             pstmt.setInt(2, index);
             pstmt.setInt(3, projectID);
             pstmt.executeUpdate();
         } 
         catch (SQLException ex) {
+            System.out.println(ex);
             System.out.println("Error in saving images to database");
         }
         
@@ -290,8 +368,9 @@ public final class Database {
      * @throws SQLException
      */
     private static int getUserID (String username) throws SQLException {
-        Statement st = CONN.createStatement();
-        ResultSet rs = st.executeQuery("SELECT id FROM Users WHERE username = " + username + "\"");
+        PreparedStatement pstmt = CONN.prepareStatement("SELECT id FROM Users WHERE username = ?");
+        pstmt.setString(1, username);
+        ResultSet rs = pstmt.executeQuery();
         return rs.getInt("id");
     }
 
@@ -322,7 +401,7 @@ public final class Database {
      * @param projectName name of the project
      * @param index index of the image in the project
      */
-    public static void serialize (String username, String projectName, int index) {        
+    private static void serialize (String username, String projectName, int index) {        
         ArrayList<Integer> al = new ArrayList<Integer>();
         al.add(5);
         al.add(6);
@@ -345,7 +424,7 @@ public final class Database {
         
     }
     
-    public static Object deserialize () {
+    private static Object deserialize () {
         try {
             PreparedStatement pstmt = CONN.prepareStatement("SELECT image FROM Editable_Images WHERE id = ?");
             pstmt.setLong(1, 1);
