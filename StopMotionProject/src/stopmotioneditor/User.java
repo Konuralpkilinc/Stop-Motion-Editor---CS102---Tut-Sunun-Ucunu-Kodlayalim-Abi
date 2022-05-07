@@ -6,17 +6,13 @@ import java.util.ArrayList;
  */
 public class User {
 
-    String userName;
-    String password;
-    ArrayList <Project> projects;
-    static ArrayList<User> users = new ArrayList<>();
+    private String username;
+    private ArrayList <Project> projects;
 
-    public User(String userName, String password){
+    public User(String userName){
 
-        this.userName = userName;
-        this.password = password;
+        this.username = username;
         projects = new ArrayList<>();
-        users.add(this);
     }
 
 
@@ -31,18 +27,9 @@ public class User {
         return projects.get(projectNumber-1);
     }
 
+    public String getUsername(){
 
-    public final void changePassword(String newPassword){
-
-        password = newPassword;
-    }
-    public String getUserName(){
-
-        return userName;
-    }
-    public String getPassword(){
-
-        return password;
+        return username;
     }
     public ArrayList<Project> getProjects(){
 

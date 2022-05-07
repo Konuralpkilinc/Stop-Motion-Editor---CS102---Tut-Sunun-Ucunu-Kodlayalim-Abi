@@ -76,6 +76,20 @@ public class EditableImage extends ImageView implements Serializable {
         this.setEventHandling();
         this.setContainer(); 
     }
+    
+    public EditableImage(String filePath,int index){
+        super(new Image(filePath));
+        //set the index, from file input's for loop
+        this.index = index;
+        this.filePath = filePath;
+        //create small and bigImages
+        this.smallImage = new SmallImage(this, this.filePath);
+        this.bigImage = new BigImage(this, this.filePath);//true false specifies whether the final image is bigImage
+        //set the properties
+        this.setProperties();
+        this.setEventHandling();
+        this.setContainer(); 
+    }
     //set the width and height properties
     public void setProperties(){
         this.setFitWidth(EDITABLE_IMAGE_WIDTH);
@@ -132,6 +146,10 @@ public class EditableImage extends ImageView implements Serializable {
      */
     public Pane getContainer(){
         return this.editableImageContainer;
+    }
+    
+    public void setProject(Project aProject) {
+        this.project = aProject;
     }
     //This method sets the event handling procedure of the EditableImage, call from constructor
     private void setEventHandling(){

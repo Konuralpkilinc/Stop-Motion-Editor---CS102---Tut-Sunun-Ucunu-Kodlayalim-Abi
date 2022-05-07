@@ -36,17 +36,15 @@ public class Project {
    /**
     * constructs a Project
     * Will be invoked when the project is constructed for the first time(not taken from database)
-    * @param images 
+    * @param editableImages 
     * @param projectName 
     * @param userName
     */
-   public Project(ArrayList<Image> fxImages, String projectName){
+   public Project(ArrayList<EditableImage> editableImages, String projectName){
        //set the numberOfImagesInProject in each editableImage during construction, will be used for smallImage indexLabell
        this.name = projectName;
-       this.numberOfImages = (fxImages == null) ? 0 : fxImages.size();
-       for(int i = 0; i < numberOfImages; i++){
-           this.images.add( new EditableImage(fxImages.get(i), this, i));
-       }
+       this.numberOfImages = (editableImages == null) ? 0 : editableImages.size();
+       this.images = editableImages;
        this.initializeTimer();
        
        //After each EditableImage has been created, initialize the smallImage's labels accordingly
