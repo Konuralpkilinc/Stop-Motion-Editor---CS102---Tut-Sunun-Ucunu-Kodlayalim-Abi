@@ -29,7 +29,7 @@ import java.io.IOException;
  */
 
 public final class Database {
-    private static final String URL = "jdbc:sqlite:StopMotionProject/src/stopmotioneditor/db.db";    // Database connection URL
+    private static final String URL = "jdbc:sqlite:StopMotionProject/db.db";    // Database connection URL
     private static Connection CONN = setConnection();
 
     /**
