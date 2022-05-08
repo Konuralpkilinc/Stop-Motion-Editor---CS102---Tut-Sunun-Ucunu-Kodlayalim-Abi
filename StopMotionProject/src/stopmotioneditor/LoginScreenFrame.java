@@ -13,14 +13,12 @@ package stopmotioneditor;
 public class LoginScreenFrame extends javax.swing.JFrame {
     private String userName;
     private String passWord;
-    private RegisterScreenFrame registerScreenFrame = null;
-    private MainMenuFrame mainMenuFrame = null;
 
     /**
      * Creates new form NewJFrame
      */
-    public LoginScreenFrame() {
-        
+
+    public LoginScreenFrame(){
         initComponents();
     }
 
@@ -181,10 +179,10 @@ public class LoginScreenFrame extends javax.swing.JFrame {
     private void loginDoneButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginDoneButtonActionPerformed
        
        if(Database.isUserExist(userName, passWord)){
-           setVisible(false);
-           MainMenuFrame mainmenuFrame = new MainMenuFrame(Database.getUser(userName));
+           MainMenuFrame mainMenuFrame = new MainMenuFrame();
+           mainMenuFrame.setUser(Database.getUser(userName));
            mainMenuFrame.setVisible(true);
-           dispose();
+           this.dispose();
        }
        else{
            loginUsernameTextArea.setText("Invalid");
@@ -195,10 +193,60 @@ public class LoginScreenFrame extends javax.swing.JFrame {
     private void registerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerButtonActionPerformed
         
         setVisible(false);
-        registerScreenFrame = new RegisterScreenFrame(this);
+        RegisterScreenFrame registerScreenFrame = new RegisterScreenFrame() ;
+        registerScreenFrame.setLoginScreenFrame(this);
         registerScreenFrame.setVisible(true);
         
     }//GEN-LAST:event_registerButtonActionPerformed
+
+
+    //auto-generated main method
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(LoginScreenFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(LoginScreenFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(LoginScreenFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(LoginScreenFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new LoginScreenFrame().setVisible(true);
+            }
+        });
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;

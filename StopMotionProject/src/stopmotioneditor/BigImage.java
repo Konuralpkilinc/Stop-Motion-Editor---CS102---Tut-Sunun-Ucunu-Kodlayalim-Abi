@@ -6,7 +6,7 @@
 package stopmotioneditor;
 
 import javafx.scene.image.Image;
-
+import javafx.scene.shape.Polyline;
 /**
  *
  * @author yigit
@@ -22,19 +22,24 @@ public class BigImage extends FinalImage{
         super(editableImg, fxImage);
         
         //set the dimensions
-        this.setFitWidth(FinalImage.SMALL_IMAGE_WIDTH);
-        this.setFitHeight(FinalImage.SMALL_IMAGE_HEIGHT);
+        this.setFitWidth(FinalImage.BIG_IMAGE_WIDTH);
+        this.setFitHeight(FinalImage.BIG_IMAGE_HEIGHT);
     }
     public BigImage(EditableImage editableImg, String filePath){
         super(editableImg,filePath);
         
         //set the dimensions
-        this.setFitWidth(FinalImage.SMALL_IMAGE_WIDTH);
-        this.setFitHeight(FinalImage.SMALL_IMAGE_HEIGHT);
+        this.setFitWidth(FinalImage.BIG_IMAGE_WIDTH);
+        this.setFitHeight(FinalImage.BIG_IMAGE_HEIGHT);
     }
     
     //Invoke when a drawing has been made
     public void addLastLine(){
         super.addLastLine(EditableImage.BIG_IMAGE_EDITABLE_IMAGE_RATIO);
     }
+    //Invoke when an EditableImage is copied, invoke for each polyline to be copied if any
+    public void addLine(Polyline editableImagePolyline){
+        super.addLine(editableImagePolyline, EditableImage.BIG_IMAGE_EDITABLE_IMAGE_RATIO);
+    }
+    
 }

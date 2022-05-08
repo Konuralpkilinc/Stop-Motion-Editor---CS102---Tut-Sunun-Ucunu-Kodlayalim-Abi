@@ -8,7 +8,6 @@ package stopmotioneditor;
  *This class will be used to view the main editing screen when the edit button is hit on the main menu.
  * @author yigit
  */
-import java.io.IOException;
 import java.util.ArrayList;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
@@ -77,7 +76,7 @@ public class EditScreen extends Application{
         primaryStage.setTitle("Edit Project");
         primaryStage.show();
     }
-    public static void main(String[] args) throws IOException{
+    public static void main(String[] args){
         //For test only purposes
         launch(args);//launch the edit screen
     }
@@ -118,14 +117,23 @@ public class EditScreen extends Application{
         Insets insets = new Insets(BORDERPANE_INSETS_VALUE,0,BORDERPANE_INSETS_VALUE,0);
         this.borderPane.setPadding(insets);
     }
-    private void setSmallImageBox(){
+    //Invoke this method from constructor and when a deletion appending etc happens
+    public void setSmallImageBox(){
         //set the smallImageBox's pos value
         this.smallImageBox.setAlignment(Pos.CENTER);
-
+        
+        this.smallImageBox.getChildren().clear(); // This will avoid children duplicate exception
+        
+        
+        
         //get the VBox(SmallImageContainer) of the SmallImages and add them all to the smallImageBox
         for(int i = 0; i < this.project.getNumberOfImages(); i++){
             EditableImage currentImg = this.project.getImage(i);
             SmallImage currentSmallImg = (SmallImage) (currentImg.getSmallImage());
+            
+            //Update the index labels of each smallImage before setting them 
+            currentSmallImg.updateIndexLabel();
+            
             smallImageBox.getChildren().add(currentSmallImg.getSmallImagePaneContainer()); //Add smallImg's StackPane
         }
         this.smallImageBox.setSpacing(SMALL_IMAGE_BOX_SPACING);//set spacing of this pane to 5 pixels
@@ -157,9 +165,17 @@ public class EditScreen extends Application{
         choicePaneSelector.getItems().add(drawingString);//add comboBox item
         
         String fpsString = "Fps & Audio";
-        this.choicePanes.add(new FpsAudioChoicePane(this.project, fpsString)); //create new choice pane
+        this.choicePanes.add(new FpsAudioChoicePane(this.project, fpsString, this)); //create new choice pane
         choicePaneSelector.getItems().add(fpsString);
        
+        String filterString = "Apply Filter";
+        this.choicePanes.add(new FilterChoicePane(filterString));
+        choicePaneSelector.getItems().add(filterString);
+        
+        String imageOrderingString = "Order Images";
+        this.choicePanes.add(new ImageOrderingChoicePane(this.project, imageOrderingString));
+        this.choicePaneSelector.getItems().add(imageOrderingString);
+        
         //set the initial selection to the first element
         this.choicePaneSelector.getSelectionModel().selectFirst(); //Might be problematic !!!!!!!!!!!!!!!!!!!!
         
@@ -209,7 +225,6 @@ public class EditScreen extends Application{
                 //Set the DrawijngChoicePane's circle to this Project instance
                 Circle circle = ((DrawingChoicePane)choicePane).getCircle();
                 this.project.setDrawingCircle(circle);
-                
             }
         }
         
@@ -234,5 +249,12 @@ public class EditScreen extends Application{
         String selection = this.choicePaneSelector.getValue();
         return selection;
     }
-    
+    /**
+     * !!!Important!!!
+     * Invoke this from fpsAudioChoicePane and FilterChoicePane to obtain the current selected editable image that we are performing an action on
+     * @return the current selected EditableImage
+     */
+    public EditableImage getSelectedImage(){
+        return this.selectedImg;
+    }
 }
