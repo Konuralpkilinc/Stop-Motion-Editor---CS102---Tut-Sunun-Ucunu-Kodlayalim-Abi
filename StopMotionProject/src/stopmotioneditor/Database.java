@@ -225,16 +225,29 @@ public final class Database {
      * INVOKE THIS METHOD WHEN USER ADDS NEW IMAGES TO AN EXISTING PROJECT
      * @param file File which includes NEW images
      * @param username Username of the user who logged in
-     * @param projectName Name of the project which the images will be added
+     * @param Project project object which images will be added
+     * @return returns ArrayList of NEW added images
      */
-    public static void addNewImagesToProject (File file, String username, String projectName) {
+    public static ArrayList<EditableImage> addNewImagesToProject (File file, String username, Project project) {
+        ArrayList<EditableImage> al = new ArrayList<EditableImage>();
+        
         try {
-            int projectID = getProjectID( username, projectName);
+            // save new images to database and copy to projects folder
+            int projectID = getProjectID( username, project.getName());
             registerImagesOfProject( readImagesFromFolderToFileArrayList(file), projectID);
+            int index = getLastIndexOfProject( projectID) + 1;
+            
+            
+            ArrayList<File> newImages = readImagesFromFolderToFileArrayList(file);
+            for (File image : newImages) {
+                al.add( new EditableImage( file.getPath(), project, index));
+                index++;
+            }
         } 
         catch (SQLException ex) {
             System.out.println("addNewImagesToProject error");
         }
+        return al;
     }
     
     /**

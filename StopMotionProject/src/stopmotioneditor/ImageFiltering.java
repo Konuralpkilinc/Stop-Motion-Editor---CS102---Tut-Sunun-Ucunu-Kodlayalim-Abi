@@ -9,6 +9,7 @@ import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.WritableImage;
 
 
 /**
