@@ -6,7 +6,6 @@ package stopmotioneditor;
 
 import java.util.ArrayList;
 
-import javafx.scene.image.Image;
 import javax.swing.JRadioButton;
 import javax.swing.plaf.DimensionUIResource;
 
@@ -19,10 +18,14 @@ public class CreateProjectFrame extends javax.swing.JFrame {
 
     /**
      * Creates new form CreateProjectFrame
-     */
-    public CreateProjectFrame( MainMenuFrame mainMenuFrame ) {
-        this.mainMenu=mainMenuFrame;
+    */
+
+    public CreateProjectFrame(){
         initComponents();
+    }
+
+    public void setMainMenu(MainMenuFrame mainMenuFrame){
+        this.mainMenu=mainMenuFrame;
     }
 
     /**
@@ -73,8 +76,8 @@ public class CreateProjectFrame extends javax.swing.JFrame {
         cpEnterProjectTextField.setBackground(new java.awt.Color(153, 153, 0));
         cpEnterProjectTextField.setFont(new java.awt.Font("SimSun", 0, 18)); // NOI18N
         cpEnterProjectTextField.setForeground(new java.awt.Color(255, 255, 102));
-        cpEnterProjectTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        cpEnterProjectTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
                 cpEnterProjectTextFieldActionPerformed(evt);
             }
         });
@@ -171,8 +174,8 @@ public class CreateProjectFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void cpEnterProjectTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cpEnterProjectTextFieldActionPerformed
-        // TODO add your handling code here:
+    private void cpEnterProjectTextFieldActionPerformed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cpEnterProjectTextFieldActionPerformed
+        projectName = cpEnterProjectTextField.getText();
     }//GEN-LAST:event_cpEnterProjectTextFieldActionPerformed
 
     private void cpSelectFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cpSelectFileButtonActionPerformed
@@ -183,21 +186,55 @@ public class CreateProjectFrame extends javax.swing.JFrame {
 
     private void cpDoneButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cpDoneButtonActionPerformed
 
-        String projectName = cpEnterProjectTextField.getText();
+        JRadioButton button = new JRadioButton( projectName );
+        button.setPreferredSize( new DimensionUIResource(160, 140) );
+        button.setForeground( new java.awt.Color (220, 170, 170) ); 
+        mainMenu.getButtonHolder().add(button);
+        mainMenu.setVisible(false);
+        mainMenu.setVisible(true);
 
         //creating the project
         Project project = new Project ( projectImages, projectName );
 
         mainMenu.getUser().addProject( project );
 
-        JRadioButton button = new JRadioButton( projectName );
-        button.setPreferredSize( new DimensionUIResource(160, 140) ); 
-        mainMenu.getButtonHolder().add(button);
+        
 
         this.dispose();
 
     }//GEN-LAST:event_cpDoneButtonActionPerformed
 
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(CreateProjectFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(CreateProjectFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(CreateProjectFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(CreateProjectFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new CreateProjectFrame().setVisible(true);
+            }
+        });
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel cpBackgroundPanel;
@@ -210,6 +247,7 @@ public class CreateProjectFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 
-    MainMenuFrame mainMenu;
+    private MainMenuFrame mainMenu;
+    private String projectName;
     private ArrayList<EditableImage> projectImages = new ArrayList<EditableImage>();
 }
