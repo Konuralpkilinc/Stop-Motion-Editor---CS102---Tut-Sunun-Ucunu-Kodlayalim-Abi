@@ -168,6 +168,27 @@ public final class Database {
     }
     
     /**
+     * INVOKE THIS METHOD WHEN USERS CLICKS DELETE PROJECT BUTTON
+     * @param username Username of the user who logged in
+     * @param projectName Name oft he project to be deleted
+     */
+    public static void deleteProjectFromUser (String username, String projectName) {
+        try {
+            int userID = getUserID(username);
+            int projectID = getProjectID(username, projectName);
+            
+            PreparedStatement pstmt = CONN.prepareStatement("DELETE FROM User_Project_Join WHERE user_id = ? AND project_id = ?");
+            pstmt.setInt(1, userID);
+            pstmt.setInt(2, projectID);
+            pstmt.executeUpdate();
+        } 
+        catch (SQLException ex) {
+            System.out.println("deleteProjectFromUser error");
+        }
+        
+    }
+    
+    /**
      * INVOKE THIS METHOD WHEN USRS ADD A NEW SOUND
      * @param image EditableImage which the sound will be saved on
      * @param file Filepath of the mp3 file 
