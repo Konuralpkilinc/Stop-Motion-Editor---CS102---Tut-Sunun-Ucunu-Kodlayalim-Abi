@@ -54,7 +54,7 @@ public class ImageFiltering {
                 image.setRGB(x,y,redColor.getRGB());
             }
         }
-        WriteableImage fxImage = SwingFXUtils.toFXImage(image, null);
+        WritableImage fxImage = SwingFXUtils.toFXImage(image, null);
         input.setImage(fxImage);    //compiler just want this and I add it all these
     }                                                       //try catch statements
     public static void greenFiltering(EditableImage input){
@@ -69,7 +69,7 @@ public class ImageFiltering {
                 image.setRGB(x,y,greenColor.getRGB());
             }
         }
-        WriteableImage fxImage = SwingFXUtils.toFXImage(image, null);
+        WritableImage fxImage = SwingFXUtils.toFXImage(image, null);
         input.setImage(fxImage);
     }
 
@@ -85,7 +85,7 @@ public class ImageFiltering {
                 image.setRGB(x,y,blueColor.getRGB());
             }
         }
-        WriteableImage fxImage = SwingFXUtils.toFXImage(image, null);
+        WritableImage fxImage = SwingFXUtils.toFXImage(image, null);
         input.setImage(fxImage);
     }
 
@@ -104,7 +104,7 @@ public class ImageFiltering {
                 image.setRGB(x,y,gray.getRGB());
             }
         }
-        WriteableImage fxImage = SwingFXUtils.toFXImage(image, null);
+        WritableImage fxImage = SwingFXUtils.toFXImage(image, null);
         input.setImage(fxImage);
     }  
 }
