@@ -68,12 +68,18 @@ public final class Database {
             PreparedStatement pstmt = CONN.prepareStatement( "SELECT password FROM Users WHERE username = ?");
             pstmt.setString( 1, aUsername);
             ResultSet rs = pstmt.executeQuery();
+            String password = "";
+            
+            if (rs.next()) {
+                password = rs.getString( "password");
+            }
 
             // Return true if there is a user with given username and password
-            return rs.getString( "password").equals( aPassword);
+            return password.equals( aPassword);
         } 
         catch (SQLException e) {
             System.out.println("Cannot check whether user exist or not");
+            System.out.println(e);
             return false;
         }
     }
@@ -388,6 +394,7 @@ public final class Database {
         } 
         catch (SQLException ex) {
             System.out.println("getAllProjectsOfUser error");
+            System.out.println(ex);
         }
         return projects;
     }
