@@ -117,6 +117,7 @@ public class MainMenuFrame extends javax.swing.JFrame {
         });
         
         mainMenuUserListScrollpane.getPanel().setBackground( new java.awt.Color ( 50, 0, 10 ) );
+        //mainMenuUserListScrollpane.getPanel().setForeground( new java.awt.Color ( 220, 170, 170 ) );
 
         javax.swing.GroupLayout mainMenuButtonsPanelLayout = new javax.swing.GroupLayout(mainMenuButtonsPanel);
         mainMenuButtonsPanel.setLayout(mainMenuButtonsPanelLayout);
@@ -235,7 +236,11 @@ public class MainMenuFrame extends javax.swing.JFrame {
         }
 
         mainMenuProjectsScrollpane.remove(radioBoxes.get(removeIndex));
+        Project project = user.getProjects().get(removeIndex);
         user.removeProject(removeIndex);
+        Database.deleteProjectFromUser ( user.getUsername() , project.getProjectName());
+        this.setVisible(false);
+        this.setVisible(true);
     }//GEN-LAST:event_mainMenuDeleteProjectButtonActionPerformed
 
     public static void main(String args[]) {
