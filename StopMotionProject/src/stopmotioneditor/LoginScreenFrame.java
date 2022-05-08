@@ -184,6 +184,7 @@ public class LoginScreenFrame extends javax.swing.JFrame {
            setVisible(false);
            MainMenuFrame mainmenuFrame = new MainMenuFrame(Database.getUser(userName));
            mainMenuFrame.setVisible(true);
+           dispose();
        }
        else{
            loginUsernameTextArea.setText("Invalid");
