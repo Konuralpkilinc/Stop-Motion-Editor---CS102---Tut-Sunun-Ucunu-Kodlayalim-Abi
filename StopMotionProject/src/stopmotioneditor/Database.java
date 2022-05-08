@@ -159,6 +159,39 @@ public final class Database {
     }
     
     /**
+     * INVOKE THIS METHOD WHEN USRS ADD A NEW SOUND
+     * @param image EditableImage which the sound will be saved on
+     * @param file Filepath of the mp3 file 
+     */
+    public static void addMediaToEditableImage (EditableImage image, File file) {
+        int imageID = getEditableImageID(image);
+      
+        String from = file.getPath();
+        String to = "Media\\" + file.getName();
+        Path source = Paths.get(from);
+        Path target = Paths.get(to);
+        
+        try {
+            Files.copy(source, target, StandardCopyOption.COPY_ATTRIBUTES);
+        } 
+        catch (FileAlreadyExistsException faee) {
+            
+        }
+        catch (IOException ex) {
+            System.out.println("addMediaToEditableImage error");
+        }
+        finally {
+            try {
+                PreparedStatement pstmt2 = CONN.prepareStatement("INSERT INTO Medias (filepath, image_id) VALUES (?, ?)");
+                pstmt2.setString(1, target.toString());
+                pstmt2.setInt(2, imageID);
+            } catch (SQLException ex) {
+                System.out.println ("media save error");
+            }
+        }
+    }
+    
+    /**
      * INVOKE THIS METHOD WHEN USER ADDS NEW IMAGES TO AN EXISTING PROJECT
      * @param file File which includes NEW images
      * @param username Username of the user who logged in
@@ -299,7 +332,20 @@ public final class Database {
             ResultSet rs = pstmt.executeQuery();
             
             while (rs.next()) {
-                images.add( new EditableImage(rs.getString("filepath"), rs.getInt("image_index")));
+                EditableImage ei = new EditableImage(rs.getString("filepath"), rs.getInt("image_index"));
+                String mediaFilePath = null;
+                
+                try {
+                    PreparedStatement pstmt2 = CONN.prepareStatement("SELECT filepath FROM Medias WHERE image_id = ?");
+                    pstmt2.setInt(1, getEditableImageID(ei));
+                    ResultSet rs2 = pstmt2.executeQuery();
+                    mediaFilePath = rs2.getString("filepath");
+                }
+                catch (SQLException ex) {
+                    System.out.println("getProject error in media check");
+                }
+                ei.setMediaFilePath(mediaFilePath);
+                images.add( ei);
             }
             Project project = new Project(images, projectName);
             
@@ -483,7 +529,25 @@ public final class Database {
         ResultSet rs = pstmt.executeQuery();
         return rs.getInt("id");
     }
-
+    
+    /**
+     * This is a private method which returns the id of given EditableImage in the database
+     * @param editableImage EditableImage object
+     * @return id of the EditableImage in the database
+     */
+    private static int getEditableImageID (EditableImage editableImage) {
+        int imageID = 0;
+        try {
+            PreparedStatement pstmt = CONN.prepareStatement("SELECT id FROM Editable_Images WHERE filepath = ?");
+            pstmt.setString(1, editableImage.getFilePath());
+            ResultSet rs = pstmt.executeQuery();
+            imageID = rs.getInt("id");
+        } 
+        catch (SQLException ex) {
+            System.out.println("getEditableImageID error");
+        }
+        return imageID;
+    }
     /**
      * This method creates a EditableImage object from the parameters, then serialize it to the database.
      * @param img javaFX image
