@@ -44,6 +44,7 @@ public class LoginScreenFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
+        setLocationRelativeTo(null);
 
         logıinBasePanel.setBackground(new java.awt.Color(102, 236, 133));
 

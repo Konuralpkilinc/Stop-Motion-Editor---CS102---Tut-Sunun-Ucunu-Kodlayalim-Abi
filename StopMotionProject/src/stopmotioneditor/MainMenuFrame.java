@@ -53,6 +53,7 @@ public class MainMenuFrame extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Stop Motion Film Editor");
         setResizable(false);
+        setLocationRelativeTo(null);
 
         mainMenuBasePanel.setBackground(new java.awt.Color(102, 0, 0));
         mainMenuBasePanel.setPreferredSize(new java.awt.Dimension(1000, 850));
