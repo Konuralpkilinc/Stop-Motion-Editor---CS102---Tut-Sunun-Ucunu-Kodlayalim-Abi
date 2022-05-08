@@ -79,6 +79,9 @@ public class Project {
    public int getNumberOfImages(){
        return this.numberOfImages;
    }
+   public String getName() {
+       return this.name;
+   }
    //IMPORTANT, invoke each time when an image is deleted added pasted etc., updates the number of images
    public void updateNumberOfImages(){
        this.numberOfImages = this.images.size();
