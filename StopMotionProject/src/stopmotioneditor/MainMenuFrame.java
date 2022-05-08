@@ -200,6 +200,8 @@ public class MainMenuFrame extends javax.swing.JFrame {
 
     private void mainMenuPlayProjectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mainMenuPlayProjectButtonActionPerformed
         // TODO add your handling code here:
+        PlayScreen playScreen = new PlayScreen();
+        playScreen.launch();
     }//GEN-LAST:event_mainMenuPlayProjectButtonActionPerformed
 
     private void mainMenuShareProjectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mainMenuShareProjectButtonActionPerformed

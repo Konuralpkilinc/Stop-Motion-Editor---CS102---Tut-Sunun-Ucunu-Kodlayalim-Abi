@@ -168,16 +168,20 @@ public class LoginScreenFrame extends javax.swing.JFrame {
 
     private void usernameHandler(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_usernameHandler
         
-        userName = loginUsernameTextArea.getText();
+        
     }//GEN-LAST:event_usernameHandler
 
     private void loginPasswordTextAreausernameHandler(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_loginPasswordTextAreausernameHandler
         
-        passWord = loginPasswordTextArea.getText();
     }//GEN-LAST:event_loginPasswordTextAreausernameHandler
 
     private void loginDoneButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginDoneButtonActionPerformed
        
+        userName = loginUsernameTextArea.getText();
+        passWord = loginPasswordTextArea.getText();
+        System.out.println(userName);
+        System.out.println(passWord);
+
        if(Database.isUserExist(userName, passWord)){
            MainMenuFrame mainMenuFrame = new MainMenuFrame();
            mainMenuFrame.setUser(Database.getUser(userName));
