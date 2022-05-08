@@ -140,7 +140,7 @@ public final class Database {
             int userID = getUserID(username);
             // Getting project ID
             Statement st = CONN.createStatement();
-            ResultSet rs = st.executeQuery("SELECT id FROM Projects ORDER BY id ASC LIMIT 1"); // Getting highest id in projects table since we have just added a new project
+            ResultSet rs = st.executeQuery("SELECT id FROM Projects ORDER BY id DESC LIMIT 1"); // Getting highest id in projects table since we have just added a new project
             int projectID = rs.getInt("id");
 
             // Establishing the relation between the project and the user
@@ -150,11 +150,70 @@ public final class Database {
             pstmt2.executeUpdate();
 
             // Copying the images to our Projects folder and saving them to database.
-            addImagesToProject(readImagesFromFolderToFileArrayList(file), projectID);
+            registerImagesOfProject(readImagesFromFolderToFileArrayList(file), projectID);
             
         } 
         catch (SQLException e) {
             System.out.println("Cannot register project");
+        }
+    }
+    
+    /**
+     * INVOKE THIS METHOD WHEN USER ADDS NEW IMAGES TO AN EXISTING PROJECT
+     * @param file File which includes NEW images
+     * @param username Username of the user who logged in
+     * @param projectName Name of the project which the images will be added
+     */
+    public static void addNewImagesToProject (File file, String username, String projectName) {
+        try {
+            int projectID = getProjectID( username, projectName);
+            registerImagesOfProject( readImagesFromFolderToFileArrayList(file), projectID);
+        } 
+        catch (SQLException ex) {
+            System.out.println("addNewImagesToProject error");
+        }
+    }
+    
+    /**
+     * INVOKE THIS METHOD AFTER USER SAVES HIS CHANGES IN THE PROJECT
+     * @param images ArrayList which contains EditableImages of the project
+     * @param username Username of the user who logged in
+     * @param projectName Name of the project in which changes are made.
+     */
+    public static void saveChangesInProject (ArrayList<EditableImage> images, String username, String projectName) {
+        try {
+            int projectID = getProjectID( username, projectName);
+            PreparedStatement pstmt = CONN.prepareStatement("DELETE FROM Editable_Images WHERE project_id = ?");
+            pstmt.setInt(1, projectID);
+            pstmt.executeUpdate();
+            
+            for (EditableImage image : images) {
+                saveImageToDatabase(image.getFilePath(), image.getIndex(), projectID);
+            }
+        }
+        catch (SQLException ex) {
+            System.out.println("saveChangesInTheProject error");
+        }
+    }
+    
+    /**
+     * INVOKE THIS METHOD WHEN USER CLICKS SHARE PROJECT BUTTON
+     * This methods sets relation between targetUser and the project in the database. So the project is shared with targetUser
+     * @param sharerUsername username of the current user who logged şn
+     * @param targetUsername username of the user which the project will be shared
+     * @param projectName name of the project to be shared
+     */
+    public static void shareProject (String sharerUsername, String targetUsername, String projectName) {
+        try {
+            int targetUserID = getUserID(targetUsername);
+            int projectID = getProjectID(sharerUsername, projectName);
+            PreparedStatement pstmt = CONN.prepareStatement("INSERT INTO User_Project_Join (user_id, project_id) VALUES (?, ?)");
+            pstmt.setInt(1, targetUserID);
+            pstmt.setInt(2, projectID);
+            pstmt.executeUpdate();
+        } 
+        catch (SQLException ex) {
+            System.out.println("shareProject error");
         }
     }
     
@@ -172,6 +231,57 @@ public final class Database {
             user.addProject(project);
         }
         return user;
+    }
+    
+    /**
+     * INVOKE THIS METHOD WHEN CREATING USERLIST PANEL
+     * This method returns an ArrayList of all Users in the database. 
+     * Warning: These User objects contains only username and avatar. They don't contain Project, EditableImage etc.
+     * @return arraylist of all users in the database
+     */
+    public static ArrayList<User> getAllUsers () {
+        ArrayList<User> users = new ArrayList<User>();
+        try {
+            PreparedStatement pstmt = CONN.prepareStatement("SELECT username FROM Users");
+            ResultSet rs = pstmt.executeQuery();
+            
+            while (rs.next()) {
+                users.add ( new User( rs.getString("username")));
+            }
+        } 
+        catch (SQLException ex) {
+            System.out.println("getAllUsers error");
+        }
+        return users;
+    }
+    
+    /**
+     * This methods return a random avatar from the Avatars folder
+     * @return an Avatar in the form of BufferedImage
+     */
+    public static BufferedImage getRandomAvatar () {
+        double chooser = Math.random() * 4; // we have 4 avatars
+        String filepath;
+        BufferedImage img = null;
+        if (chooser < 1) {
+            filepath= "Avatars\\avatar1.jpeg";
+        }
+        else if (chooser < 2) {
+            filepath= "Avatars\\avatar2.jpg";
+        }
+        else if (chooser < 3) {
+            filepath= "Avatars\\avatar3.jpg";
+        }
+        else {
+            filepath= "Avatars\\avatar4.jpg";
+        }
+        try {
+            img = ImageIO.read(new File( filepath));
+        } 
+        catch (IOException e) {
+            System.out.println("getRandomAvatar error");
+        }
+        return img;
     }
     
     /**
@@ -224,54 +334,11 @@ public final class Database {
             while (rs.next()) {
                 projects.add (getProject(username, rs.getString("name")));
             }
-            return projects;
         } 
         catch (SQLException ex) {
             System.out.println("getAllProjectsOfUser error");
         }
-        return null;
-    }
-
-    /**
-     * This method reads images in a folder and convert them to JavaFX Image
-     * @param file the folder that incldues the images
-     * @return returns an arraylist of JavaFX Images.
-     */
-    public static ArrayList<Image> readImagesFromFolder (File file) {
-        // Creating an arraylist to return the images in the folder
-        ArrayList<Image> images = new ArrayList<Image>();
-
-        // Specifying the supported extensions
-        String[] extensions = new String[] { "jpg", "jpeg", "png"}; 
-
-        // Filter to identify images based on their extensions
-        FilenameFilter filter = new FilenameFilter() {
-            @Override
-            public boolean accept(File file, String name) {
-                for (String ext : extensions) {
-                    if (name.endsWith("." + ext)) {
-                        return true;
-                    }
-                }
-                return false;
-            }
-        };
-
-        if (file.isDirectory()) {   // Making sure it is a directory
-            for (File f : file.listFiles( filter)) {   // Reading each image from the directory
-                BufferedImage img = null;
-
-                try {
-                    img = ImageIO.read(f);
-                    Image fxImage = SwingFXUtils.toFXImage(img, null);
-                    images.add(fxImage);
-
-                } catch (IOException e) {
-                    System.out.println("Cannot read from the file!");
-                }
-            }
-        }
-        return images;
+        return projects;
     }
     
     /**
@@ -308,16 +375,20 @@ public final class Database {
     }
     
     /**
-     * This method creates a ProjectX folder in Projects, and copies images in the files ArrayList there.
+     * This method creates a ProjectX folder in Projects (if not exist), and copies images in the files ArrayList there.
      * Also, invokes saveImageToDatabase method to save image's properties to database.
      * @param files the arraylist that contains images
      * @param projectID id of the project
      */
-    private static void addImagesToProject (ArrayList<File> files, int projectID) {
+    private static void registerImagesOfProject (ArrayList<File> files, int projectID) {
         String folderName = "Project" + projectID;
         File projectFolder = new File("Projects\\" + folderName);
-        projectFolder.mkdir();
-        int index = 0;
+        boolean folderExists = projectFolder.exists();  // Check whether there is a folder of this project already.
+        
+        if (!folderExists) {
+            projectFolder.mkdirs();  // if there is no folder of this project, create it
+        }
+        int index = getLastIndexOfProject(projectID) + 1;
                 
         for (File file : files) {
             String from = file.getPath();
@@ -327,7 +398,7 @@ public final class Database {
             
             try {
                 Files.copy(source, target, StandardCopyOption.COPY_ATTRIBUTES);
-                saveImageToDatabase(target, index, projectID);
+                saveImageToDatabase(target.toString(), index, projectID);
                 index++;
             }
             catch (FileAlreadyExistsException ex) {
@@ -347,10 +418,10 @@ public final class Database {
      * @param index index of the image in the project
      * @param projectID id of the project which the image belongs to
      */
-    private static void saveImageToDatabase (Path path, int index, int projectID) {
+    private static void saveImageToDatabase (String filepath, int index, int projectID) {
         try {
             PreparedStatement pstmt = CONN.prepareStatement("INSERT INTO Editable_Images (filepath, image_index, project_id) VALUES (?, ?, ?)");
-            pstmt.setString(1, path.toString());
+            pstmt.setString(1, filepath);
             pstmt.setInt(2, index);
             pstmt.setInt(3, projectID);
             pstmt.executeUpdate();
@@ -360,6 +431,25 @@ public final class Database {
             System.out.println("Error in saving images to database");
         }
         
+    }
+    
+    /**
+     * This method returns the index of the last image in the project
+     * @param projectID id of the project
+     * @return highest index
+     */
+    private static int getLastIndexOfProject (int projectID) {
+        int result = -1;  // return -1 if the project is empty. so the next image will be index 0
+        try {
+            PreparedStatement pstmt = CONN.prepareStatement("SELECT image_index FROM Editable_Images WHERE project_id = ? ORDER BY image_index DESC LIMIT 1");
+            pstmt.setInt(1, projectID);
+            ResultSet rs = pstmt.executeQuery();
+            result = rs.getInt("image_index");
+        } 
+        catch (SQLException ex) {
+            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
     }
 
     /**

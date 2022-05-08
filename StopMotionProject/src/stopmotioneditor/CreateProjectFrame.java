@@ -76,8 +76,8 @@ public class CreateProjectFrame extends javax.swing.JFrame {
         cpEnterProjectTextField.setBackground(new java.awt.Color(153, 153, 0));
         cpEnterProjectTextField.setFont(new java.awt.Font("SimSun", 0, 18)); // NOI18N
         cpEnterProjectTextField.setForeground(new java.awt.Color(255, 255, 102));
-        cpEnterProjectTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        cpEnterProjectTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
                 cpEnterProjectTextFieldActionPerformed(evt);
             }
         });
@@ -174,8 +174,8 @@ public class CreateProjectFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void cpEnterProjectTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cpEnterProjectTextFieldActionPerformed
-        // TODO add your handling code here:
+    private void cpEnterProjectTextFieldActionPerformed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cpEnterProjectTextFieldActionPerformed
+        projectName = cpEnterProjectTextField.getText();
     }//GEN-LAST:event_cpEnterProjectTextFieldActionPerformed
 
     private void cpSelectFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cpSelectFileButtonActionPerformed
@@ -186,16 +186,20 @@ public class CreateProjectFrame extends javax.swing.JFrame {
 
     private void cpDoneButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cpDoneButtonActionPerformed
 
-        String projectName = cpEnterProjectTextField.getText();
+        JRadioButton button = new JRadioButton( projectName );
+        button.setPreferredSize( new DimensionUIResource(160, 140) ); 
+        mainMenu.getButtonHolder().add(button);
+        //mainMenu.getButtonHolder().repaint();
+        //mainMenu.repaint();
+        mainMenu.setVisible(false);
+        mainMenu.setVisible(true);
 
         //creating the project
         Project project = new Project ( projectImages, projectName );
 
         mainMenu.getUser().addProject( project );
 
-        JRadioButton button = new JRadioButton( projectName );
-        button.setPreferredSize( new DimensionUIResource(160, 140) ); 
-        mainMenu.getButtonHolder().add(button);
+        
 
         this.dispose();
 
@@ -244,6 +248,7 @@ public class CreateProjectFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 
-    MainMenuFrame mainMenu;
+    private MainMenuFrame mainMenu;
+    private String projectName;
     private ArrayList<EditableImage> projectImages = new ArrayList<EditableImage>();
 }
