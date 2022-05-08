@@ -27,6 +27,9 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Polyline;
 
 
 /**
@@ -221,7 +224,7 @@ public final class Database {
             pstmt.executeUpdate();
             
             for (EditableImage image : images) {
-                saveImageToDatabase(image.getFilePath(), image.getIndex(), projectID);
+                saveImageToDatabase(image, projectID);
             }
         }
         catch (SQLException ex) {
@@ -344,7 +347,9 @@ public final class Database {
                 catch (SQLException ex) {
                     System.out.println("getProject error in media check");
                 }
-                ei.setMediaFilePath(mediaFilePath);
+                ei.setMediaFilePath(mediaFilePath);                
+                ei.setLines(deserializePolylines(ei));
+                
                 images.add( ei);
             }
             Project project = new Project(images, projectName);
@@ -460,9 +465,34 @@ public final class Database {
     
     /**
      * This method inserts into Editable_Images table in the database
-     * @param path filepath of the image
-     * @param index index of the image in the project
+     * @param image EditableImage to be saved
      * @param projectID id of the project which the image belongs to
+     */
+    private static void saveImageToDatabase (EditableImage image, int projectID) {
+        try {
+            PreparedStatement pstmt = CONN.prepareStatement("INSERT INTO Editable_Images (filepath, image_index, project_id) VALUES (?, ?, ?)");
+            pstmt.setString(1, image.getFilePath());
+            pstmt.setInt(2, image.getIndex());
+            pstmt.setInt(3, projectID);
+            pstmt.executeUpdate();
+        } 
+        catch (SQLException ex) {
+            System.out.println(ex);
+            System.out.println("Error in saving images to database");
+        }
+        
+        ArrayList<Polyline> polylines = image.getLines();
+        for (Polyline polyline : polylines) {
+            serializePolyline(polyline, image);
+        }
+        
+    }
+    
+    /**
+     * USE THIS JUST FOR ADDING NEW IMAGES TO PROJECT OR CREATING A PROJECT
+     * @param filepath
+     * @param index
+     * @param projectID 
      */
     private static void saveImageToDatabase (String filepath, int index, int projectID) {
         try {
@@ -555,46 +585,71 @@ public final class Database {
      * @param projectName name of the project
      * @param index index of the image in the project
      */
-    private static void serialize (String username, String projectName, int index) {        
-        ArrayList<Integer> al = new ArrayList<Integer>();
-        al.add(5);
-        al.add(6);
+    private static void serializePolyline (Polyline polyline, EditableImage editableImage) {        
+        ArrayList<Double> colorCodes = new ArrayList<Double>();
+        double red = ((Color) polyline.getStroke()).getRed();
+        double green = ((Color) polyline.getStroke()).getGreen();
+        double blue = ((Color) polyline.getStroke()).getBlue();
+        double opacity = ((Color) polyline.getStroke()).getOpacity();
+        colorCodes.add(red);
+        colorCodes.add(green);
+        colorCodes.add(blue);
+        colorCodes.add(opacity);
+
+        List<Double> points = polyline.getPoints();
+        double strokeWidth = polyline.getStrokeWidth();
         
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        String st = gson.toJson(al);
+        String pts = gson.toJson(points);
+        String colors = gson.toJson(colorCodes);
+        String width = gson.toJson(strokeWidth);
         
         try {
-            PreparedStatement pstmt = CONN.prepareStatement("INSERT INTO Editable_Images (image, image_index, project_id) VALUES (?, ?, ?)");
-            pstmt.setString(1, st);
-            pstmt.setInt(2, 1);
-            pstmt.setInt(3, 1);
+            PreparedStatement pstmt = CONN.prepareStatement("INSERT INTO Polylines (points, stroke, stroke_width, image_id) VALUES (?, ?, ?, ?)");
+            pstmt.setString(1, pts);
+            pstmt.setString(2, colors);
+            pstmt.setString(3, width);
             pstmt.executeUpdate();
-            
-            System.out.println("Serialization done!");
         }
-        catch (SQLException exception) {
-            System.out.println("Serialization fail!");
+        catch (SQLException ex) {
+            System.out.println("Serialization error");
         }
+        
+
         
     }
     
-    private static Object deserialize () {
+    private static ArrayList<Polyline> deserializePolylines (EditableImage image) {
+        ArrayList<Polyline> polylines = new ArrayList<Polyline>();
+        int imageID = getEditableImageID(image);
+        
         try {
-            PreparedStatement pstmt = CONN.prepareStatement("SELECT image FROM Editable_Images WHERE id = ?");
-            pstmt.setLong(1, 1);
+            PreparedStatement pstmt = CONN.prepareStatement("SELECT (points, stroke, stroke_width) FROM Polylines WHERE image_id = ?");
+            pstmt.setLong(1, imageID);
             ResultSet rs = pstmt.executeQuery();
-            rs.next();
-            String st = rs.getString(1);
+            //rs.next();
             
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            ArrayList<Image> deserializedImage = gson.fromJson(st, new TypeToken<List<Integer>>(){}.getType());
             
-            System.out.println("Deserialization successful!");
-            return deserializedImage;
+            while (rs.next()) {
+                String points = rs.getString("points");
+                String colorCodes = rs.getString("stroke");
+                String strokeWidth = rs.getString("stroke_width");
+                
+                List<Double> pts = gson.fromJson( points, new TypeToken<List<Double>>(){}.getType());
+                ArrayList<Double> colors = gson.fromJson( colorCodes, new TypeToken<List<Double>>(){}.getType());
+                Double width = gson.fromJson( strokeWidth, Double.class);
+                
+                Polyline p = new Polyline();
+                p.getPoints().addAll( pts);
+                p.setStroke( new Color (colors.get(0), colors.get(1), colors.get(2), colors.get(3)));
+                p.setStrokeWidth( width);
+                polylines.add( p);
+            }
             
         } catch (SQLException ex) {
             System.out.println("Desiralization error!");
         }
-        return null;
+        return polylines;
     }
 }

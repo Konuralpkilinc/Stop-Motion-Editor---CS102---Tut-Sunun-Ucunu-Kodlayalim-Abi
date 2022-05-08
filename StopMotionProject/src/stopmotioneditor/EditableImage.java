@@ -124,6 +124,9 @@ public class EditableImage extends ImageView implements Serializable {
     public String getMediaFilePath() {
         return this.mediaFilePath;
     }
+    public ArrayList<Polyline> getLines() {
+        return this.lines;
+    }
     //Following  3 methods are necessary to create same objects in project class
     public String getFilePath(){
         return filePath;
@@ -142,6 +145,9 @@ public class EditableImage extends ImageView implements Serializable {
      */
     public void setIndex(int index){
         this.index = index;
+    }
+    public void setLines (ArrayList<Polyline> polylines) {
+        this.lines = polylines;
     }
     public void setMediaFilePath (String filepath) {
         this.mediaFilePath = filepath;
