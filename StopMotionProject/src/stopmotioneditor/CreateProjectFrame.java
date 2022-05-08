@@ -75,11 +75,6 @@ public class CreateProjectFrame extends javax.swing.JFrame {
         cpEnterProjectTextField.setBackground(new java.awt.Color(153, 153, 0));
         cpEnterProjectTextField.setFont(new java.awt.Font("SimSun", 0, 18)); // NOI18N
         cpEnterProjectTextField.setForeground(new java.awt.Color(255, 255, 102));
-        cpEnterProjectTextField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                cpEnterProjectTextFieldActionPerformed(evt);
-            }
-        });
 
         cpSelectFileButton.setBackground(new java.awt.Color(171, 153, 0));
         cpSelectFileButton.setFont(new java.awt.Font("SimSun", 1, 18)); // NOI18N
@@ -173,10 +168,6 @@ public class CreateProjectFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void cpEnterProjectTextFieldActionPerformed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cpEnterProjectTextFieldActionPerformed
-        projectName = cpEnterProjectTextField.getText();
-    }//GEN-LAST:event_cpEnterProjectTextFieldActionPerformed
-
     private void cpSelectFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cpSelectFileButtonActionPerformed
 
         // in here, methods for selecting images from a folder and adding them to an ArrayList must be called
@@ -184,6 +175,7 @@ public class CreateProjectFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_cpSelectFileButtonActionPerformed
 
     private void cpDoneButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cpDoneButtonActionPerformed
+        projectName = cpEnterProjectTextField.getText();
 
         JRadioButton button = new JRadioButton( projectName );
         button.setPreferredSize( new DimensionUIResource(160, 140) );
