@@ -60,11 +60,8 @@ public class LoginScreenFrame extends javax.swing.JFrame {
         loginUsernameTextArea.setFont(new java.awt.Font("Constantia", 0, 36)); // NOI18N
         loginUsernameTextArea.setForeground(new java.awt.Color(0, 102, 102));
         loginUsernameTextArea.setRows(5);
-        loginUsernameTextArea.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                usernameHandler(evt);
-            }
-        });
+        
+        
         loginUsernameScrollpane.setViewportView(loginUsernameTextArea);
 
         loginPasswordLabel.setFont(new java.awt.Font("Ink Free", 3, 36)); // NOI18N
@@ -79,11 +76,7 @@ public class LoginScreenFrame extends javax.swing.JFrame {
         loginPasswordTextArea.setFont(new java.awt.Font("Constantia", 0, 36)); // NOI18N
         loginPasswordTextArea.setForeground(new java.awt.Color(0, 102, 102));
         loginPasswordTextArea.setRows(5);
-        loginPasswordTextArea.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                loginPasswordTextAreausernameHandler(evt);
-            }
-        });
+        
         loginPasswordScrollpane.setViewportView(loginPasswordTextArea);
 
         loginDoneButton.setBackground(new java.awt.Color(51, 204, 0));
@@ -167,15 +160,7 @@ public class LoginScreenFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void usernameHandler(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_usernameHandler
-        
-        
-    }//GEN-LAST:event_usernameHandler
-
-    private void loginPasswordTextAreausernameHandler(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_loginPasswordTextAreausernameHandler
-        
-    }//GEN-LAST:event_loginPasswordTextAreausernameHandler
-
+   
     private void loginDoneButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginDoneButtonActionPerformed
        
         userName = loginUsernameTextArea.getText();
