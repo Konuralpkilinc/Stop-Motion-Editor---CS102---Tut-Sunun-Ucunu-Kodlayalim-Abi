@@ -187,10 +187,9 @@ public class CreateProjectFrame extends javax.swing.JFrame {
     private void cpDoneButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cpDoneButtonActionPerformed
 
         JRadioButton button = new JRadioButton( projectName );
-        button.setPreferredSize( new DimensionUIResource(160, 140) ); 
+        button.setPreferredSize( new DimensionUIResource(160, 140) );
+        button.setForeground( new java.awt.Color (220, 170, 170) ); 
         mainMenu.getButtonHolder().add(button);
-        //mainMenu.getButtonHolder().repaint();
-        //mainMenu.repaint();
         mainMenu.setVisible(false);
         mainMenu.setVisible(true);
 

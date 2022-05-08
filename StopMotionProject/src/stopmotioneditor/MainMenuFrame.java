@@ -57,6 +57,10 @@ public class MainMenuFrame extends javax.swing.JFrame {
         mainMenuBasePanel.setBackground(new java.awt.Color(102, 0, 0));
         mainMenuBasePanel.setPreferredSize(new java.awt.Dimension(1000, 850));
 
+        mainMenuProjectsScrollpane.setBackground( new java.awt.Color(40, 0, 0) );
+        mainMenuProjectsScrollpane.getPanel().setBackground( new java.awt.Color(50, 0, 10) );
+        mainMenuProjectsScrollpane.getCreateButton().setBackground( new java.awt.Color( 100,0,0 ) );
+
         mainMenuButtonsPanel.setBackground(new java.awt.Color(51, 0, 0));
 
         mainMenuEditProjectButton.setBackground(new java.awt.Color(153, 0, 0));
@@ -117,15 +121,15 @@ public class MainMenuFrame extends javax.swing.JFrame {
         mainMenuButtonsPanelLayout.setHorizontalGroup(
             mainMenuButtonsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainMenuButtonsPanelLayout.createSequentialGroup()
-                .addGap(18, 18, 18)
+                .addGap(32, 32, 32)
                 .addComponent(mainMenuPlayProjectButton, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
                 .addComponent(mainMenuEditProjectButton, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
+                .addGap(26, 26, 26)
                 .addComponent(mainMenuDeleteProjectButton, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(33, 33, 33)
+                .addGap(26, 26, 26)
                 .addComponent(mainMenuShareProjectButton, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18))
+                .addGap(32, 32, 32))
         );
         mainMenuButtonsPanelLayout.setVerticalGroup(
             mainMenuButtonsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

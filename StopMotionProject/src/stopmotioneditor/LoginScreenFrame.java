@@ -179,10 +179,10 @@ public class LoginScreenFrame extends javax.swing.JFrame {
     private void loginDoneButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginDoneButtonActionPerformed
        
        if(Database.isUserExist(userName, passWord)){
-           setVisible(false);
            MainMenuFrame mainMenuFrame = new MainMenuFrame();
            mainMenuFrame.setUser(Database.getUser(userName));
            mainMenuFrame.setVisible(true);
+           this.dispose();
        }
        else{
            loginUsernameTextArea.setText("Invalid");
