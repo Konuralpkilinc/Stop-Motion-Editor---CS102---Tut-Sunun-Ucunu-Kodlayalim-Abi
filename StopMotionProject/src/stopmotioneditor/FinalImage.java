@@ -15,6 +15,7 @@ import javafx.scene.shape.Polyline; //drawings
 import java.util.ArrayList;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
+
 public class FinalImage extends ImageView{
     public static final double BIG_IMAGE_WIDTH = 1920;
     public static final double BIG_IMAGE_HEIGHT = 1080;
@@ -69,6 +70,35 @@ public class FinalImage extends ImageView{
         this.lines.add(lastLine);
         //Add the lastLine to the finalImageContainer
         this.finalImageContainer.getChildren().add(this.lastLine);
+    }
+    /**
+     * 
+     * @param givenImageLine editableImage line representation of the line to be copied
+     * @param ratio of the line to be copied. Determined by whether this is a smallImage or bigImage
+     * Will be invoked from subclasses when an image is copied from the imageOrderingPane
+     */
+    public void addLine(Polyline givenLine, double ratio){
+        Polyline temp = new Polyline();//empty polyline
+        //set the colors
+        
+        Paint color = givenLine.getStroke();
+        temp.setStroke(color);
+        
+        //copy all of the points with respect to ratio of images
+        //shift each point with respect to ratio
+        for(int i = 0; i < givenLine.getPoints().size(); i++){
+            double coordinate = givenLine.getPoints().get(i);
+            temp.getPoints().add(coordinate * ratio);
+        }
+        //set the width of the polyline wrt to ratio(MAY BE PROBLEMATIC LATER ON)
+        temp.setStrokeWidth(givenLine.getStrokeWidth() * ratio);
+        
+       //add the temp
+       
+        this.lines.add(temp);
+        //Add the temp to the finalImageContainer
+        this.finalImageContainer.getChildren().add(temp);
+
     }
     //Return the container of this FinalImage
     public Pane getContainer(){
