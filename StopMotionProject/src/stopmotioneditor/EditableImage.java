@@ -24,6 +24,7 @@ import javafx.event.EventType;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
@@ -38,6 +39,8 @@ public class EditableImage extends ImageView implements Serializable {
     private ArrayList<Polyline> lines = new ArrayList<>();//drawings that have been made
     private Polyline lastLine = new Polyline(); //represents the last line that is added to the lines
     private String filePath;
+    private String mediaFilePath;
+    private MediaPlayer mediaPlayer;
     private SmallImage smallImage;
     private BigImage bigImage;
     private Image fxImage;
@@ -118,6 +121,9 @@ public class EditableImage extends ImageView implements Serializable {
     public SmallImage getSmallImage(){
         return this.smallImage;
     }
+    public String getMediaFilePath() {
+        return this.mediaFilePath;
+    }
     //Following  3 methods are necessary to create same objects in project class
     public String getFilePath(){
         return filePath;
@@ -136,6 +142,9 @@ public class EditableImage extends ImageView implements Serializable {
      */
     public void setIndex(int index){
         this.index = index;
+    }
+    public void setMediaFilePath (String filepath) {
+        this.mediaFilePath = filepath;
     }
     public Project getProject(){
         return this.project;
