@@ -45,4 +45,8 @@ public class UserHolder extends JScrollPane {
         return checkBoxes.get(i);
     }
     
+    public JPanel getPanel(){
+        return this.panel;
+    }
+    
 }
