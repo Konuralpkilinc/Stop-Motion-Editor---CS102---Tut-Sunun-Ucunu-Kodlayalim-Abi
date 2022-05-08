@@ -115,6 +115,8 @@ public class MainMenuFrame extends javax.swing.JFrame {
                 mainMenuDeleteProjectButtonActionPerformed(evt);
             }
         });
+        
+        mainMenuUserListScrollpane.getPanel().setBackground( new java.awt.Color ( 50, 0, 10 ) );
 
         javax.swing.GroupLayout mainMenuButtonsPanelLayout = new javax.swing.GroupLayout(mainMenuButtonsPanel);
         mainMenuButtonsPanel.setLayout(mainMenuButtonsPanelLayout);
