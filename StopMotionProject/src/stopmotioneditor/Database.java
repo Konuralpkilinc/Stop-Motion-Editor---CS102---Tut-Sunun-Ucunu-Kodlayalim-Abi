@@ -62,7 +62,7 @@ public final class Database {
      */
     public static boolean isUserExist (String aUsername, String aPassword) {
         try {
-            PreparedStatement pstmt = CONN.prepareStatement( "SELECT password FROM Users WHERE username = '?'");
+            PreparedStatement pstmt = CONN.prepareStatement( "SELECT password FROM Users WHERE username = ?");
             pstmt.setString( 1, aUsername);
             ResultSet rs = pstmt.executeQuery();
 
@@ -85,7 +85,7 @@ public final class Database {
     public static boolean isUsernameUnique (String aUsername) {
         try {
             // Getting the number of users with have a username as 'aUsername' in the database 
-            PreparedStatement pstmt = CONN.prepareStatement( "SELECT count(*) FROM Users WHERE username = '?'");
+            PreparedStatement pstmt = CONN.prepareStatement( "SELECT count(*) FROM Users WHERE username = ?");
             pstmt.setString( 1, aUsername);
             ResultSet rs = pstmt.executeQuery();
 
@@ -113,7 +113,7 @@ public final class Database {
             try {
                 PreparedStatement pstmt = CONN.prepareStatement( "INSERT INTO Users (username, password) VALUES (?, ?)");
                 pstmt.setString(1, username);
-                pstmt.setString(2, username);
+                pstmt.setString(2, password);
                 pstmt.executeUpdate();
             } catch (SQLException e) {
                 System.out.println("Cannot register the user");
@@ -140,7 +140,7 @@ public final class Database {
             int userID = getUserID(username);
             // Getting project ID
             Statement st = CONN.createStatement();
-            ResultSet rs = st.executeQuery("SELECT id FROM Projects ORDER BY id ASC LIMIT 1"); // Getting highest id in projects table since we have just added a new project
+            ResultSet rs = st.executeQuery("SELECT id FROM Projects ORDER BY id DESC LIMIT 1"); // Getting highest id in projects table since we have just added a new project
             int projectID = rs.getInt("id");
 
             // Establishing the relation between the project and the user
@@ -150,11 +150,49 @@ public final class Database {
             pstmt2.executeUpdate();
 
             // Copying the images to our Projects folder and saving them to database.
-            addImagesToProject(readImagesFromFolderToFileArrayList(file), projectID);
+            registerImagesOfProject(readImagesFromFolderToFileArrayList(file), projectID);
             
         } 
         catch (SQLException e) {
             System.out.println("Cannot register project");
+        }
+    }
+    
+    /**
+     * INVOKE THIS METHOD WHEN USER ADDS NEW IMAGES TO AN EXISTING PROJECT
+     * @param file File which includes NEW images
+     * @param username Username of the user who logged in
+     * @param projectName Name of the project which the images will be added
+     */
+    public static void addNewImagesToProject (File file, String username, String projectName) {
+        try {
+            int projectID = getProjectID( username, projectName);
+            registerImagesOfProject( readImagesFromFolderToFileArrayList(file), projectID);
+        } 
+        catch (SQLException ex) {
+            System.out.println("addNewImagesToProject error");
+        }
+    }
+    
+    /**
+     * INVOKE THIS METHOD AFTER USER SAVES HIS CHANGES IN THE PROJECT
+     * @param images ArrayList which contains EditableImages of the project
+     * @param username Username of the user who logged in
+     * @param projectName Name of the project in which changes are made.
+     */
+    public static void saveChangesInProject (ArrayList<EditableImage> images, String username, String projectName) {
+        try {
+            int projectID = getProjectID( username, projectName);
+            PreparedStatement pstmt = CONN.prepareStatement("DELETE FROM Editable_Images WHERE project_id = ?");
+            pstmt.setInt(1, projectID);
+            pstmt.executeUpdate();
+            
+            for (EditableImage image : images) {
+                saveImageToDatabase(image.getFilePath(), image.getIndex(), projectID);
+            }
+        }
+        catch (SQLException ex) {
+            System.out.println("saveChangesInTheProject error");
         }
     }
     
@@ -296,12 +334,11 @@ public final class Database {
             while (rs.next()) {
                 projects.add (getProject(username, rs.getString("name")));
             }
-            return projects;
         } 
         catch (SQLException ex) {
             System.out.println("getAllProjectsOfUser error");
         }
-        return null;
+        return projects;
     }
     
     /**
@@ -338,16 +375,20 @@ public final class Database {
     }
     
     /**
-     * This method creates a ProjectX folder in Projects, and copies images in the files ArrayList there.
+     * This method creates a ProjectX folder in Projects (if not exist), and copies images in the files ArrayList there.
      * Also, invokes saveImageToDatabase method to save image's properties to database.
      * @param files the arraylist that contains images
      * @param projectID id of the project
      */
-    private static void addImagesToProject (ArrayList<File> files, int projectID) {
+    private static void registerImagesOfProject (ArrayList<File> files, int projectID) {
         String folderName = "Project" + projectID;
         File projectFolder = new File("Projects\\" + folderName);
-        projectFolder.mkdir();
-        int index = 0;
+        boolean folderExists = projectFolder.exists();  // Check whether there is a folder of this project already.
+        
+        if (!folderExists) {
+            projectFolder.mkdirs();  // if there is no folder of this project, create it
+        }
+        int index = getLastIndexOfProject(projectID) + 1;
                 
         for (File file : files) {
             String from = file.getPath();
@@ -357,7 +398,7 @@ public final class Database {
             
             try {
                 Files.copy(source, target, StandardCopyOption.COPY_ATTRIBUTES);
-                saveImageToDatabase(target, index, projectID);
+                saveImageToDatabase(target.toString(), index, projectID);
                 index++;
             }
             catch (FileAlreadyExistsException ex) {
@@ -377,10 +418,10 @@ public final class Database {
      * @param index index of the image in the project
      * @param projectID id of the project which the image belongs to
      */
-    private static void saveImageToDatabase (Path path, int index, int projectID) {
+    private static void saveImageToDatabase (String filepath, int index, int projectID) {
         try {
             PreparedStatement pstmt = CONN.prepareStatement("INSERT INTO Editable_Images (filepath, image_index, project_id) VALUES (?, ?, ?)");
-            pstmt.setString(1, path.toString());
+            pstmt.setString(1, filepath);
             pstmt.setInt(2, index);
             pstmt.setInt(3, projectID);
             pstmt.executeUpdate();
@@ -390,6 +431,25 @@ public final class Database {
             System.out.println("Error in saving images to database");
         }
         
+    }
+    
+    /**
+     * This method returns the index of the last image in the project
+     * @param projectID id of the project
+     * @return highest index
+     */
+    private static int getLastIndexOfProject (int projectID) {
+        int result = -1;  // return -1 if the project is empty. so the next image will be index 0
+        try {
+            PreparedStatement pstmt = CONN.prepareStatement("SELECT image_index FROM Editable_Images WHERE project_id = ? ORDER BY image_index DESC LIMIT 1");
+            pstmt.setInt(1, projectID);
+            ResultSet rs = pstmt.executeQuery();
+            result = rs.getInt("image_index");
+        } 
+        catch (SQLException ex) {
+            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
     }
 
     /**
