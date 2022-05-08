@@ -68,12 +68,18 @@ public final class Database {
             PreparedStatement pstmt = CONN.prepareStatement( "SELECT password FROM Users WHERE username = ?");
             pstmt.setString( 1, aUsername);
             ResultSet rs = pstmt.executeQuery();
+            String password = "";
+            
+            if (rs.next()) {
+                password = rs.getString( "password");
+            }
 
             // Return true if there is a user with given username and password
-            return rs.getString( "password").equals( aPassword);
+            return password.equals( aPassword);
         } 
         catch (SQLException e) {
             System.out.println("Cannot check whether user exist or not");
+            System.out.println(e);
             return false;
         }
     }
@@ -159,6 +165,27 @@ public final class Database {
         catch (SQLException e) {
             System.out.println("Cannot register project");
         }
+    }
+    
+    /**
+     * INVOKE THIS METHOD WHEN USERS CLICKS DELETE PROJECT BUTTON
+     * @param username Username of the user who logged in
+     * @param projectName Name oft he project to be deleted
+     */
+    public static void deleteProjectFromUser (String username, String projectName) {
+        try {
+            int userID = getUserID(username);
+            int projectID = getProjectID(username, projectName);
+            
+            PreparedStatement pstmt = CONN.prepareStatement("DELETE FROM User_Project_Join WHERE user_id = ? AND project_id = ?");
+            pstmt.setInt(1, userID);
+            pstmt.setInt(2, projectID);
+            pstmt.executeUpdate();
+        } 
+        catch (SQLException ex) {
+            System.out.println("deleteProjectFromUser error");
+        }
+        
     }
     
     /**
@@ -388,6 +415,7 @@ public final class Database {
         } 
         catch (SQLException ex) {
             System.out.println("getAllProjectsOfUser error");
+            System.out.println(ex);
         }
         return projects;
     }
