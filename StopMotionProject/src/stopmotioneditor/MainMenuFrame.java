@@ -220,6 +220,9 @@ public class MainMenuFrame extends javax.swing.JFrame {
         for(int i = 0; i < indexes.size(); i++){
             User.users.get(indexes.get(i)).addProject(sharedProject);
         }
+        for(int i = 0; i < indexes.size(); i++){
+            Database.shareProject(user.getUsername(), User.users.get(indexes.get(i)).getUsername(), sharedProject.getProjectName());
+        }
     }//GEN-LAST:event_mainMenuShareProjectButtonActionPerformed
 
     private void mainMenuDeleteProjectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mainMenuDeleteProjectButtonActionPerformed

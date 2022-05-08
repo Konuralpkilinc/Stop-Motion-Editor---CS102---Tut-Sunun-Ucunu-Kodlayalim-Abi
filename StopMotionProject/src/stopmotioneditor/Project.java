@@ -71,6 +71,9 @@ public class Project {
            
        }
    }
+   public String getProjectName(){
+       return name;
+   }
    
    //will be used by smallImage instances
    public int getNumberOfImages(){
