@@ -7,7 +7,6 @@ package stopmotioneditor;
 
 
 
-import Stop.PlayScreen;
 import java.util.ArrayList;
 import javafx.animation.Timeline;
 import javafx.animation.KeyFrame;

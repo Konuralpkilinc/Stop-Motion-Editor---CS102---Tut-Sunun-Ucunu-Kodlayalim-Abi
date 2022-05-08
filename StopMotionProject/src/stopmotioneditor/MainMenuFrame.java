@@ -22,9 +22,12 @@ public class MainMenuFrame extends javax.swing.JFrame {
     /**
      * Creates new form MainMenu
      */
-    public MainMenuFrame(User user) {
-        this.user = user;
+    public MainMenuFrame() {
         initComponents();
+    }
+
+    public void setUser(User user){
+        this.user = user;
     }
 
     /**
@@ -53,6 +56,10 @@ public class MainMenuFrame extends javax.swing.JFrame {
 
         mainMenuBasePanel.setBackground(new java.awt.Color(102, 0, 0));
         mainMenuBasePanel.setPreferredSize(new java.awt.Dimension(1000, 850));
+
+        mainMenuProjectsScrollpane.setBackground( new java.awt.Color(40, 0, 0) );
+        mainMenuProjectsScrollpane.getPanel().setBackground( new java.awt.Color(50, 0, 10) );
+        mainMenuProjectsScrollpane.getCreateButton().setBackground( new java.awt.Color( 100,0,0 ) );
 
         mainMenuButtonsPanel.setBackground(new java.awt.Color(51, 0, 0));
 
@@ -108,21 +115,23 @@ public class MainMenuFrame extends javax.swing.JFrame {
                 mainMenuDeleteProjectButtonActionPerformed(evt);
             }
         });
+        
+        mainMenuUserListScrollpane.getPanel().setBackground( new java.awt.Color ( 50, 0, 10 ) );
 
         javax.swing.GroupLayout mainMenuButtonsPanelLayout = new javax.swing.GroupLayout(mainMenuButtonsPanel);
         mainMenuButtonsPanel.setLayout(mainMenuButtonsPanelLayout);
         mainMenuButtonsPanelLayout.setHorizontalGroup(
             mainMenuButtonsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainMenuButtonsPanelLayout.createSequentialGroup()
-                .addGap(18, 18, 18)
+                .addGap(32, 32, 32)
                 .addComponent(mainMenuPlayProjectButton, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
                 .addComponent(mainMenuEditProjectButton, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
+                .addGap(26, 26, 26)
                 .addComponent(mainMenuDeleteProjectButton, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(33, 33, 33)
+                .addGap(26, 26, 26)
                 .addComponent(mainMenuShareProjectButton, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18))
+                .addGap(32, 32, 32))
         );
         mainMenuButtonsPanelLayout.setVerticalGroup(
             mainMenuButtonsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -229,6 +238,38 @@ public class MainMenuFrame extends javax.swing.JFrame {
         user.removeProject(removeIndex);
     }//GEN-LAST:event_mainMenuDeleteProjectButtonActionPerformed
 
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(MainMenuFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(MainMenuFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(MainMenuFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(MainMenuFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new MainMenuFrame().setVisible(true);
+            }
+        });
+    }
 
     public ButtonHolder getButtonHolder(){
         return mainMenuProjectsScrollpane;

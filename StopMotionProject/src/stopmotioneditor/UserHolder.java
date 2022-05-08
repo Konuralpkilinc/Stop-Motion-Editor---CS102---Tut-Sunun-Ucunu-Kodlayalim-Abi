@@ -35,7 +35,7 @@ public class UserHolder extends JScrollPane {
 
         for(int i = 0; i < User.users.size(); i++){
             
-            checkBoxes.add(new JCheckBox(User.users.get(i).getUserName()));
+            checkBoxes.add(new JCheckBox(User.users.get(i).getUsername()));
             if(User.users.get(i).equals(user)){checkBoxes.get(i).setEnabled(false);}
             panel.add(checkBoxes.get(i));
         }
@@ -43,6 +43,10 @@ public class UserHolder extends JScrollPane {
 
     public JCheckBox getCheckBox(int i){
         return checkBoxes.get(i);
+    }
+    
+    public JPanel getPanel(){
+        return this.panel;
     }
     
 }
