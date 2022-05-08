@@ -7,9 +7,12 @@ package stopmotioneditor;
 
 
 
+import Stop.PlayScreen;
 import java.util.ArrayList;
 import javafx.animation.Timeline;
 import javafx.animation.KeyFrame;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.ComboBox;
 import javafx.util.Duration;
 import javafx.scene.image.Image;
@@ -21,22 +24,25 @@ import javafx.scene.shape.Circle;
  */
 public class Project {
    public static final double INITIAL_FPS_RATE = 9;
+   
    private String name;
     // user data field?
-   private ArrayList <EditableImage> clonedArrayList = new ArrayList<>(); 
    private ArrayList<EditableImage> images = new ArrayList<>();
-   private Timeline timer; //similar to swing Timer, determines animation fps
+   private ArrayList <EditableImage> clonedArrayList = new ArrayList<>();
+   //private Timeline timer; //similar to swing Timer, determines animation fps
    private int numberOfImages; //THIS IS IMPORTANT FOR SMALLIMAGE, represents the no of images must be updated during runtime when necessary
-  
+   private double fpsRate = INITIAL_FPS_RATE;
+   
    //Properties received from the EditScreen object
    private EditScreen editScreen; //EditScreen object itself, its created automatically after start method is invoked in EditScreen
+   //private PlayScreen playScreen; //When the animation is played
    private ComboBox<String> choicePaneSelector; //this is the same ComboBox with the one in the EditScreen
    private Circle drawingCircle; //This is the same circle with the one in the DrawingChoicePane, will be used from EditableImage event handling
    private int selectedImgIndex;  //Will be useful for smallImage event handling
    /**
     * constructs a Project
     * Will be invoked when the project is constructed for the first time(not taken from database)
-    * @param editableImages 
+    * @param images 
     * @param projectName 
     * @param userName
     */
@@ -45,7 +51,7 @@ public class Project {
        this.name = projectName;
        this.numberOfImages = (editableImages == null) ? 0 : editableImages.size();
        this.images = editableImages;
-       this.initializeTimer();
+       //this.initializeTimer();
        
        //After each EditableImage has been created, initialize the smallImage's labels accordingly
        for(int i = 0; i < this.numberOfImages; i++){
@@ -59,7 +65,7 @@ public class Project {
            String filePath = imageFilePaths.get(i);
            images.add(new EditableImage(filePath,this,i));
        }
-       this.initializeTimer();
+       //this.initializeTimer();
        
        //After each EditableImage has been created, initialize the smallImage's labels accordingly
        for(int i = 0; i < this.numberOfImages; i++){
@@ -106,6 +112,7 @@ public class Project {
     * on a project's editable image arraylist
     */
    public void updateIndexesOfImages(){
+       this.updateNumberOfImages(); // This will be useful !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
        for(int i = 0; i < this.images.size(); i++){
            //set the index of each editable image to i
            EditableImage currentImg = this.images.get(i);
@@ -120,12 +127,16 @@ public class Project {
        return -1;
    }
    
-   //Set the fps rate to 9
+   /*//Set the fps rate to 9
    private void initializeTimer(){
        this.timer = new Timeline(new KeyFrame(Duration.millis(1000 / INITIAL_FPS_RATE), e -> {
            //This is the actionPerformed method of the timer, will be used when the animation is played
            //ToDo
        }));
+       KeyFrame frame = new KeyFrame(Duration.millis(3), e-> {
+           
+       });
+       
        this.timer.setCycleCount(1);//play the animation only once
    }
    public void pauseProject(){
@@ -133,6 +144,25 @@ public class Project {
    }
    public void playProject(){
        this.timer.play(); // continue the animation if it's paused
+   }*/
+   //Set the project's fps rate, invoke from the FpsAudioChoicePane's slider
+   public void setFpsRate(double fps){
+       
+       this.fpsRate = fps;
+       
+       /*EventHandler<ActionEvent> timerHandler;           //Event handler of the timer
+       timerHandler = playScreen.getPlayHandler();//Event handler of the timer
+               
+       //Create a new timer instance and assign it to our reference. Then set the properties of the new timer
+       this.timer = new Timeline(new KeyFrame(Duration.millis(1000 / fps), timerHandler));
+       this.timer.setCycleCount(this.images.size()); //Cycle count must be equal to number of images*/ 
+   }
+   public double getFpsRate(){
+       return this.fpsRate;
+   }
+   //Invoke this from the PlayScreen. This will dictate what happens when the animation is being played
+   public void setTimerHandler(EventHandler<ActionEvent> eventHandler){
+       
    }
     /**
      * 
@@ -160,6 +190,10 @@ public class Project {
     public void setEditScreen(EditScreen editScreen){
         this.editScreen = editScreen;
     }
+    /*//Invoke from the start of playScreen
+    public void setPlayScreen(PlayScreen playScreen){
+        this.playScreen = playScreen;
+    }*/
     public void setSelectedImageIndex(int index){
         this.selectedImgIndex = index;
     }
@@ -174,12 +208,48 @@ public class Project {
     public void invokeUpdateEditableImagePane(int index){
         this.editScreen.updateEditableImagePane(index);
     }
+
+
+    //Bahadırın kod
+    
+    /**
+     * This method reverses the existing images from startIndex to endIndex inclusive
+     * @param startIndex
+     * @param endIndex 
+     */
+    public void reverse(int startIndex, int endIndex){
+        int high = endIndex;
+        int low = startIndex;
+        while(low < high){
+            EditableImage temp = this.images.remove(low);
+            //DEVAM ET
+            this.images.add(high , temp);
+            temp = this.images.remove(high - 1);
+            this.images.add(low , temp);        //MIGHT BE PROBLEMATIC
+            
+            
+            high--;
+            low++;
+        }
+        this.updateIndexesOfImages();
+        this.editScreen.setSmallImageBox();
+    }
+    
+    //Inclusive start, inclusive end copy
     public void copy(int minIndex , int maxIndex){
         // I assume that you have already convert these integers to ındex values
+        
+        //Clear the clonedArrayList so previous elements are disregarded
+        this.clonedArrayList.clear();
         for(int i = minIndex; i <= maxIndex ;i++ ){
-
-            clonedArrayList.add(clone(images.get(i)));
+            EditableImage currentImage = this.images.get(i);
+            EditableImage clonedImage = currentImage.clone();
+            
+            //Add the cloned image to the clonedArrayList
+            this.clonedArrayList.add(clonedImage);
         }
+        this.updateIndexesOfImages();
+        this.editScreen.setSmallImageBox();
     }
 
     public void remove (int minIndex, int maxIndex){
@@ -188,40 +258,47 @@ public class Project {
             images.remove(i);
         }
         updateIndexesOfImages();
+        this.editScreen.setSmallImageBox();
     }
+    //Inclusive start, inclusive end
     public void cut(int minIndex, int maxIndex){
-        int calculation = minIndex;
-
-        for(int i = minIndex; i <= maxIndex; i++){
-            clonedArrayList.add(clone(images.get(i)));
-        }
-        for(int i = minIndex; i <= maxIndex; i++){
-            images.remove(calculation);
-        }
+        //First copy, then remove
+        this.copy(minIndex, maxIndex);
+        this.remove(minIndex, maxIndex);
+        this.updateIndexesOfImages();
+        this.editScreen.setSmallImageBox();
     }
-    public void paste(int entryIndex){
-
-        ArrayList <EditableImage> temp = new ArrayList<>();
-
-        for(int i = entryIndex+1 ; i < images.size(); i++){
-
-            temp.add(clone(images.get(i)));
+    /**
+     * Pastes the copiedArrayList to specified index
+     * Throws Exception if copiedArrayList is empty (if user hasn't copied anything)
+     * @param startIndex index to be pasted, if there are 6 images, user can specify 0 to 6 inclusive values, specifying 6 will just append it to the end 
+     * 
+     */
+    public void paste(int startIndex) throws Exception{
+        //First clone the clonedArrayList to a temp so we can preserve it after paste operation
+        ArrayList<EditableImage> temp = new ArrayList<>();
+        for(int i = 0; i < this.clonedArrayList.size(); i++){
+            EditableImage currentEditableImage = this.clonedArrayList.get(i);
+            EditableImage clonedEditableImage = currentEditableImage.clone();
+            temp.add(clonedEditableImage);
         }
-        for(int i = images.size()-1; i > entryIndex ; i--){
-
-            images.remove(i);
+        
+        
+        if(this.clonedArrayList.isEmpty()){
+            //no image has been copied, throw an exception
+            throw new Exception("Exception: Nothing is copied"); //!!!Important, use this when handling the exception
         }
-        for(int i = 0 ; i < clonedArrayList.size() ; i++){
-
-            images.add(clonedArrayList.get(i));
+        if(startIndex == this.images.size()){
+            //last index of the current images is specified, just append the copied list to the end
+            this.images.addAll(this.clonedArrayList);
         }
-        for(int i = 0 ; i < temp.size(); i++){
-
-            images.add(temp.get(i));
+        else{
+            this.images.addAll(startIndex, this.clonedArrayList);
         }
-        updateIndexesOfImages();
-    }
-    public EditableImage clone(EditableImage x){
-            return null; 
+        this.updateIndexesOfImages();
+        this.editScreen.setSmallImageBox();
+        
+        //preserve the copied images
+        this.clonedArrayList = temp;
     }
 }
