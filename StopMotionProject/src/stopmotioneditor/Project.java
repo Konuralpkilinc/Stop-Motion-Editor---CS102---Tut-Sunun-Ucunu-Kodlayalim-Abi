@@ -306,4 +306,15 @@ public class Project {
         //preserve the copied images
         this.clonedArrayList = temp;
     }
+    /**
+     * this method adds the new images to the project during runtime
+     * invoke from imageorderingchoicepane
+     * @param newImages 
+     */
+    public void addNewImages(ArrayList<EditableImage> newImages){
+        this.images.addAll(newImages);
+        
+        this.updateIndexesOfImages();
+        this.editScreen.setSmallImageBox();
+    }
 }

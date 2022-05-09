@@ -4,6 +4,7 @@ package stopmotioneditor;
  *
  * @author yigit
  */
+import java.io.File;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -44,19 +45,21 @@ public class FilterChoicePane extends Pane{
     private RadioButton btGreen = new RadioButton();
     private RadioButton btGray = new RadioButton();
     private RadioButton btNoFilter = new RadioButton();
+    private Project project;
     
     private GridPane gridPane = new GridPane(); // will hold the radio buttons and their corresponding images
-    public FilterChoicePane(String comboBoxValue){
+    public FilterChoicePane(String comboBoxValue, Project project){
         this.comboBoxValue = comboBoxValue;
+        this.project = project;
         this.setProperties();
         this.setButtons();
         
         //Images next to radio buttons
-        ImageView redFilterImage = new ImageView(new Image("Images/FilterImage.jpg"));
-        ImageView blueFilterImage = new ImageView(new Image("Images/FilterImage.jpg"));
-        ImageView greenFilterImage = new ImageView(new Image("Images/FilterImage.jpg"));
-        ImageView grayFilterImage = new ImageView(new Image("Images/FilterImage.jpg"));
-        ImageView noFilterImage = new ImageView(new Image("Images/FilterImage.jpg")); //!!!! This image will be contained in program's jar file, this is not external source
+        ImageView redFilterImage = new ImageView(new File(("src/stopmotioneditor/Images/FixedImage.jpg")).toURI().toString());
+        ImageView blueFilterImage = new ImageView(new File(("src/stopmotioneditor/Images/FixedImage.jpg")).toURI().toString());
+        ImageView greenFilterImage = new ImageView(new File(("src/stopmotioneditor/Images/FixedImage.jpg")).toURI().toString());
+        ImageView grayFilterImage = new ImageView(new File(("src/stopmotioneditor/Images/FixedImage.jpg")).toURI().toString());
+        ImageView noFilterImage = new ImageView(new File(("src/stopmotioneditor/Images/FixedImage.jpg")).toURI().toString());//!!!! This image will be contained in program's jar file, this is not external source
         
         //Set each of these images' fitwidth fitheight properties to 100
         redFilterImage.setFitHeight(FIXED_IMAGE_SCALE);
@@ -152,9 +155,12 @@ public class FilterChoicePane extends Pane{
     class FilterButtonHandler implements EventHandler<ActionEvent>{
         @Override
         public void handle(ActionEvent event){
+            int selectedImageIndex = project.getSelectedImageIndex();
+            EditableImage selectedImage = project.getImage(selectedImageIndex);
             if(btRed.isSelected()){
                 //Apply Red Filter
                 //ToDo by Bahadır
+                ImageFiltering.redFiltering(selectedImage);
             }
             else if(btBlue.isSelected()){
                 //Apply blue filter

@@ -43,6 +43,8 @@ public class EditScreen extends Application{
     public static final boolean CHOICE_PANE_SELECTOR_EDITABLE = false;
     private Project project;
     private EditableImage selectedImg; //this represents the selected image, will be the first image initially
+    private Stage primaryStage;
+    private String userName; //retrieved from args will be used for database
     
     //Layout management
     private Pane editableImagePane = new Pane();
@@ -59,6 +61,7 @@ public class EditScreen extends Application{
     public void start(Stage primaryStage){
         //Receive the corresponding Project instance from the main menu class's getSelectedProject method
         this.project = MainMenu.testMethod();
+        this.primaryStage = primaryStage;
         
         this.project.setEditScreen(this); //Set the project's EditScreen
         //Initializations
@@ -169,11 +172,11 @@ public class EditScreen extends Application{
         choicePaneSelector.getItems().add(fpsString);
        
         String filterString = "Apply Filter";
-        this.choicePanes.add(new FilterChoicePane(filterString));
+        this.choicePanes.add(new FilterChoicePane(filterString, project));
         choicePaneSelector.getItems().add(filterString);
         
         String imageOrderingString = "Order Images";
-        this.choicePanes.add(new ImageOrderingChoicePane(this.project, imageOrderingString));
+        this.choicePanes.add(new ImageOrderingChoicePane(this.project, imageOrderingString, this));
         this.choicePaneSelector.getItems().add(imageOrderingString);
         
         //set the initial selection to the first element
@@ -256,5 +259,9 @@ public class EditScreen extends Application{
      */
     public EditableImage getSelectedImage(){
         return this.selectedImg;
+    }
+    //Returns the stage of the EditScreen, will be useful for obtaining file input from user during edit screen runtime
+    public Stage getPrimaryStage(){
+        return this.primaryStage;
     }
 }

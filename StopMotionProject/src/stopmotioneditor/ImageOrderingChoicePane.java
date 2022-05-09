@@ -4,6 +4,9 @@ package stopmotioneditor;
  *
  * @author yigit
  */
+import java.io.File;
+import java.io.FilenameFilter;
+import java.util.ArrayList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -12,8 +15,12 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 
 public class ImageOrderingChoicePane extends StackPane {
@@ -48,13 +55,18 @@ public class ImageOrderingChoicePane extends StackPane {
     private Label pasteLabel = new Label("Paste At Index");
     private Label errorLabel = new Label(); //This label will indicate errors if any exist
     
-    public ImageOrderingChoicePane(Project project, String comboBoxValue){
+    private DirectoryChooser fc;
+    private EditScreen editScreen;
+    
+    public ImageOrderingChoicePane(Project project, String comboBoxValue, EditScreen editScreen){
         this.project = project;
         this.comboBoxValue = comboBoxValue;
         this.setTextFields();
         this.setButtons();
         this.setGridPaneProperties();
         this.setErrorLabel();
+        this.setFileChooser();
+        this.editScreen = editScreen;
         
         this.setPadding(new Insets(VERTICAL_INSET, HORIZONTAL_INSET, VERTICAL_INSET, HORIZONTAL_INSET));
         this.getChildren().add(this.gridPane);
@@ -169,6 +181,11 @@ public class ImageOrderingChoicePane extends StackPane {
             errorLabel.setText(""); //empty string no error
         }
     }
+    //Set fc properties
+    private void setFileChooser(){
+        fc = new DirectoryChooser();
+        fc.setTitle("Open Folder");        
+    }
     
     @Override
     public String toString(){
@@ -182,6 +199,34 @@ public class ImageOrderingChoicePane extends StackPane {
             }
         }
         return true;
+    }
+    //Invoke when a new image is added
+    public static ArrayList<File> getAddedFiles(File file){
+        // Creating an arraylist to return the images in the folder
+        ArrayList<File> images = new ArrayList<File>();
+
+        // Specifying the supported extensions
+        String[] extensions = new String[] { "jpg", "jpeg", "png"}; 
+
+        // Filter to identify images based on their extensions
+        FilenameFilter filter = new FilenameFilter() {
+            @Override
+            public boolean accept(File file, String name) {
+                for (String ext : extensions) {
+                    if (name.endsWith("." + ext)) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        };
+
+        if (file.isDirectory()) {   // Making sure it is a directory
+            for (File f : file.listFiles( filter)) {   // Reading each image from the directory
+                images.add(f);
+            }
+        }
+        return images;
     }
     //This class will dictate what will happen when a button is clicked
     class ImageOrderingHandler implements EventHandler<ActionEvent>{
@@ -208,7 +253,22 @@ public class ImageOrderingChoicePane extends StackPane {
             }
             else if(eventSource.equals(btAddImage)){
                 //ToDo by Konuralp Kılınç
+                Stage editScreenStage = editScreen.getPrimaryStage();
+                File folder = fc.showDialog(editScreenStage);
                 
+                
+                ArrayList<EditableImage> addedImages = new ArrayList<>();
+                ArrayList<File> addedImageFiles = ImageOrderingChoicePane.getAddedFiles(folder);
+                
+                for(int i = 0; i < addedImageFiles.size(); i++){
+                    File file = addedImageFiles.get(i);
+                    Image img = new Image(file.toURI().toString());
+                    
+                    EditableImage newImage = new EditableImage(img, project, 0); //index will be set later !!!
+                    addedImages.add(newImage);
+                }
+                
+                project.addNewImages(addedImages);
             }
             else if(eventSource.equals(btDelete)){
                 //Try to delete specified images with respect to given input
@@ -283,3 +343,18 @@ public class ImageOrderingChoicePane extends StackPane {
         }
     }
 }
+
+/*
+else if(eventSource.equals(btAddImage)){
+                //ToDo by Konuralp Kılınç
+                Stage editScreenStage = editScreen.getPrimaryStage();
+                File file = fc.showDialog(editScreenStage);
+                
+                User user;
+                user = MainMenuFrame.user;
+                String userName = user.getUsername();
+              
+                ArrayList<EditableImage> addedImages = Database.addNewImagesToProject(file, userName, project);
+                project.addNewImages(addedImages);
+            }
+*/

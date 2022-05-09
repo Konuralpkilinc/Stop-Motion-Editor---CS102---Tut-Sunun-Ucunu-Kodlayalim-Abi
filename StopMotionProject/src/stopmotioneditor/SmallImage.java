@@ -55,6 +55,7 @@ public class SmallImage extends FinalImage{
         //initialize the stackpane, no selection or sound at first
         this.initializeSmallImagePane();
         this.setSmallImagePaneContainer();
+        this.setEventHandling();
     }
     
     public SmallImage(EditableImage editableImg,String filePath){

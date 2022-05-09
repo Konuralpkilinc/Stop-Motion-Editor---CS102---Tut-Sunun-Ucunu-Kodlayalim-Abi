@@ -9,6 +9,7 @@ package stopmotioneditor;
  *
  * @author yigit
  */
+import java.io.File;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -18,6 +19,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Label;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.stage.Stage;
 public class FpsAudioChoicePane extends StackPane{
     public final double VERTICAL_INSET = 225;
     public final double HORIZONTAL_INSET = 125;
@@ -39,6 +43,9 @@ public class FpsAudioChoicePane extends StackPane{
     private String comboBoxValue; //this pane's String representation on combobox
     private Label fpsLabel = new Label("FPS");
     
+    private FileChooser fc; //filechooser to choose audio file
+    private File file;
+    
     //Layout
     private HBox fpsSliderContainer = new HBox(); //will contain the slider and label
     private HBox audioButtonContainer = new HBox();
@@ -53,6 +60,7 @@ public class FpsAudioChoicePane extends StackPane{
         this.setButtons();
         this.setSlider();
         this.setElements();
+        this.setFileChooser();
     }
     public void setButtons(){
         this.btAddSound = new Button("Add Sound");
@@ -86,23 +94,31 @@ public class FpsAudioChoicePane extends StackPane{
         //finally add the hboxContainer to this object
         this.getChildren().add(hboxContainer);
     }
+    public void setFileChooser(){
+        fc = new FileChooser();
+        fc.getExtensionFilters().addAll(new ExtensionFilter("Audio Files", "*.wav","*.mp3","*.aac"));
+    }
     
     class SoundButtonHandler implements EventHandler<ActionEvent>{
         @Override
         public void handle(ActionEvent e){
-            //Either remove sound or add sound button is pressed
+             //Either remove sound or add sound button is pressed
             Button eventSource = (Button)e.getSource();
             EditableImage selectedEditableImage = editScreen.getSelectedImage();
             SmallImage selectedSmallImage = selectedEditableImage.getSmallImage();
             
             if(eventSource.equals(btAddSound)){
-                //Add sound
-                String filePath = null; // !!!!!!!!!!!!!!! TODO KONUR
-                //Get the selectedEditableImage from editScreen;
-                selectedEditableImage.setAudio(filePath);
+                Stage editScreenStage = editScreen.getPrimaryStage();
                 
-                //Update the smallImage's audio state
-                selectedSmallImage.setSoundState(true);
+                if(eventSource.equals(btAddSound)){
+                    
+                    file = fc.showOpenDialog(editScreenStage);
+                    Database.addMediaToEditableImage(selectedEditableImage , file); 
+                    selectedEditableImage.setAudio(file.getAbsolutePath());
+                    //Update the smallImage's audio state
+                    selectedSmallImage.setSoundState(true);
+                }
+
             }
             else{
                 //remove sound

@@ -17,7 +17,7 @@ import javax.swing.JRadioButton;
  * @contributor Bahadır Günenc
  */
 public class MainMenuFrame extends javax.swing.JFrame {
-    User user;
+    public static User user;
 
     /**
      * Creates new form MainMenu
@@ -197,12 +197,15 @@ public class MainMenuFrame extends javax.swing.JFrame {
 
     private void mainMenuEditProjectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mainMenuEditProjectButtonActionPerformed
         // TODO add your handling code here:
+        System.out.println("Edit pressed");
+        EditScreen.launch(null); //no args so far !!!!!!!!!!!!!!!!!!!!!CHANGE IF YOU NEED TO PASS ARGUMENTS
+        
     }//GEN-LAST:event_mainMenuEditProjectButtonActionPerformed
 
     private void mainMenuPlayProjectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mainMenuPlayProjectButtonActionPerformed
         // TODO add your handling code here:
-        PlayScreen playScreen = new PlayScreen();
-        playScreen.launch();
+        
+        PlayScreen.launch(null);
     }//GEN-LAST:event_mainMenuPlayProjectButtonActionPerformed
 
     private void mainMenuShareProjectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mainMenuShareProjectButtonActionPerformed
@@ -286,7 +289,7 @@ public class MainMenuFrame extends javax.swing.JFrame {
         return mainMenuProjectsScrollpane;
     }
 
-    public User getUser(){
+    public static User getUser(){
         return user;
     }
 
