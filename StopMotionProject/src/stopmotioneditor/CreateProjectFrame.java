@@ -6,6 +6,9 @@ package stopmotioneditor;
 
 import java.util.ArrayList;
 
+import javax.swing.JFileChooser;
+import java.io.File;
+
 import javax.swing.JRadioButton;
 import javax.swing.plaf.DimensionUIResource;
 
@@ -22,10 +25,17 @@ public class CreateProjectFrame extends javax.swing.JFrame {
 
     public CreateProjectFrame(){
         initComponents();
+        setFileChooser();
     }
 
     public void setMainMenu(MainMenuFrame mainMenuFrame){
         this.mainMenu=mainMenuFrame;
+    }
+
+    //creates file chooser to use
+    public void setFileChooser(){
+        fc = new JFileChooser();
+        fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
     }
 
     /**
@@ -170,7 +180,11 @@ public class CreateProjectFrame extends javax.swing.JFrame {
 
     private void cpSelectFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cpSelectFileButtonActionPerformed
 
-        // in here, methods for selecting images from a folder and adding them to an ArrayList must be called
+        int returnVal = fc.showOpenDialog(CreateProjectFrame.this);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            file = fc.getSelectedFile();
+            //This is where a real application would open the file.
+        }
 
     }//GEN-LAST:event_cpSelectFileButtonActionPerformed
 
@@ -185,7 +199,9 @@ public class CreateProjectFrame extends javax.swing.JFrame {
         mainMenu.setVisible(true);
 
         //creating the project
+        //adding it to the database
         Project project = new Project ( projectImages, projectName );
+        Database.registerProject(file, mainMenu.getUser().getUsername() ,projectName);
 
         mainMenu.getUser().addProject( project );
 
@@ -238,7 +254,13 @@ public class CreateProjectFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 
+    //initializing mainMenu to use its spesific user
     private MainMenuFrame mainMenu;
+    //initializing projectname and editable image to create a project from Project class
     private String projectName;
     private ArrayList<EditableImage> projectImages = new ArrayList<EditableImage>();
+    //initializing instance variable file to add it to database
+    private File file;
+    //initializing fc variable to use JFileChoosers properties
+    private JFileChooser fc;
 }
