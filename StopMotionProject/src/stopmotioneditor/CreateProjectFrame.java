@@ -202,15 +202,15 @@ public class CreateProjectFrame extends javax.swing.JFrame {
         
         boolean exists = false;
         ArrayList< javax.swing.JRadioButton> buttons = mainMenu.getButtonHolder().getButtons();
-        /*
+        
         for ( javax.swing.JRadioButton button : buttons){
             
-            if ( button.getName().equals(projectName) ){
+            if ( button.getText().equals(projectName) ){
                 exists = true;
                 cpEnterProjectTextField.setText( "Try a different name" );
             }
         }
-*/
+
         if ( ! exists ){
             JRadioButton button = new JRadioButton( projectName );
             button.setPreferredSize( new DimensionUIResource(160, 140) );
