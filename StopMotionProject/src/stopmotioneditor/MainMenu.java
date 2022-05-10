@@ -29,6 +29,8 @@ public class MainMenu {
         filePaths.add(new File(("src/stopmotioneditor/Images/FixedImage.jpg")).toURI().toString());
         filePaths.add(new File(("src/stopmotioneditor/Images/FixedImage.jpg")).toURI().toString());
         filePaths.add(new File(("src/stopmotioneditor/Images/FixedImage.jpg")).toURI().toString());
-        return new Project(filePaths);
+        Project project = new Project(filePaths);
+        project.setUserName("User1");
+        return project;
     }
 }

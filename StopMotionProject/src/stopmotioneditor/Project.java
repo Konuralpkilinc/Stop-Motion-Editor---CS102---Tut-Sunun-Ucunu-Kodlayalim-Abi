@@ -38,6 +38,8 @@ public class Project {
    private ComboBox<String> choicePaneSelector; //this is the same ComboBox with the one in the EditScreen
    private Circle drawingCircle; //This is the same circle with the one in the DrawingChoicePane, will be used from EditableImage event handling
    private int selectedImgIndex;  //Will be useful for smallImage event handling
+   private String userName;
+   
    /**
     * constructs a Project
     * Will be invoked when the project is constructed for the first time(not taken from database)
@@ -107,6 +109,12 @@ public class Project {
            return this.images.get(index);
        }
        return null;   
+   }
+   public void setUserName(String userName){
+       this.userName = userName;
+   }
+   public String getUserName(){
+       return this.userName;
    }
    //return all of the images
    public ArrayList<EditableImage> getAllImages(){

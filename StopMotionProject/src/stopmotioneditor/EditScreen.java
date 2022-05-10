@@ -44,7 +44,7 @@ public class EditScreen extends Application{
     private Project project;
     private EditableImage selectedImg; //this represents the selected image, will be the first image initially
     private Stage primaryStage;
-    private String userName; //retrieved from args will be used for database
+    //private String userName; //retrieved from args will be used for database
     
     //Layout management
     private Pane editableImagePane = new Pane();
@@ -77,6 +77,9 @@ public class EditScreen extends Application{
         Scene scene = new Scene(bigContainer);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Edit Project");
+        primaryStage.setOnCloseRequest(e -> { 
+            this.closingOperation(); //will save the changes to database
+        }); 
         primaryStage.show();
     }
     public static void main(String[] args){
@@ -263,5 +266,14 @@ public class EditScreen extends Application{
     //Returns the stage of the EditScreen, will be useful for obtaining file input from user during edit screen runtime
     public Stage getPrimaryStage(){
         return this.primaryStage;
+    }
+    /**
+     * This method will be invoked when the editscreen is  being closed
+     * This method saves the project to our database
+     */
+    public void closingOperation(){
+        ArrayList<EditableImage> images = project.getAllImages();
+        String userName = project.getUserName();
+        Database.saveChangesInProject(images, userName, project.getName());
     }
 }
