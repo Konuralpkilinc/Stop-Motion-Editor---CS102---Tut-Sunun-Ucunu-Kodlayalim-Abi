@@ -10,6 +10,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JRadioButton;
+import javax.swing.plaf.DimensionUIResource;
 
 /**
  *
@@ -293,7 +294,11 @@ public class MainMenuFrame extends javax.swing.JFrame {
             java.util.ArrayList<javax.swing.JRadioButton> buttons = new java.util.ArrayList<>(); //creating an ArrayList for passing it to ButtonHolder
 
             for ( Project p : Database.getAllProjectsOfUser(user.getUsername()) ){
+                
                 javax.swing.JRadioButton button = new javax.swing.JRadioButton( p.getName() ); //creating the button which will represent the project
+                button.setPreferredSize( new DimensionUIResource(160, 140) );
+                button.setForeground( new java.awt.Color (220, 170, 170) );
+                
                 buttons.add(button);
                 
                 user.addProject(p); // adding the project from Database to the User
