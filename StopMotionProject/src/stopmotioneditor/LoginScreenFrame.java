@@ -34,6 +34,7 @@ public class LoginScreenFrame extends javax.swing.JFrame {
         buttonGroup1 = new javax.swing.ButtonGroup();
         logıinBasePanel = new javax.swing.JPanel();
         loginUsernameLabel = new javax.swing.JLabel();
+        loginDoneButton = new javax.swing.JButton();
         loginUsernameScrollpane = new javax.swing.JScrollPane();
         loginUsernameTextArea = new javax.swing.JTextArea();
         loginPasswordLabel = new javax.swing.JLabel();
@@ -44,7 +45,6 @@ public class LoginScreenFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
-        setLocationRelativeTo(null);
 
         logıinBasePanel.setBackground(new java.awt.Color(102, 236, 133));
 
@@ -60,6 +60,11 @@ public class LoginScreenFrame extends javax.swing.JFrame {
         loginUsernameTextArea.setFont(new java.awt.Font("Constantia", 0, 36)); // NOI18N
         loginUsernameTextArea.setForeground(new java.awt.Color(0, 102, 102));
         loginUsernameTextArea.setRows(5);
+        loginUsernameTextArea.addKeyListener( new java.awt.event.KeyAdapter(){
+            public void keyReleased(java.awt.event.KeyEvent evt){
+                usernameHandler(evt);
+            }
+        });
         
         
         loginUsernameScrollpane.setViewportView(loginUsernameTextArea);
@@ -76,6 +81,11 @@ public class LoginScreenFrame extends javax.swing.JFrame {
         loginPasswordTextArea.setFont(new java.awt.Font("Constantia", 0, 36)); // NOI18N
         loginPasswordTextArea.setForeground(new java.awt.Color(0, 102, 102));
         loginPasswordTextArea.setRows(5);
+        loginPasswordTextArea.addKeyListener( new java.awt.event.KeyAdapter(){
+            public void keyReleased(java.awt.event.KeyEvent evt){
+                passwordHandler(evt);
+            }
+        });
         
         loginPasswordScrollpane.setViewportView(loginPasswordTextArea);
 
@@ -158,15 +168,17 @@ public class LoginScreenFrame extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-   
-    private void loginDoneButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginDoneButtonActionPerformed
-       
+    private void usernameHandler(java.awt.event.KeyEvent evt){
         userName = loginUsernameTextArea.getText();
+    }
+    private void passwordHandler(java.awt.event.KeyEvent evt){
         passWord = loginPasswordTextArea.getText();
-        System.out.println(userName);
-        System.out.println(passWord);
+    }
+   
+    private void loginDoneButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
 
        if(Database.isUserExist(userName, passWord)){
            MainMenuFrame mainMenuFrame = new MainMenuFrame();
