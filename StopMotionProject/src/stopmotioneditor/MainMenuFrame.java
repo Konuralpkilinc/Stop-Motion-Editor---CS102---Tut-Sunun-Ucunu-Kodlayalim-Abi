@@ -53,7 +53,6 @@ public class MainMenuFrame extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Stop Motion Film Editor");
         setResizable(false);
-        setLocationRelativeTo(null);
 
         mainMenuBasePanel.setBackground(new java.awt.Color(102, 0, 0));
         mainMenuBasePanel.setPreferredSize(new java.awt.Dimension(1000, 850));
@@ -191,8 +190,9 @@ public class MainMenuFrame extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(mainMenuBasePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 700, Short.MAX_VALUE)
         );
-
+        
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void mainMenuEditProjectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mainMenuEditProjectButtonActionPerformed
@@ -283,6 +283,25 @@ public class MainMenuFrame extends javax.swing.JFrame {
                 new MainMenuFrame().setVisible(true);
             }
         });
+    }
+    
+    // this method will add all of the projects of the user to the User and to ButtonHolde which is displayed on the MainMenuFrame
+    public void addUsersProjects(){
+        
+        if ( ! ( Database.getAllProjectsOfUser(user.getUsername()).isEmpty() ) ){ //checking if the user has any projects at all or not
+        
+            java.util.ArrayList<javax.swing.JRadioButton> buttons = new java.util.ArrayList<>(); //creating an ArrayList for passing it to ButtonHolder
+
+            for ( Project p : Database.getAllProjectsOfUser(user.getUsername()) ){
+                javax.swing.JRadioButton button = new javax.swing.JRadioButton( p.getName() ); //creating the button which will represent the project
+                buttons.add(button);
+                
+                user.addProject(p); // adding the project from Database to the User
+            }
+
+            mainMenuProjectsScrollpane.addArrayList( buttons );
+        }
+
     }
 
     public ButtonHolder getButtonHolder(){

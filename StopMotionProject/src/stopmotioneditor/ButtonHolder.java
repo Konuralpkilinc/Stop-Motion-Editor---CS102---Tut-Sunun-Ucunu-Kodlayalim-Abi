@@ -124,24 +124,24 @@ class ButtonHolder extends JPanel{
     }
 
     /*
-    * this method adds the elements in the given array one by 
+    * this method adds the elements in the given ArrayList one by 
     * it exist for the purpose of showasing already existing projects of the user
     */
-    public void addArray( JRadioButton[] buttonArray ){
+    public void addArrayList( ArrayList<JRadioButton> buttonArray ){
 
-        for ( int i = 0; i < buttonArray.length; i++){
-            this.add( buttonArray[i] );
+        for ( JRadioButton button : buttonArray ){
+            this.add( button );
         }
     }
 
     /*
-    * this method removes the elements in the given array one by 
+    * this method removes the elements in the given ArrayList one by 
     * it exist for no purpose particular, it just might be useful
     */
-    public void removeArray( JRadioButton[] buttonArray ){
+    public void removeArrayList( ArrayList<JRadioButton> buttonArray ){
 
-        for ( int i = 0; i < buttonArray.length; i++){
-            this.remove( buttonArray[i] );
+        for ( JRadioButton button : buttonArray ){
+            this.remove( button );
         }
     }
 
