@@ -73,6 +73,18 @@ public class Project {
            
        }
    }
+   
+   public Project(String projectName){
+       this.name = projectName;
+   }
+   
+   
+   public void incrementNumberOfImages () {
+       this.numberOfImages++;
+   }
+   public void addImage (EditableImage ei) {
+       this.images.add(ei);
+   }
    public String getProjectName(){
        return name;
    }

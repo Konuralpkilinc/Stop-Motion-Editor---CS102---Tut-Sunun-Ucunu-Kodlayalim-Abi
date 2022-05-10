@@ -230,22 +230,17 @@ public final class Database {
      */
     public static ArrayList<EditableImage> addNewImagesToProject (File file, String username, Project project) {
         ArrayList<EditableImage> al = new ArrayList<EditableImage>();
-        
-        try {
-            // save new images to database and copy to projects folder
-            int projectID = getProjectID( username, project.getName());
-            registerImagesOfProject( readImagesFromFolderToFileArrayList(file), projectID);
-            int index = getLastIndexOfProject( projectID) + 1;
-            
-            
-            ArrayList<File> newImages = readImagesFromFolderToFileArrayList(file);
-            for (File image : newImages) {
-                al.add( new EditableImage( file.getPath(), project, index));
-                index++;
-            }
-        } 
-        catch (SQLException ex) {
-            System.out.println("addNewImagesToProject error");
+
+        // save new images to database and copy to projects folder
+        int projectID = getProjectID( username, project.getName());
+        registerImagesOfProject( readImagesFromFolderToFileArrayList(file), projectID);
+        int index = getLastIndexOfProject( projectID) + 1;
+
+
+        ArrayList<File> newImages = readImagesFromFolderToFileArrayList(file);
+        for (File image : newImages) {
+            al.add( new EditableImage( image.getPath(), project, index));
+            index++;
         }
         return al;
     }
@@ -269,6 +264,7 @@ public final class Database {
         }
         catch (SQLException ex) {
             System.out.println("saveChangesInTheProject error");
+            System.out.println(ex);
         }
     }
     
@@ -368,21 +364,28 @@ public final class Database {
      */
     public static Project getProject (String username, String projectName) {
         ArrayList<EditableImage> images = new ArrayList<EditableImage>();
+        Project project = new Project(projectName);
         try {
             int projectID = getProjectID(username, projectName);
+
             PreparedStatement pstmt = CONN.prepareStatement("SELECT filepath,image_index FROM Editable_Images WHERE project_id = ?");
             pstmt.setInt(1, projectID);
             ResultSet rs = pstmt.executeQuery();
             
             while (rs.next()) {
-                EditableImage ei = new EditableImage(rs.getString("filepath"), rs.getInt("image_index"));
+                String filepath = rs.getString("filepath");
+                int index = rs.getInt("image_index");
+                String fp = new File(filepath).toURI().toString();
+                EditableImage ei = new EditableImage(fp, project, index);
                 String mediaFilePath = null;
                 
                 try {
                     PreparedStatement pstmt2 = CONN.prepareStatement("SELECT filepath FROM Medias WHERE image_id = ?");
                     pstmt2.setInt(1, getEditableImageID(ei));
                     ResultSet rs2 = pstmt2.executeQuery();
-                    mediaFilePath = rs2.getString("filepath");
+                    if (rs2.next()) {
+                        mediaFilePath = rs2.getString("filepath");
+                    }
                 }
                 catch (SQLException ex) {
                     System.out.println("getProject error in media check");
@@ -390,17 +393,15 @@ public final class Database {
                 ei.setMediaFilePath(mediaFilePath);                
                 ei.setLines(deserializePolylines(ei));
                 
-                images.add( ei);
+                project.addImage(ei);
+                project.incrementNumberOfImages();
             }
-            Project project = new Project(images, projectName);
             
-            for (EditableImage image : images) {
-                image.setProject(project);
-            }
             return project;
         } 
         catch (SQLException ex) {
             System.out.println("getProject error");
+            System.out.println(ex);
         }
         return null;
     }
@@ -414,16 +415,17 @@ public final class Database {
         ArrayList<Project> projects = new ArrayList<Project>();
         try {
             int userID = getUserID(username);
-            PreparedStatement pstmt = CONN.prepareStatement("SELECT Projects.name FROM Projects" 
-            + "JOIN User_Project_Join"
-            + "ON Projects.id = User_Project_Join.project_id"
-            + "WHERE User_Project_Join.user_id = ?");
+            String query = "SELECT Projects.name FROM Projects " 
+            + "JOIN User_Project_Join "
+            + "ON Projects.id = User_Project_Join.project_id "
+            + "WHERE User_Project_Join.user_id = ?";
+            PreparedStatement pstmt = CONN.prepareStatement(query);
             
             pstmt.setInt(1, userID);
             ResultSet rs = pstmt.executeQuery();
             
             while (rs.next()) {
-                projects.add (getProject(username, rs.getString("name")));
+                projects.add (new Project(rs.getString("name")));
             }
         } 
         catch (SQLException ex) {
@@ -474,7 +476,7 @@ public final class Database {
      */
     private static void registerImagesOfProject (ArrayList<File> files, int projectID) {
         String folderName = "Project" + projectID;
-        File projectFolder = new File("Projects\\" + folderName);
+        File projectFolder = new File("Projects/" + folderName);
         boolean folderExists = projectFolder.exists();  // Check whether there is a folder of this project already.
         
         if (!folderExists) {
@@ -484,13 +486,13 @@ public final class Database {
                 
         for (File file : files) {
             String from = file.getPath();
-            String to = "Projects\\" + folderName + "\\" + file.getName();
+            String to = "Projects/" + folderName + "/" + file.getName();
             Path source = Paths.get(from);
             Path target = Paths.get(to);
             
             try {
                 Files.copy(source, target, StandardCopyOption.COPY_ATTRIBUTES);
-                saveImageToDatabase(target.toString(), index, projectID);
+                saveImageToDatabase(to, index, projectID);
                 index++;
             }
             catch (FileAlreadyExistsException ex) {
@@ -561,7 +563,9 @@ public final class Database {
             PreparedStatement pstmt = CONN.prepareStatement("SELECT image_index FROM Editable_Images WHERE project_id = ? ORDER BY image_index DESC LIMIT 1");
             pstmt.setInt(1, projectID);
             ResultSet rs = pstmt.executeQuery();
-            result = rs.getInt("image_index");
+            if (rs.next()) {
+                result = rs.getInt("image_index");
+            }
         } 
         catch (SQLException ex) {
             Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
@@ -574,11 +578,22 @@ public final class Database {
      * @return id of the user
      * @throws SQLException
      */
-    private static int getUserID (String username) throws SQLException {
-        PreparedStatement pstmt = CONN.prepareStatement("SELECT id FROM Users WHERE username = ?");
-        pstmt.setString(1, username);
-        ResultSet rs = pstmt.executeQuery();
-        return rs.getInt("id");
+    private static int getUserID (String username) {
+        int id = -1;
+        try {
+            PreparedStatement pstmt = CONN.prepareStatement("SELECT id FROM Users WHERE username = ?");
+            pstmt.setString(1, username);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                id = rs.getInt("id");
+            }
+            return id;
+        }
+        catch (SQLException ex) {
+            System.out.println("getUserID error");
+            System.out.println(ex);
+        }
+        return -1;
     }
 
     /**
@@ -586,19 +601,31 @@ public final class Database {
      * @return id of the project
      * @throws SQLException
      */
-    private static int getProjectID (String username, String projectName) throws SQLException {
-        int userID = getUserID(username);
+    private static int getProjectID (String username, String projectName) {
+        try {
+            int userID = getUserID(username);
+            String query = ("SELECT Projects.id FROM Projects " 
+            + "JOIN User_Project_Join "
+            + "ON Projects.id = User_Project_Join.project_id "
+            + "WHERE User_Project_Join.user_id = ? "
+            + "AND Projects.name = ?");
+            
+            PreparedStatement pstmt = CONN.prepareStatement(query);
+            pstmt.setInt(1, userID);
+            pstmt.setString(2, projectName);
 
-        PreparedStatement pstmt = CONN.prepareStatement("SELECT Projects.id FROM Projects" 
-        + "JOIN User_Project_Join"
-        + "ON Projects.id = User_Project_Join.project_id"
-        + "WHERE User_Project_Join.user_id = ?"
-        + "AND Projects.name = ?");
-        pstmt.setInt(1, userID);
-        pstmt.setString(2, projectName);
-
-        ResultSet rs = pstmt.executeQuery();
-        return rs.getInt("id");
+            ResultSet rs = pstmt.executeQuery();
+            int id = -1;
+            if (rs.next()) {
+                id = rs.getInt("id");
+            }
+            return id;
+        }
+        catch (SQLException ex) {
+            System.out.println("getProjectID error");
+            System.out.println(ex);
+        }
+        return -1;
     }
     
     /**
@@ -612,7 +639,9 @@ public final class Database {
             PreparedStatement pstmt = CONN.prepareStatement("SELECT id FROM Editable_Images WHERE filepath = ?");
             pstmt.setString(1, editableImage.getFilePath());
             ResultSet rs = pstmt.executeQuery();
-            imageID = rs.getInt("id");
+            if (rs.next()) {
+                imageID = rs.getInt("id");
+            }
         } 
         catch (SQLException ex) {
             System.out.println("getEditableImageID error");
@@ -665,7 +694,7 @@ public final class Database {
         int imageID = getEditableImageID(image);
         
         try {
-            PreparedStatement pstmt = CONN.prepareStatement("SELECT (points, stroke, stroke_width) FROM Polylines WHERE image_id = ?");
+            PreparedStatement pstmt = CONN.prepareStatement("SELECT points, stroke, stroke_width FROM Polylines WHERE image_id = ?");
             pstmt.setLong(1, imageID);
             ResultSet rs = pstmt.executeQuery();
             //rs.next();
@@ -690,6 +719,7 @@ public final class Database {
             
         } catch (SQLException ex) {
             System.out.println("Desiralization error!");
+            System.out.println(ex);
         }
         return polylines;
     }

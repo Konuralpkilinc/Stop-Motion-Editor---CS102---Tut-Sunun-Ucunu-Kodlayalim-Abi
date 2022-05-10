@@ -79,6 +79,7 @@ public class EditableImage extends ImageView implements Cloneable{
         //set the index, from file input's for loop
         this.index = index;
         this.filePath = filePath;
+         this.fxImage = new Image(filePath); //This will avoid exception when ordering images !!!
         //create small and bigImages
         this.smallImage = new SmallImage(this, this.filePath);
         this.bigImage = new BigImage(this, this.filePath);//true false specifies whether the final image is bigImage
