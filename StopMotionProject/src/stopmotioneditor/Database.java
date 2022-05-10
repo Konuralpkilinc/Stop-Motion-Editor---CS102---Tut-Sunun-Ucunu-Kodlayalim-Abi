@@ -20,6 +20,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -655,7 +656,8 @@ public final class Database {
      * @param projectName name of the project
      * @param index index of the image in the project
      */
-    private static void serializePolyline (Polyline polyline, EditableImage editableImage) {        
+    private static void serializePolyline (Polyline polyline, EditableImage editableImage) {    
+        int imageID = getEditableImageID(editableImage);
         ArrayList<Double> colorCodes = new ArrayList<Double>();
         double red = ((Color) polyline.getStroke()).getRed();
         double green = ((Color) polyline.getStroke()).getGreen();
@@ -666,11 +668,12 @@ public final class Database {
         colorCodes.add(blue);
         colorCodes.add(opacity);
 
+        Type listType = new TypeToken<List<Double>>() {}.getType();
         List<Double> points = polyline.getPoints();
         double strokeWidth = polyline.getStrokeWidth();
         
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        String pts = gson.toJson(points);
+        String pts = gson.toJson(points, listType);
         String colors = gson.toJson(colorCodes);
         String width = gson.toJson(strokeWidth);
         
@@ -679,10 +682,12 @@ public final class Database {
             pstmt.setString(1, pts);
             pstmt.setString(2, colors);
             pstmt.setString(3, width);
+            pstmt.setInt(4, imageID);
             pstmt.executeUpdate();
         }
         catch (SQLException ex) {
             System.out.println("Serialization error");
+            System.out.println(ex);
         }
         
 
