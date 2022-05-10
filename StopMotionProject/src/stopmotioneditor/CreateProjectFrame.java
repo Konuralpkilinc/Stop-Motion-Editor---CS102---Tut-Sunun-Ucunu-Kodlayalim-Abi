@@ -85,6 +85,11 @@ public class CreateProjectFrame extends javax.swing.JFrame {
         cpEnterProjectTextField.setBackground(new java.awt.Color(153, 153, 0));
         cpEnterProjectTextField.setFont(new java.awt.Font("SimSun", 0, 18)); // NOI18N
         cpEnterProjectTextField.setForeground(new java.awt.Color(255, 255, 102));
+        cpEnterProjectTextField.addKeyListener( new java.awt.event.KeyAdapter() {
+            public void keyReleased( java.awt.event.KeyEvent evt){
+                projectNameHandler(evt);
+            }
+        });
 
         cpSelectFileButton.setBackground(new java.awt.Color(171, 153, 0));
         cpSelectFileButton.setFont(new java.awt.Font("SimSun", 1, 18)); // NOI18N
@@ -176,6 +181,7 @@ public class CreateProjectFrame extends javax.swing.JFrame {
         );
 
         pack();
+        this.setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void cpSelectFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cpSelectFileButtonActionPerformed
@@ -187,9 +193,12 @@ public class CreateProjectFrame extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_cpSelectFileButtonActionPerformed
+    
+    public void projectNameHandler( java.awt.event.KeyEvent evt ){
+        projectName = cpEnterProjectTextField.getText();
+    }
 
     private void cpDoneButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cpDoneButtonActionPerformed
-        projectName = cpEnterProjectTextField.getText();
 
         JRadioButton button = new JRadioButton( projectName );
         button.setPreferredSize( new DimensionUIResource(160, 140) );

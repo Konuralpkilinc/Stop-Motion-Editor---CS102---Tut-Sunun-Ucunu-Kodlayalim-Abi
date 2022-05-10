@@ -53,7 +53,6 @@ public class RegisterScreenFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
-        setLocationRelativeTo(null);
 
         registerBasePanel.setBackground(new java.awt.Color(102, 236, 133));
 
@@ -69,6 +68,11 @@ public class RegisterScreenFrame extends javax.swing.JFrame {
         registerUsernameTextArea.setFont(new java.awt.Font("Constantia", 0, 36)); // NOI18N
         registerUsernameTextArea.setForeground(new java.awt.Color(0, 102, 102));
         registerUsernameTextArea.setRows(5);
+        registerUsernameTextArea.addKeyListener( new java.awt.event.KeyAdapter(){
+            public void keyReleased(java.awt.event.KeyEvent evt){
+                usernameHandler(evt);
+            }
+        });
         
         registerUsernameScrollpane.setViewportView(registerUsernameTextArea);
 
@@ -84,6 +88,11 @@ public class RegisterScreenFrame extends javax.swing.JFrame {
         registerPasswordTextArea.setFont(new java.awt.Font("Constantia", 0, 36)); // NOI18N
         registerPasswordTextArea.setForeground(new java.awt.Color(0, 102, 102));
         registerPasswordTextArea.setRows(5);
+        registerPasswordTextArea.addKeyListener( new java.awt.event.KeyAdapter(){
+            public void keyReleased(java.awt.event.KeyEvent evt){
+                passwordHandler(evt);
+            }
+        });
         
         registerPasswordScrollpane.setViewportView(registerPasswordTextArea);
 
@@ -95,6 +104,11 @@ public class RegisterScreenFrame extends javax.swing.JFrame {
         registerRePasswordTextArea.setFont(new java.awt.Font("Constantia", 0, 36)); // NOI18N
         registerRePasswordTextArea.setForeground(new java.awt.Color(0, 102, 102));
         registerRePasswordTextArea.setRows(5);
+        registerRePasswordTextArea.addKeyListener( new java.awt.event.KeyAdapter(){
+            public void keyReleased(java.awt.event.KeyEvent evt){
+                rePasswordHandler(evt);
+            }
+        });
         
         registerRePasswordScrollpane.setViewportView(registerRePasswordTextArea);
 
@@ -184,9 +198,21 @@ public class RegisterScreenFrame extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void usernameHandler(java.awt.event.KeyEvent evt){
+        userName = registerUsernameTextArea.getText();
+    }
+    
+    private void passwordHandler(java.awt.event.KeyEvent evt){
+        password = registerPasswordTextArea.getText();
+    }
 
+    private void rePasswordHandler(java.awt.event.KeyEvent evt){
+        rePassword = registerRePasswordTextArea.getText();
+    }
+    
     private void registerBackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerBackButtonActionPerformed
         
         loginScreenFrame.setVisible(true);
@@ -194,14 +220,11 @@ public class RegisterScreenFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_registerBackButtonActionPerformed
 
     private void registerDoneButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerDoneButtonActionPerformed
-        userName = registerUsernameTextArea.getText();
-        password = registerPasswordTextArea.getText();
-        rePassword = registerRePasswordTextArea.getText();
 
         if(!password.equals(rePassword)){
             registerUsernameTextArea.setText("");
-            registerPasswordTextArea.setText("Doesnt match with repassword");
-            registerRePasswordTextArea.setText("Doesnt match with password");
+            registerPasswordTextArea.setText("Doesn't match");
+            registerRePasswordTextArea.setText("Doesn't match");
 
         }
         else{
