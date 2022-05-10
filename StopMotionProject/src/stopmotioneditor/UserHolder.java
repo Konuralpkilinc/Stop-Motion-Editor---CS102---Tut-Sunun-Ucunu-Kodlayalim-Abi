@@ -2,6 +2,7 @@ package stopmotioneditor;
 
 import javax.swing.*;
 import java.util.ArrayList;
+import java.awt.FlowLayout;
 
 /**
  * UserHolder
@@ -10,12 +11,16 @@ import java.util.ArrayList;
 public class UserHolder extends JScrollPane {
 
     JPanel panel;
+    ArrayList<JPanel> userCards;
+    ArrayList<ImageShowcase> avatars;
     ArrayList<JCheckBox> checkBoxes; 
     User user;
 
     public UserHolder(User user){
         this.user = user;
         checkBoxes = new ArrayList<>();
+        avatars = new ArrayList<>();
+        userCards = new ArrayList<>();
         initComponents();
     }
     private void initComponents(){
@@ -37,7 +42,21 @@ public class UserHolder extends JScrollPane {
             JCheckBox cBox = new JCheckBox(User.users.get(i).getUsername());
             cBox.setForeground( java.awt.Color.GRAY );
             checkBoxes.add(cBox );
-            panel.add(checkBoxes.get(i));
+            
+            JPanel userCard = new JPanel(new FlowLayout(FlowLayout.LEFT));
+            javax.swing.plaf.DimensionUIResource size = new javax.swing.plaf.DimensionUIResource (300,30);
+            userCard.setMinimumSize(size);
+            userCard.setPreferredSize(size);
+            userCard.setMaximumSize(size);
+            userCard.setBackground( new java.awt.Color ( 65, 0, 10 ));
+            userCards.add(userCard);
+            
+            ImageShowcase avatar = new ImageShowcase( User.users.get(i).getAvatar(), 25, 25 );   
+            avatars.add(avatar);
+            
+            userCard.add(checkBoxes.get(i));
+            userCard.add(avatars.get(i));
+            panel.add(userCards.get(i));
         }
     }
     
