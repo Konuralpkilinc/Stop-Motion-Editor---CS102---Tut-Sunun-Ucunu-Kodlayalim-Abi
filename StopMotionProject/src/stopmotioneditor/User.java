@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * Bahadır
  */
-public class User {
+public class User implements Comparable {
 
     private String username;
     private ArrayList <Project> projects;
@@ -50,5 +50,18 @@ public class User {
     public void removeProject(int removeIndex){
         
         projects.remove(projects.get(removeIndex));
+    }
+    
+    // this method exists to check if the two instance of two User class is same or not, returns -1 if the given object is not an Users
+    public int compareTo( Object o ){
+        User user;
+        if ( o instanceof User){
+            user = (User)o;
+            
+            if ( this.username.equals(user.username)){
+                return 0;
+            }
+        }
+        return -1;
     }
 }

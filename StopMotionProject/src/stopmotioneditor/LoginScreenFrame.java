@@ -181,8 +181,10 @@ public class LoginScreenFrame extends javax.swing.JFrame {
     private void loginDoneButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
 
        if(Database.isUserExist(userName, passWord)){
+           User user = Database.getUser(userName);
            MainMenuFrame mainMenuFrame = new MainMenuFrame();
-           mainMenuFrame.setUser(Database.getUser(userName));
+           mainMenuFrame.setUser(user);
+           mainMenuFrame.getUserHolder().disableCurrentUser(user);
            mainMenuFrame.setVisible(true);
            this.dispose();
        }

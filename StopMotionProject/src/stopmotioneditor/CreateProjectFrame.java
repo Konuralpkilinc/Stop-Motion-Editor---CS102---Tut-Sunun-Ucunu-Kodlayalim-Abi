@@ -1,4 +1,4 @@
-/*
+ /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
@@ -199,25 +199,35 @@ public class CreateProjectFrame extends javax.swing.JFrame {
     }
 
     private void cpDoneButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cpDoneButtonActionPerformed
-
-        JRadioButton button = new JRadioButton( projectName );
-        button.setPreferredSize( new DimensionUIResource(160, 140) );
-        button.setForeground( new java.awt.Color (220, 170, 170) ); 
-        mainMenu.getButtonHolder().add(button);
-        mainMenu.setVisible(false);
-        mainMenu.setVisible(true);
-
-        //creating the project
-        //adding it to the database
-        Project project = new Project ( projectImages, projectName );
-        Database.registerProject(file, mainMenu.getUser().getUsername() ,projectName);
-
-        mainMenu.getUser().addProject( project );
-
         
+        boolean exists = false;
+        ArrayList< javax.swing.JRadioButton> buttons = mainMenu.getButtonHolder().getButtons();
+        /*
+        for ( javax.swing.JRadioButton button : buttons){
+            
+            if ( button.getName().equals(projectName) ){
+                exists = true;
+                cpEnterProjectTextField.setText( "Try a different name" );
+            }
+        }
+*/
+        if ( ! exists ){
+            JRadioButton button = new JRadioButton( projectName );
+            button.setPreferredSize( new DimensionUIResource(160, 140) );
+            button.setForeground( new java.awt.Color (220, 170, 170) ); 
+            mainMenu.getButtonHolder().add(button);
+            mainMenu.setVisible(false);
+            mainMenu.setVisible(true);
 
-        this.dispose();
+            //creating the project
+            //adding it to the database
+            Project project = new Project ( projectImages, projectName );
+            Database.registerProject(file, mainMenu.getUser().getUsername() ,projectName);
 
+            mainMenu.getUser().addProject( project );
+
+            this.dispose();
+        }
     }//GEN-LAST:event_cpDoneButtonActionPerformed
 
     public static void main(String args[]) {

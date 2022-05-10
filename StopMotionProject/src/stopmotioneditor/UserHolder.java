@@ -37,9 +37,14 @@ public class UserHolder extends JScrollPane {
             JCheckBox cBox = new JCheckBox(User.users.get(i).getUsername());
             cBox.setForeground( java.awt.Color.GRAY );
             checkBoxes.add(cBox );
-            if(User.users.get(i).equals(user)){checkBoxes.get(i).setEnabled(false);}
             panel.add(checkBoxes.get(i));
         }
+    }
+    
+    public void disableCurrentUser( User user ){
+        for ( int j = 0; j < checkBoxes.size(); j++){
+                if(User.users.get(j).compareTo(user) == 0 ){checkBoxes.get(j).setEnabled(false);}
+            }
     }
 
     public JCheckBox getCheckBox(int i){

@@ -292,6 +292,10 @@ public class MainMenuFrame extends javax.swing.JFrame {
     public static User getUser(){
         return user;
     }
+    
+    public UserHolder getUserHolder(){
+        return mainMenuUserListScrollpane;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel mainMenuBasePanel;
