@@ -10,6 +10,7 @@ import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.WritableImage;
+import javafx.scene.image.Image;
 
 
 /**
@@ -25,6 +26,7 @@ public class ImageFiltering {
     static BufferedImage image;
     static int width; 
     static int height; 
+    static Image prevImage;
 
     public ImageFiltering(){}  //empty constructor 
     
@@ -36,7 +38,7 @@ public class ImageFiltering {
         
     }
     public static void redFiltering(EditableImage input){
-        
+        prevImage = input.getImage();
         Filtering(input);
 
         for (int y = 0 ; y < height ; y++){                //these nested loops analyzes all pixels and 
@@ -51,7 +53,7 @@ public class ImageFiltering {
          input.setImage(fxImage);      //compiler just want this and I add it all these
     }                                                       //try catch statements
     public static void greenFiltering(EditableImage input){
-
+        prevImage = input.getImage();
         Filtering(input);
 
         for (int y = 0 ; y < height ; y++){
@@ -68,7 +70,9 @@ public class ImageFiltering {
 
     public static void blueFiltering(EditableImage input){
 
+        prevImage = input.getImage();
         Filtering(input);
+        
 
         for (int y = 0 ; y < height ; y++){
             for (int x = 0; x < width ; x++){
@@ -84,7 +88,9 @@ public class ImageFiltering {
 
     public static void grayFiltering(EditableImage input){
 
+        prevImage = input.getImage();
         Filtering(input);
+
 
         for(int y = 0; y < height; y++){                  //Just here I have to use all three rgb value
             for (int x = 0; x < width ; x++){
@@ -100,4 +106,8 @@ public class ImageFiltering {
         WritableImage fxImage = SwingFXUtils.toFXImage(image, null);
         input.setImage(fxImage);
     }  
+    public static void noFilter(EditableImage input){
+        input.setImage(prevImage);
+        
+    }
 }
