@@ -6,6 +6,7 @@
 package stopmotioneditor;
 
 import javafx.scene.image.Image;
+import javafx.scene.layout.Pane;
 import javafx.scene.shape.Polyline;
 /**
  *
@@ -27,6 +28,7 @@ public class BigImage extends FinalImage{
     }
     public BigImage(EditableImage editableImg, String filePath){
         super(editableImg,filePath);
+        this.finalImageContainer.getChildren().add(this); //!!!!!!!!!!!!!!!!!!!!11
         
         //set the dimensions
         this.setFitWidth(FinalImage.BIG_IMAGE_WIDTH);
@@ -41,5 +43,8 @@ public class BigImage extends FinalImage{
     public void addLine(Polyline editableImagePolyline){
         super.addLine(editableImagePolyline, EditableImage.BIG_IMAGE_EDITABLE_IMAGE_RATIO);
     }
-    
+    //Invoke from playscreen
+    public Pane getBigImageContainer(){
+        return this.finalImageContainer;
+    }
 }

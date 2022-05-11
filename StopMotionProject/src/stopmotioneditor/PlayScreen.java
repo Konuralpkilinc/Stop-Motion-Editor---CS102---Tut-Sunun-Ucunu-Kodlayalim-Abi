@@ -34,7 +34,7 @@ public class PlayScreen extends Application{
     @Override
     public void start(Stage primaryStage){
         //Receive the project first from database etc. !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        this.project = MainMenu.testMethod();
+        this.project = Database.getProject("yigit", "project1");
         
         this.initializeProperties();
         this.initializeTimer();
@@ -83,9 +83,9 @@ public class PlayScreen extends Application{
             EditableImage editableImage = editableImages.get(imageCounter++);
             
             
-            Pane bigImageContainer = bigImage.getContainer(); //bigImage and its polylines
-            //playPane.getChildren().add(bigImageContainer);
-            playPane.getChildren().add(bigImage);
+            Pane bigImageContainer = bigImage.getBigImageContainer(); //bigImage and its polylines
+            playPane.getChildren().add(bigImageContainer);
+            //playPane.getChildren().add(bigImage);
             //Play the audio
             editableImage.playAudio();
         }
