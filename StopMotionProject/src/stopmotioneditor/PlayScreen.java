@@ -34,7 +34,7 @@ public class PlayScreen extends Application{
     @Override
     public void start(Stage primaryStage){
         //Receive the project first from database etc. !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        this.project = Database.getProject("yigit", "project1");
+        this.project = Database.getProject("qwe", "qwe");
         
         this.initializeProperties();
         this.initializeTimer();
