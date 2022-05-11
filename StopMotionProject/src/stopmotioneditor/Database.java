@@ -141,9 +141,14 @@ public final class Database {
      */
     public static void registerProject (File file, String username, String projectName) {
         try {
+            double fpsRate = 3.0;
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            String fpsString = gson.toJson(fpsRate);
+            
             // Creating a new project in the database with given projectName
-            PreparedStatement pstmt = CONN.prepareStatement("INSERT INTO Projects (name) VALUES (?)");
+            PreparedStatement pstmt = CONN.prepareStatement("INSERT INTO Projects (name, fps) VALUES (?, ?)");
             pstmt.setString(1, projectName);
+            pstmt.setString(2, fpsString);
             pstmt.executeUpdate();
 
             // Getting user ID
@@ -252,12 +257,21 @@ public final class Database {
      * @param username Username of the user who logged in
      * @param projectName Name of the project in which changes are made.
      */
-    public static void saveChangesInProject (ArrayList<EditableImage> images, String username, String projectName) {
+    public static void saveChangesInProject (ArrayList<EditableImage> images, String username, String projectName, double fps) {
         try {
             int projectID = getProjectID( username, projectName);
             PreparedStatement pstmt = CONN.prepareStatement("DELETE FROM Editable_Images WHERE project_id = ?");
             pstmt.setInt(1, projectID);
             pstmt.executeUpdate();
+            
+            // Update fps
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            String fpsString = gson.toJson(fps);
+            
+            PreparedStatement pstmt2 = CONN.prepareStatement("UPDATE Projects SET fps = ? WHERE id = ?");
+            pstmt2.setString(1, fpsString);
+            pstmt2.setInt(2, projectID);
+            pstmt2.executeUpdate();
             
             for (EditableImage image : images) {
                 saveImageToDatabase(image, projectID);
@@ -366,6 +380,28 @@ public final class Database {
     public static Project getProject (String username, String projectName) {
         ArrayList<EditableImage> images = new ArrayList<EditableImage>();
         Project project = new Project(projectName);
+        
+        // Set project fps
+        try {
+            int projectID = getProjectID(username, projectName);
+            
+            PreparedStatement pstmt = CONN.prepareStatement("SELECT fps FROM Projects WHERE id = ?");
+            pstmt.setInt(1, projectID);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                String fpsString = rs.getString(1);
+                
+                Gson gson = new GsonBuilder().setPrettyPrinting().create();
+                double fps = gson.fromJson(fpsString, Double.class);
+                project.setFpsRate(fps);
+            }
+        }
+        catch (SQLException ex) {
+            System.out.println("FPS getProject error");
+            System.out.println(ex);
+        }
+        
+        // Set project images
         try {
             int projectID = getProjectID(username, projectName);
 

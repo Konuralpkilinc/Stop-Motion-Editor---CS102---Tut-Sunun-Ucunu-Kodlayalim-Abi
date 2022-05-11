@@ -60,7 +60,7 @@ public class EditScreen extends Application{
     @Override
     public void start(Stage primaryStage){
         //Receive the corresponding Project instance from the main menu class's getSelectedProject method
-        this.project = Database.getProject("yigit", "project1");
+        this.project = Database.getProject("test3", "project");
         this.primaryStage = primaryStage;
         
         this.project.setEditScreen(this); //Set the project's EditScreen
@@ -274,6 +274,6 @@ public class EditScreen extends Application{
     public void closingOperation(){
         ArrayList<EditableImage> images = project.getAllImages();
         String userName = project.getUserName();
-        Database.saveChangesInProject(images, userName, project.getName());
+        Database.saveChangesInProject(images, userName, project.getName(), project.getFpsRate());
     }
 }

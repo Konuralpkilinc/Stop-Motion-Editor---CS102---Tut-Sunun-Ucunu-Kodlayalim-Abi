@@ -76,6 +76,7 @@ public class Project {
    
    public Project(String projectName){
        this.name = projectName;
+       this.fpsRate = 3.0;
    }
    
    
