@@ -143,6 +143,13 @@ public class EditableImage extends ImageView implements Cloneable{
     }
     public void setLines (ArrayList<Polyline> polylines) {
         this.lines = polylines;
+        //add each polyline to the editableImagePane
+        for(int i = 0; i < this.lines.size(); i++){
+            Polyline currentLine = this.lines.get(i);
+            this.editableImageContainer.getChildren().add(currentLine);
+        }
+        this.bigImage.setLines(polylines, EditableImage.BIG_IMAGE_EDITABLE_IMAGE_RATIO);
+        this.smallImage.setLines(polylines, EditableImage.SMALL_IMAGE_EDITABLE_IMAGE_RATIO);
     }
     public void setProject(Project aProject) {
         this.project = aProject;

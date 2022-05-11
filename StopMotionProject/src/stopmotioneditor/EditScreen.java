@@ -60,7 +60,7 @@ public class EditScreen extends Application{
     @Override
     public void start(Stage primaryStage){
         //Receive the corresponding Project instance from the main menu class's getSelectedProject method
-        this.project = Database.getProject("last", "lastproject4");
+        this.project = Database.getProject("yigit", "project1");
         this.primaryStage = primaryStage;
         
         this.project.setEditScreen(this); //Set the project's EditScreen

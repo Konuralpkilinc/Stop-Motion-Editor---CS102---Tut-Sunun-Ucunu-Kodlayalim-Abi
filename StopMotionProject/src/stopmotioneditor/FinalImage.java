@@ -114,4 +114,15 @@ public class FinalImage extends ImageView{
         //remove the line from the container
         this.finalImageContainer.getChildren().remove(removedLine);
     }
+    /**
+     * Invoke from editableImage's setLines method. Invoke on both smallImage and bigImage
+     * @param editableImageLines editableImage representation of polylines
+     * @param ratio ratio of the lines to be drawn
+     */
+    public void setLines(ArrayList<Polyline> editableImageLines, double ratio){
+        for(int i = 0; i < editableImageLines.size(); i++){
+            Polyline currentLine = editableImageLines.get(i);
+            this.addLine(currentLine, ratio);
+        }
+    }
 }
