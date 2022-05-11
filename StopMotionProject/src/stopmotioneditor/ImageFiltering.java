@@ -28,24 +28,16 @@ public class ImageFiltering {
 
     public ImageFiltering(){}  //empty constructor 
     
-    public static void filtering(EditableImage input){
-        try{
-           iis = ImageIO.createImageInputStream(input.getImage());   //creates location for image
-           iterator = ImageIO.getImageReaders(iis);       //as I understand this decodes image
-           reader = iterator.next();                      //idk
-           imageFormat = reader.getFormatName();          //when writing image, type is important
-           
-           image = ImageIO.read(iis);                       
-           width = (int)EditableImage.EDITABLE_IMAGE_WIDTH;
-           height = (int)EditableImage.EDITABLE_IMAGE_HEIGHT;
-        }
-        catch(IOException ex){
-            System.out.println(ex);
-        }
+    public static void Filtering(EditableImage input){
+               //when writing image, type is important
+           image = SwingFXUtils.fromFXImage(input.getImage(),null);                       
+           width = image.getWidth();
+           height = image.getHeight();
+        
     }
     public static void redFiltering(EditableImage input){
         
-        filtering(input);
+        Filtering(input);
 
         for (int y = 0 ; y < height ; y++){                //these nested loops analyzes all pixels and 
             for (int x = 0; x < width ; x++){              //modifies is according to the method
@@ -55,12 +47,12 @@ public class ImageFiltering {
                 image.setRGB(x,y,redColor.getRGB());
             }
         }
-        WritableImage fxImage = SwingFXUtils.toFXImage(image, null);
-        input.setImage(fxImage);    //compiler just want this and I add it all these
+         WritableImage fxImage = SwingFXUtils.toFXImage(image, null);
+         input.setImage(fxImage);      //compiler just want this and I add it all these
     }                                                       //try catch statements
     public static void greenFiltering(EditableImage input){
 
-        filtering(input);
+        Filtering(input);
 
         for (int y = 0 ; y < height ; y++){
             for (int x = 0; x < width ; x++){
@@ -76,7 +68,7 @@ public class ImageFiltering {
 
     public static void blueFiltering(EditableImage input){
 
-        filtering(input);
+        Filtering(input);
 
         for (int y = 0 ; y < height ; y++){
             for (int x = 0; x < width ; x++){
@@ -92,7 +84,7 @@ public class ImageFiltering {
 
     public static void grayFiltering(EditableImage input){
 
-        filtering(input);
+        Filtering(input);
 
         for(int y = 0; y < height; y++){                  //Just here I have to use all three rgb value
             for (int x = 0; x < width ; x++){
