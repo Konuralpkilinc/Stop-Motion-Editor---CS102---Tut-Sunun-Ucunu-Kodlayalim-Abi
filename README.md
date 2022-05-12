@@ -1,13 +1,14 @@
-# **Stop-Motion-Editor**
- by **Tut Şunun Ucunu Kodlayalım Abi**
- **CS102 Group Project** 
-
+# **Stop Motion Editor**
+ by **Tut Şunun Ucunu Kodlayalım Abi**  
+ CS102 Group Project   
+  
+  
 ## **Group Members**
-Bahadır Günenc
-Burak Oruk
-Emir Tuğlu
-Konuralp Kılınç
-Musa Yiğit Yayla
+- Bahadır Günenc
+- Burak Oruk
+- Emir Tuğlu
+- Konuralp Kılınç
+- Musa Yiğit Yayla
 
 ## **Dependencies**
 - NetBeans IDE
