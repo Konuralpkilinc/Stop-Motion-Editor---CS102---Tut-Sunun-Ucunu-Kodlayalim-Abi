@@ -14,10 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import stopmotioneditor.BigImage;
-import stopmotioneditor.EditableImage;
-import stopmotioneditor.MainMenu;
-import stopmotioneditor.Project;
+
 
 public class PlayScreen extends Application{
     public double PLAY_SCENE_HEIGHT = 1080;
@@ -34,7 +31,7 @@ public class PlayScreen extends Application{
     @Override
     public void start(Stage primaryStage){
         //Receive the project first from database etc. !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        this.project = Database.getProject("qwe", "qwe");
+        this.project = Database.getProject("emir", "project");  // ENTER USERNAME AND PROJECTNAME HERE 
         
         this.initializeProperties();
         this.initializeTimer();

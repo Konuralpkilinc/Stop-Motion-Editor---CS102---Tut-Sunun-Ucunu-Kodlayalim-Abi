@@ -59,8 +59,8 @@ public class EditScreen extends Application{
     
     @Override
     public void start(Stage primaryStage){
-        //Receive the corresponding Project instance from the main menu class's getSelectedProject method
-        this.project = Database.getProject("qwe", "qwe");
+        //Receive the corresponding Project instance from the database
+        this.project = Database.getProject("emir", "project");  // ENTER USERNAME AND PROJECTNAME HERE 
         this.primaryStage = primaryStage;
         
         this.project.setEditScreen(this); //Set the project's EditScreen
