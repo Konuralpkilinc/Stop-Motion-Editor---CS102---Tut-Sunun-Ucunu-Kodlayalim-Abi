@@ -1,5 +1,4 @@
 package stopmotioneditor;
-import java.awt.Image;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File; 
@@ -9,6 +8,8 @@ import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.WritableImage;
+import javafx.scene.image.Image;
 
 
 /**
@@ -24,27 +25,20 @@ public class ImageFiltering {
     static BufferedImage image;
     static int width; 
     static int height; 
+    static Image prevImage;
 
     public ImageFiltering(){}  //empty constructor 
     
-    public static void filtering(EditableImage input){
-        try{
-           iis = ImageIO.createImageInputStream(input.getImage());   //creates location for image
-           iterator = ImageIO.getImageReaders(iis);       //as I understand this decodes image
-           reader = iterator.next();                      //idk
-           imageFormat = reader.getFormatName();          //when writing image, type is important
-           
-           image = ImageIO.read(iis);                       
-           width = (int)EditableImage.EDITABLE_IMAGE_WIDTH;
-           height = (int)EditableImage.EDITABLE_IMAGE_HEIGHT;
-        }
-        catch(IOException ex){
-            System.out.println(ex);
-        }
+    public static void Filtering(EditableImage input){
+               //when writing image, type is important
+           image = SwingFXUtils.fromFXImage(input.getImage(),null);                       
+           width = image.getWidth();
+           height = image.getHeight();
+        
     }
     public static void redFiltering(EditableImage input){
-        
-        filtering(input);
+        prevImage = input.getImage();
+        Filtering(input);
 
         for (int y = 0 ; y < height ; y++){                //these nested loops analyzes all pixels and 
             for (int x = 0; x < width ; x++){              //modifies is according to the method
@@ -54,12 +48,12 @@ public class ImageFiltering {
                 image.setRGB(x,y,redColor.getRGB());
             }
         }
-        WriteableImage fxImage = SwingFXUtils.toFXImage(image, null);
-        input.setImage(fxImage);    //compiler just want this and I add it all these
+         WritableImage fxImage = SwingFXUtils.toFXImage(image, null);
+         input.setImage(fxImage);      //compiler just want this and I add it all these
     }                                                       //try catch statements
     public static void greenFiltering(EditableImage input){
-
-        filtering(input);
+        prevImage = input.getImage();
+        Filtering(input);
 
         for (int y = 0 ; y < height ; y++){
             for (int x = 0; x < width ; x++){
@@ -69,13 +63,15 @@ public class ImageFiltering {
                 image.setRGB(x,y,greenColor.getRGB());
             }
         }
-        WriteableImage fxImage = SwingFXUtils.toFXImage(image, null);
+        WritableImage fxImage = SwingFXUtils.toFXImage(image, null);
         input.setImage(fxImage);
     }
 
     public static void blueFiltering(EditableImage input){
 
-        filtering(input);
+        prevImage = input.getImage();
+        Filtering(input);
+        
 
         for (int y = 0 ; y < height ; y++){
             for (int x = 0; x < width ; x++){
@@ -85,13 +81,15 @@ public class ImageFiltering {
                 image.setRGB(x,y,blueColor.getRGB());
             }
         }
-        WriteableImage fxImage = SwingFXUtils.toFXImage(image, null);
+        WritableImage fxImage = SwingFXUtils.toFXImage(image, null);
         input.setImage(fxImage);
     }
 
     public static void grayFiltering(EditableImage input){
 
-        filtering(input);
+        prevImage = input.getImage();
+        Filtering(input);
+
 
         for(int y = 0; y < height; y++){                  //Just here I have to use all three rgb value
             for (int x = 0; x < width ; x++){
@@ -104,7 +102,11 @@ public class ImageFiltering {
                 image.setRGB(x,y,gray.getRGB());
             }
         }
-        WriteableImage fxImage = SwingFXUtils.toFXImage(image, null);
+        WritableImage fxImage = SwingFXUtils.toFXImage(image, null);
         input.setImage(fxImage);
     }  
+    public static void noFilter(EditableImage input){
+        input.setImage(prevImage);
+        
+    }
 }

@@ -19,10 +19,13 @@ public class RegisterScreenFrame extends javax.swing.JFrame {
     /**
      * Creates new form NewJFrame
      */
-    public RegisterScreenFrame(LoginScreenFrame loginScreenFrame) {
-        this.loginScreenFrame = loginScreenFrame;
+
+    public RegisterScreenFrame(){
         initComponents();
-        setVisible(true);
+    }
+
+    public void setLoginScreenFrame(LoginScreenFrame loginScreenFrame) {
+        this.loginScreenFrame = loginScreenFrame;
     }
 
     /**
@@ -65,11 +68,12 @@ public class RegisterScreenFrame extends javax.swing.JFrame {
         registerUsernameTextArea.setFont(new java.awt.Font("Constantia", 0, 36)); // NOI18N
         registerUsernameTextArea.setForeground(new java.awt.Color(0, 102, 102));
         registerUsernameTextArea.setRows(5);
-        registerUsernameTextArea.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
+        registerUsernameTextArea.addKeyListener( new java.awt.event.KeyAdapter(){
+            public void keyReleased(java.awt.event.KeyEvent evt){
                 usernameHandler(evt);
             }
         });
+        
         registerUsernameScrollpane.setViewportView(registerUsernameTextArea);
 
         registerPasswordLabel.setFont(new java.awt.Font("Ink Free", 3, 36)); // NOI18N
@@ -84,11 +88,12 @@ public class RegisterScreenFrame extends javax.swing.JFrame {
         registerPasswordTextArea.setFont(new java.awt.Font("Constantia", 0, 36)); // NOI18N
         registerPasswordTextArea.setForeground(new java.awt.Color(0, 102, 102));
         registerPasswordTextArea.setRows(5);
-        registerPasswordTextArea.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                registerPasswordTextAreausernameHandler(evt);
+        registerPasswordTextArea.addKeyListener( new java.awt.event.KeyAdapter(){
+            public void keyReleased(java.awt.event.KeyEvent evt){
+                passwordHandler(evt);
             }
         });
+        
         registerPasswordScrollpane.setViewportView(registerPasswordTextArea);
 
         registerRePasswordScrollpane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -99,11 +104,12 @@ public class RegisterScreenFrame extends javax.swing.JFrame {
         registerRePasswordTextArea.setFont(new java.awt.Font("Constantia", 0, 36)); // NOI18N
         registerRePasswordTextArea.setForeground(new java.awt.Color(0, 102, 102));
         registerRePasswordTextArea.setRows(5);
-        registerRePasswordTextArea.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                registerRePasswordTextAreausernameHandler(evt);
+        registerRePasswordTextArea.addKeyListener( new java.awt.event.KeyAdapter(){
+            public void keyReleased(java.awt.event.KeyEvent evt){
+                rePasswordHandler(evt);
             }
         });
+        
         registerRePasswordScrollpane.setViewportView(registerRePasswordTextArea);
 
         registerRePasswordLabel.setFont(new java.awt.Font("Ink Free", 3, 36)); // NOI18N
@@ -192,48 +198,85 @@ public class RegisterScreenFrame extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void usernameHandler(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_usernameHandler
-        
+    private void usernameHandler(java.awt.event.KeyEvent evt){
         userName = registerUsernameTextArea.getText();
-    }//GEN-LAST:event_usernameHandler
-
-    private void registerPasswordTextAreausernameHandler(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_registerPasswordTextAreausernameHandler
-        
+    }
+    
+    private void passwordHandler(java.awt.event.KeyEvent evt){
         password = registerPasswordTextArea.getText();
-    }//GEN-LAST:event_registerPasswordTextAreausernameHandler
+    }
 
-    private void registerRePasswordTextAreausernameHandler(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_registerRePasswordTextAreausernameHandler
-        
+    private void rePasswordHandler(java.awt.event.KeyEvent evt){
         rePassword = registerRePasswordTextArea.getText();
-    }//GEN-LAST:event_registerRePasswordTextAreausernameHandler
-
+    }
+    
     private void registerBackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerBackButtonActionPerformed
         
-        setVisible(false);
         loginScreenFrame.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_registerBackButtonActionPerformed
 
     private void registerDoneButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerDoneButtonActionPerformed
+
         if(!password.equals(rePassword)){
             registerUsernameTextArea.setText("");
-            registerPasswordTextArea.setText("Doesnt match with repassword");
-            registerRePasswordTextArea.setText("Doesnt match with password");
+            registerPasswordTextArea.setText("Doesn't match");
+            registerRePasswordTextArea.setText("Doesn't match");
 
         }
         else{
             if(Database.isUsernameUnique(userName)){
                 Database.registerUser(userName, password);
-                setVisible(false);
                 loginScreenFrame.setVisible(true);
+                this.dispose();
             }
             else{
                 registerUsernameTextArea.setText("Username must be unique");
             }
         }
     }//GEN-LAST:event_registerDoneButtonActionPerformed
-    
+
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(RegisterScreenFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(RegisterScreenFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(RegisterScreenFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(RegisterScreenFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new RegisterScreenFrame().setVisible(true);
+            }
+        });
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton registerBackButton;

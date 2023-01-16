@@ -10,6 +10,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Polyline;
 import javafx.scene.shape.Rectangle;
 
 /**
@@ -54,6 +55,7 @@ public class SmallImage extends FinalImage{
         //initialize the stackpane, no selection or sound at first
         this.initializeSmallImagePane();
         this.setSmallImagePaneContainer();
+        this.setEventHandling();
     }
     
     public SmallImage(EditableImage editableImg,String filePath){
@@ -75,6 +77,10 @@ public class SmallImage extends FinalImage{
     //Invoke when a drawing has been made
     public void addLastLine(){
         super.addLastLine(EditableImage.SMALL_IMAGE_EDITABLE_IMAGE_RATIO);
+    }
+    //Invoke when an EditableImage is copied, invoke for each polyline to be copied if any
+    public void addLine(Polyline editableImagePolyline){
+        super.addLine(editableImagePolyline, EditableImage.SMALL_IMAGE_EDITABLE_IMAGE_RATIO);
     }
     
     /*

@@ -10,6 +10,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JRadioButton;
+import javax.swing.plaf.DimensionUIResource;
 
 /**
  *
@@ -17,14 +18,17 @@ import javax.swing.JRadioButton;
  * @contributor Bahadır Günenc
  */
 public class MainMenuFrame extends javax.swing.JFrame {
-    User user;
+    public static User user;
 
     /**
      * Creates new form MainMenu
      */
-    public MainMenuFrame(User user) {
-        this.user = user;
+    public MainMenuFrame() {
         initComponents();
+    }
+
+    public void setUser(User user){
+        this.user = user;
     }
 
     /**
@@ -53,6 +57,10 @@ public class MainMenuFrame extends javax.swing.JFrame {
 
         mainMenuBasePanel.setBackground(new java.awt.Color(102, 0, 0));
         mainMenuBasePanel.setPreferredSize(new java.awt.Dimension(1000, 850));
+
+        mainMenuProjectsScrollpane.setBackground( new java.awt.Color(40, 0, 0) );
+        mainMenuProjectsScrollpane.getPanel().setBackground( new java.awt.Color(50, 0, 10) );
+        mainMenuProjectsScrollpane.getCreateButton().setBackground( new java.awt.Color( 100,0,0 ) );
 
         mainMenuButtonsPanel.setBackground(new java.awt.Color(51, 0, 0));
 
@@ -108,21 +116,24 @@ public class MainMenuFrame extends javax.swing.JFrame {
                 mainMenuDeleteProjectButtonActionPerformed(evt);
             }
         });
+        
+        mainMenuUserListScrollpane.getPanel().setBackground( new java.awt.Color ( 50, 0, 10 ) );
+        //mainMenuUserListScrollpane.getPanel().setForeground( new java.awt.Color ( 220, 170, 170 ) );
 
         javax.swing.GroupLayout mainMenuButtonsPanelLayout = new javax.swing.GroupLayout(mainMenuButtonsPanel);
         mainMenuButtonsPanel.setLayout(mainMenuButtonsPanelLayout);
         mainMenuButtonsPanelLayout.setHorizontalGroup(
             mainMenuButtonsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainMenuButtonsPanelLayout.createSequentialGroup()
-                .addGap(18, 18, 18)
+                .addGap(32, 32, 32)
                 .addComponent(mainMenuPlayProjectButton, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
                 .addComponent(mainMenuEditProjectButton, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
+                .addGap(26, 26, 26)
                 .addComponent(mainMenuDeleteProjectButton, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(33, 33, 33)
+                .addGap(26, 26, 26)
                 .addComponent(mainMenuShareProjectButton, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18))
+                .addGap(32, 32, 32))
         );
         mainMenuButtonsPanelLayout.setVerticalGroup(
             mainMenuButtonsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -180,16 +191,22 @@ public class MainMenuFrame extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(mainMenuBasePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 700, Short.MAX_VALUE)
         );
-
+        
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void mainMenuEditProjectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mainMenuEditProjectButtonActionPerformed
         // TODO add your handling code here:
+        System.out.println("Edit pressed");
+        EditScreen.launch(null); //no args so far !!!!!!!!!!!!!!!!!!!!!CHANGE IF YOU NEED TO PASS ARGUMENTS
+        
     }//GEN-LAST:event_mainMenuEditProjectButtonActionPerformed
 
     private void mainMenuPlayProjectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mainMenuPlayProjectButtonActionPerformed
         // TODO add your handling code here:
+        
+        PlayScreen.launch(null);
     }//GEN-LAST:event_mainMenuPlayProjectButtonActionPerformed
 
     private void mainMenuShareProjectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mainMenuShareProjectButtonActionPerformed
@@ -211,6 +228,9 @@ public class MainMenuFrame extends javax.swing.JFrame {
         for(int i = 0; i < indexes.size(); i++){
             User.users.get(indexes.get(i)).addProject(sharedProject);
         }
+        for(int i = 0; i < indexes.size(); i++){
+            Database.shareProject(user.getUsername(), User.users.get(indexes.get(i)).getUsername(), sharedProject.getProjectName());
+        }
     }//GEN-LAST:event_mainMenuShareProjectButtonActionPerformed
 
     private void mainMenuDeleteProjectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mainMenuDeleteProjectButtonActionPerformed
@@ -226,16 +246,79 @@ public class MainMenuFrame extends javax.swing.JFrame {
         }
 
         mainMenuProjectsScrollpane.remove(radioBoxes.get(removeIndex));
+        Project project = user.getProjects().get(removeIndex);
         user.removeProject(removeIndex);
+        Database.deleteProjectFromUser ( user.getUsername() , project.getProjectName());
+        this.setVisible(false);
+        this.setVisible(true);
     }//GEN-LAST:event_mainMenuDeleteProjectButtonActionPerformed
 
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(MainMenuFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(MainMenuFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(MainMenuFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(MainMenuFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new MainMenuFrame().setVisible(true);
+            }
+        });
+    }
+    
+    // this method will add all of the projects of the user to the User and to ButtonHolde which is displayed on the MainMenuFrame
+    public void addUsersProjects(){
+        
+        if ( ! ( Database.getAllProjectsOfUser(user.getUsername()).isEmpty() ) ){ //checking if the user has any projects at all or not
+        
+            java.util.ArrayList<javax.swing.JRadioButton> buttons = new java.util.ArrayList<>(); //creating an ArrayList for passing it to ButtonHolder
+
+            for ( Project p : Database.getAllProjectsOfUser(user.getUsername()) ){
+                
+                javax.swing.JRadioButton button = new javax.swing.JRadioButton( p.getName() ); //creating the button which will represent the project
+                button.setPreferredSize( new DimensionUIResource(160, 140) );
+                button.setForeground( new java.awt.Color (220, 170, 170) );
+                
+                buttons.add(button);
+                
+                user.addProject(p); // adding the project from Database to the User
+            }
+
+            mainMenuProjectsScrollpane.addArrayList( buttons );
+        }
+
+    }
 
     public ButtonHolder getButtonHolder(){
         return mainMenuProjectsScrollpane;
     }
 
-    public User getUser(){
+    public static User getUser(){
         return user;
+    }
+    
+    public UserHolder getUserHolder(){
+        return mainMenuUserListScrollpane;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

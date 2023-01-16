@@ -13,14 +13,12 @@ package stopmotioneditor;
 public class LoginScreenFrame extends javax.swing.JFrame {
     private String userName;
     private String passWord;
-    private RegisterScreenFrame registerScreenFrame = null;
-    private MainMenuFrame mainMenuFrame = null;
 
     /**
      * Creates new form NewJFrame
      */
-    public LoginScreenFrame() {
-        
+
+    public LoginScreenFrame(){
         initComponents();
     }
 
@@ -36,6 +34,7 @@ public class LoginScreenFrame extends javax.swing.JFrame {
         buttonGroup1 = new javax.swing.ButtonGroup();
         logıinBasePanel = new javax.swing.JPanel();
         loginUsernameLabel = new javax.swing.JLabel();
+        loginDoneButton = new javax.swing.JButton();
         loginUsernameScrollpane = new javax.swing.JScrollPane();
         loginUsernameTextArea = new javax.swing.JTextArea();
         loginPasswordLabel = new javax.swing.JLabel();
@@ -61,11 +60,13 @@ public class LoginScreenFrame extends javax.swing.JFrame {
         loginUsernameTextArea.setFont(new java.awt.Font("Constantia", 0, 36)); // NOI18N
         loginUsernameTextArea.setForeground(new java.awt.Color(0, 102, 102));
         loginUsernameTextArea.setRows(5);
-        loginUsernameTextArea.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
+        loginUsernameTextArea.addKeyListener( new java.awt.event.KeyAdapter(){
+            public void keyReleased(java.awt.event.KeyEvent evt){
                 usernameHandler(evt);
             }
         });
+        
+        
         loginUsernameScrollpane.setViewportView(loginUsernameTextArea);
 
         loginPasswordLabel.setFont(new java.awt.Font("Ink Free", 3, 36)); // NOI18N
@@ -80,11 +81,12 @@ public class LoginScreenFrame extends javax.swing.JFrame {
         loginPasswordTextArea.setFont(new java.awt.Font("Constantia", 0, 36)); // NOI18N
         loginPasswordTextArea.setForeground(new java.awt.Color(0, 102, 102));
         loginPasswordTextArea.setRows(5);
-        loginPasswordTextArea.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                loginPasswordTextAreausernameHandler(evt);
+        loginPasswordTextArea.addKeyListener( new java.awt.event.KeyAdapter(){
+            public void keyReleased(java.awt.event.KeyEvent evt){
+                passwordHandler(evt);
             }
         });
+        
         loginPasswordScrollpane.setViewportView(loginPasswordTextArea);
 
         loginDoneButton.setBackground(new java.awt.Color(51, 204, 0));
@@ -166,25 +168,31 @@ public class LoginScreenFrame extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void usernameHandler(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_usernameHandler
-        
+    private void usernameHandler(java.awt.event.KeyEvent evt){
         userName = loginUsernameTextArea.getText();
-    }//GEN-LAST:event_usernameHandler
-
-    private void loginPasswordTextAreausernameHandler(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_loginPasswordTextAreausernameHandler
-        
+    }
+    private void passwordHandler(java.awt.event.KeyEvent evt){
         passWord = loginPasswordTextArea.getText();
-    }//GEN-LAST:event_loginPasswordTextAreausernameHandler
+    }
+   
+    private void loginDoneButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
 
-    private void loginDoneButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginDoneButtonActionPerformed
-       
        if(Database.isUserExist(userName, passWord)){
-           setVisible(false);
-           MainMenuFrame mainmenuFrame = new MainMenuFrame(Database.getUser(userName));
+           
+           User user = Database.getUser(userName);
+           
+           MainMenuFrame mainMenuFrame = new MainMenuFrame();
+           
+           mainMenuFrame.setUser(user);
+           
+           mainMenuFrame.addUsersProjects();
+           mainMenuFrame.getUserHolder().disableCurrentUser(user);
+           
            mainMenuFrame.setVisible(true);
-           dispose();
+           this.dispose();
        }
        else{
            loginUsernameTextArea.setText("Invalid");
@@ -195,10 +203,60 @@ public class LoginScreenFrame extends javax.swing.JFrame {
     private void registerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerButtonActionPerformed
         
         setVisible(false);
-        registerScreenFrame = new RegisterScreenFrame(this);
+        RegisterScreenFrame registerScreenFrame = new RegisterScreenFrame() ;
+        registerScreenFrame.setLoginScreenFrame(this);
         registerScreenFrame.setVisible(true);
         
     }//GEN-LAST:event_registerButtonActionPerformed
+
+
+    //auto-generated main method
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(LoginScreenFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(LoginScreenFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(LoginScreenFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(LoginScreenFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new LoginScreenFrame().setVisible(true);
+            }
+        });
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
